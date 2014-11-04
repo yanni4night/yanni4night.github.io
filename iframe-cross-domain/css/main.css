@@ -32,8 +32,13 @@ body {
   display: block;
 }
 .browser {
-  margin: 0 50px;
   height: 600px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin-top: -300px;
+  margin-left: -500px;
+  width: 1000px;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
@@ -108,11 +113,37 @@ body {
   font-weight: normal;
   color: #ccc;
 }
+.browser .content .step h1.end {
+  font-size: 100px;
+}
+.browser .content .step h6.by {
+  color: rgba(255, 255, 255, 0.3);
+}
 .browser .content .step .green {
   color: #30ff06;
 }
 .browser .content .step.iframe {
   background: rgba(0, 0, 0, 0.5);
+}
+.browser .content .step .charts {
+  width: 900px;
+  height: 200px;
+}
+.browser .content .step .charts .translate {
+  padding: 20px;
+}
+.browser .content .step .charts .chart {
+  height: 100%;
+  border: 1px solid #fff;
+  position: relative;
+}
+.browser .content .step .charts .chart .inner-chart {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  right: 5px;
+  bottom: 5px;
+  border: inherit;
 }
 .browser .content .step .alert {
   font-family: arial, sans-serif;

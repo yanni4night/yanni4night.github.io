@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="flexbox flex" lang="en">
+<html lang="en">
     <head>
         <meta charset="utf-8"/>
         <meta name="render" content="webkit"/>
@@ -7,25 +7,25 @@
         <title>Cross Domain through FORM&AMP;IFRAME</title>
         <link rel="stylesheet" href="css/main.css"/>
     </head>
-    <body class="f-f f-m f-c unselectable">
+    <body class="unselectable flexbox flex">
         <div class="browser f-1 f-f f-v">
             <div class="bar f-f f-h f-c f-m">
                 <img src="img/Refresh.png" alt="Refresh" title="Refresh" class="navigator refresh"/>
                 <img src="img/Back-button.png" alt="Back" title="Back" class="navigator back"/>
                 <img src="img/Forward-button.png" alt="Forward" title="Forward" class="navigator forward"/>
-                <input type="url" class="input f-1" readonly="readonly" value="http://www.A.com/"/>
+                <input type="url" class="input f-1" readonly="readonly" value="http://yanni4night.com/"/>
             </div>
             <div class="content f-1">
                 <big class="step step-0">
-                Now I'm going to present the steps of crossing domain through <b>FORM&AMP;IFRAME</b>. Please use your <kbd>←</kbd> / <kbd>→</kbd> or <kbd>↑</kbd> / <kbd>↓</kbd> keys to navigate.
+                Now I'm going to present the steps of crossing domain through <b>FORM&AMP;IFRAME</b>. Please use your <kbd>←</kbd> / <kbd>→</kbd> or <kbd>↑</kbd> / <kbd>↓</kbd> keys to navigate between pages.
                 </big>
                 <big class="step step-1 hide">
-                First we define a callback function in gloabl scope,like this:
+                <p>First we assume that we are in A.com,then we define a callback function in gloabl scope,like this:</p>
 <pre><code>window.onCrossDomainCall = function(){
         alert("Callback from B.com")
     };
 </code></pre>
-                This function will be called from an iframe soon.
+                <p>This function will be called from an iframe soon.</p>
                 </big>
                 <big class="step step-2 hide">
                 Now we create a <b>form</b> element,which includes some input elements,and a hidden iframe,like:
@@ -62,18 +62,62 @@
     parent.onCrossDomainCall(location.search.match(/msg=(\w+)/)[1]);
 &lt;/script&gt;
 </code></pre>
-<p>We can call it because the iframe and its parent window both are in A.com.</p>
+                <p>We can call it because the iframe and its parent window both are in A.com.</p>
                 </big>
                 <big class="step step-5 hide">
-                We get the alert.The "yes" message is from <i>http://www.B.com/login.php</i>.
-<div class="alert">
-    <h6 class="tip">Javascript Alert</h6>
-    <a href="#" class="x">x</a>
-    <code class="yes">yes</code>
-    <button class="sure">Sure</button>
-</div>
-                <p>Do you understand?</p>
+                We get the alert.The "yes" message is from <i>https://www.B.com/login.php</i>.
+                <div class="alert">
+                    <h6 class="tip">Javascript Alert</h6>
+                    <a href="#" class="x">x</a>
+                    <code class="yes">yes</code>
+                    <button class="sure">Sure</button>
+                </div>
+                <p>understand?</p>
+                </big>
+                <big class="step step-6 hide">
+                In brief,the previous ways can be decorated as the following chart:
+                <div class="charts f-f f-h f-c f-m">
+                    <div class="chart chart-1 f-1">
+                        A.com
+                        <div class="inner-chart">
+                            B.com
+                        </div>
+                    </div>
+                    <div class="translate f-f f-m">→</div>
+                    <div class="chart chart-2 f-1">
+                        A.com
+                        <div class="inner-chart">
+                            A.com
+                        </div>
+                    </div>
+                </div>
+                </big>
+                <big class="step step-7 hide">
                 <p>You know,we can use another iframe <b>IN</b> the iframe instead of doing location assignment,think about <code>parent.parent</code>.</p>
+                <div class="charts f-f f-h f-c f-m">
+                    <div class="chart chart-1 f-1">
+                        A.com
+                        <div class="inner-chart">
+                            B.com
+                        </div>
+                    </div>
+                    <div class="translate f-f f-m">→</div>
+                    <div class="chart chart-2 f-1">
+                        A.com
+                        <div class="inner-chart">
+                            B.com
+                            <div class="inner-chart">
+                            A.com
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </big>
+                <big class="step step-8 hide f-f f-c f-m">
+                    <hgroup>
+                        <h1 class="end">The END</h1>
+                        <h6 class="by">by <addr>yanni4night@gmail.com</addr></h6>
+                    </hgroup>
                 </big>
             </div>
         </div>

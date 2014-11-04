@@ -107,11 +107,37 @@ body
                 font-weight: normal;
                 color: #ccc;
             }
+            h1.end{
+                font-size: 100px;
+            }
+            h6.by{
+                color:rgba(255,255,255,0.3);
+            }
             .green{
                 color: #30ff06;
             }
             &.iframe{
                 background:rgba(0,0,0,0.5);
+            }
+            .charts{
+                .translate{
+                    padding: 20px;
+                }
+                .chart{
+                    .inner-chart{
+                        position: absolute;
+                        width: 70%;
+                        height: 70%;
+                        right: 5px;
+                        bottom: 5px;
+                        border: inherit;
+                    }
+                    height: 100%;
+                    border: 1px solid #fff;
+                    position: relative;
+                }
+                width: 900px;
+                height: 200px;
             }
             .alert{
                 .tip{
@@ -171,8 +197,13 @@ body
         position: relative;
         margin:10px 10px 20px
     }
-    margin:0 50px;
     height:600px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    margin-top: -300px;
+    margin-left: -500px;
+    width: 1000px;
     background:rgba(0,0,0,0.5);
     border:1px solid rgba(255,255,255,0.3);
     color:#fff;
