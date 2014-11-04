@@ -91,8 +91,9 @@ body {
   border-radius: 2px;
   padding: 1px 5px;
 }
-.browser .content .step pre code {
-  border-left: 3px #333 solid;
+.browser .content .step pre {
+  padding: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .browser .content .step code {
   font-family: 'Courier New', arial, sans-serif;

@@ -16,7 +16,6 @@ var TransEntity = require('./step.js');
 var curStep = +(location.hash.match(/#step\-(\d)/) || [0, 0])[1];
 
 var $steps = $('.step');
-var idx = 0;
 
 function stepTo(step) {
   if (step < 0) step = 0;
@@ -35,7 +34,7 @@ if (curStep >= 0 && curStep < $steps.length) {
 }
 
 $('.navigator.refresh').click(function(e) {
-    stepTo(0);
+  stepTo(0);
 });
 $('.navigator.back').click(function(e) {
   stepTo(--curStep);
@@ -46,9 +45,9 @@ $('.navigator.forward').click(function(e) {
 
 $(document).keyup(function(e) {
   if (39 === e.keyCode || 40 === e.keyCode) {
-    stepTo(++idx);
+    stepTo(++curStep);
   } else if (37 === e.keyCode || 38 === e.keyCode) {
-    stepTo(--idx);
+    stepTo(--curStep);
   }
 });
 },{"./step.js":1}]},{},[1]);

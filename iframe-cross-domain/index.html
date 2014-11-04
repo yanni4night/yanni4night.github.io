@@ -21,33 +21,26 @@
                 </big>
                 <big class="step step-1 hide">
                 First we define a callback function in gloabl scope,like this:
-<pre>
-<code>window.onCrossDomainCall = function(){
+<pre><code>window.onCrossDomainCall = function(){
         alert("Callback from B.com")
     };
-</code>
-</pre>
+</code></pre>
                 This function will called from an iframe soon.
                 </big>
                 <big class="step step-2 hide">
                 Now we create a <b>form</b> element,which includes some input elements,and a hidden iframe,like:
-<pre>
-<code>
-    &lt;form action="https://www.B.com/login.php" method="post" target="<b class="green">hidden-b.com</b>"&gt;
+<pre><code>&lt;form action="https://www.B.com/login.php" method="post" target="<b class="green">hidden-b.com</b>"&gt;
         &lt;input type="hidden" name="username" value="yanni"/&gt;
         &lt;input type="hidden" name="passport" value="nightingale"/&gt;
     &lt;/form&gt;
     &lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;&lt;/iframe&gt;
-</code>
-</pre>
+</code></pre>
                 <p>Notice the target of the form and the name of the iframe.</p>
                 <p>Then we submit this form.</p>
                 </big>
                 <big class="step step-3 hide iframe">
                 Yes,<i>https://www.B.com/login.php</i> returns a HTML page into the iframe:
-<pre>
-<code>
- &lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;
+<pre><code>&lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;
     &lt;script&gt;
         assert(location.hostname.toLowerCase() === 'www.b.com');//true
         //As we are in B.com,we cannot call a function in A.com
@@ -57,16 +50,14 @@
         location.href = 'http://www.A.com/jump.html?msg=yes';
     &lt;/script&gt;
  &lt;/iframe&gt;
-</code>
-</pre>
+</code></pre>
                 <p>
                 As you see,this page will be navigated to <i>http://www.A.com/jump.html</i>.
                 </p>
                 </big>
                 <big class="step step-4 hide iframe">
                 In jump.html,we call the previous 'onCrossDomainCall' function:
-<pre><code>
-&lt;script&gt;
+<pre><code>&lt;script&gt;
     //We are now in A.com
     parent.onCrossDomainCall(location.search.match(/msg=(\w+)/)[1]);
 &lt;/script&gt;
