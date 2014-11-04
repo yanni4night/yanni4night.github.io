@@ -32,8 +32,8 @@
 <pre><code>&lt;form action="https://www.B.com/login.php" method="post" target="<b class="green">hidden-b.com</b>"&gt;
         &lt;input type="hidden" name="username" value="yanni"/&gt;
         &lt;input type="hidden" name="passport" value="nightingale"/&gt;
-    &lt;/form&gt;
-    &lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;&lt;/iframe&gt;
+&lt;/form&gt;
+&lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;&lt;/iframe&gt;
 </code></pre>
                 <p>Notice the target of the form and the name of the iframe.</p>
                 <p>Then we submit this form.</p>
@@ -62,6 +62,7 @@
     parent.onCrossDomainCall(location.search.match(/msg=(\w+)/)[1]);
 &lt;/script&gt;
 </code></pre>
+<p>We can call it because the iframe and its parent window both are in A.com.</p>
                 </big>
                 <big class="step step-5 hide">
                 We get the alert.The "yes" message is from <i>http://www.B.com/login.php</i>.

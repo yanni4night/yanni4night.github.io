@@ -9,8 +9,6 @@
  * @version 0.1.0
  * @since 0.1.0
  */
-var TransEntity = require('./step.js');
-
 
 var curStep = +(location.hash.match(/#step\-(\d)/) || [0, 0])[1];
 
