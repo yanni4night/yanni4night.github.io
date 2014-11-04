@@ -2,69 +2,92 @@
 <html class="flexbox flex" lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>Cross Domain by form/iframe</title>
+        <meta name="render" content="webkit"/>
         <meta name="author" content="yanni4night@gmail.com"/>
-        <link rel="stylesheet" href="css/flex.css">
-        <style type="text/css">
-        *{margin: 0;padding: 0}
-        html, body{width: 100%;height: 100%;overflow: hidden;}
-        body{
-            background:#ffc20f url(img/bg.jpg) center top no-repeat;
-            background-size: 100% auto;
-        }
-        .hide{
-            display: none !important;
-        }
-        .center{
-        display: block;
-        margin: 0 auto;
-        }
-        .hgroup{
-        color: #fff;
-        text-align: center;
-        margin: 20px auto 10px;
-        }
-        .browser{
-        margin: 0 50px;
-        height: 700px;
-        background: rgba(0,0,0,0.5);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: #fff;
-        border-radius: 5px;
-        }
-        .bar{
-            height: 60px;
-        }
-        .bar .input{
-            height: 40px;
-            background: transparent;
-            border:#fff 1px solid;
-            border-radius: 3px;
-            margin: 0 20px 0 10px;
-            outline: none;
-            color: #fff;
-            font-size: 22px;
-            font-family: "Courier New",sans-serif;
-            font-weight: bold;
-            font-style: italic;
-            padding-left:1em; 
-        }
-        .content{
-            background: rgba(0,0,0,0.5);
-            margin: 10px 10px 20px;
-        }
-        </style>
+        <title>Cross Domain through FORM&AMP;IFRAME</title>
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
-    <body class="f-f f-m f-c">
+    <body class="f-f f-m f-c unselectable">
         <div class="browser f-1 f-f f-v">
             <div class="bar f-f f-h f-c f-m">
-                <img src="img/Back-button.png" alt="Back" class=""/>
-                <img src="img/Forward-button.png" alt="Forward" class=""/>
-                <input type="text" class="input f-1" readonly="readonly" value="http://www.A.com/"/>
+                <img src="img/Refresh.png" alt="Refresh" title="Refresh" class="navigator refresh"/>
+                <img src="img/Back-button.png" alt="Back" title="Back" class="navigator back"/>
+                <img src="img/Forward-button.png" alt="Forward" title="Forward" class="navigator forward"/>
+                <input type="url" class="input f-1" readonly="readonly" value="http://www.A.com/"/>
             </div>
-            <div class="content f-1"></div>
+            <div class="content f-1">
+                <big class="step step-0">
+                Now I'm going to present the steps of crossing domain through <b>FORM&AMP;IFRAME</b>. Please use your <kbd>←</kbd> / <kbd>→</kbd> or <kbd>↑</kbd> / <kbd>↓</kbd> keys to navigate.
+                </big>
+                <big class="step step-1 hide">
+                First we define a callback function in gloabl scope,like this:
+<pre>
+<code>window.onCrossDomainCall = function(){
+        alert("Callback from B.com")
+    };
+</code>
+</pre>
+                This function will called from an iframe soon.
+                </big>
+                <big class="step step-2 hide">
+                Now we create a <b>form</b> element,which includes some input elements,and a hidden iframe,like:
+<pre>
+<code>
+    &lt;form action="https://www.B.com/login.php" method="post" target="<b class="green">hidden-b.com</b>"&gt;
+        &lt;input type="hidden" name="username" value="yanni"/&gt;
+        &lt;input type="hidden" name="passport" value="nightingale"/&gt;
+    &lt;/form&gt;
+    &lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;&lt;/iframe&gt;
+</code>
+</pre>
+                <p>Notice the target of the form and the name of the iframe.</p>
+                <p>Then we submit this form.</p>
+                </big>
+                <big class="step step-3 hide iframe">
+                Yes,<i>https://www.B.com/login.php</i> returns a HTML page into the iframe:
+<pre>
+<code>
+ &lt;iframe src="about:blank" name="<b class="green">hidden-b.com</b>"&gt;
+    &lt;script&gt;
+        assert(location.hostname.toLowerCase() === 'www.b.com');//true
+        //As we are in B.com,we cannot call a function in A.com
+        try{
+            parent.onCrossDomainCall('yes')
+        }catch(e){}
+        location.href = 'http://www.A.com/jump.html?msg=yes';
+    &lt;/script&gt;
+ &lt;/iframe&gt;
+</code>
+</pre>
+                <p>
+                As you see,this page will be navigated to <i>http://www.A.com/jump.html</i>.
+                </p>
+                </big>
+                <big class="step step-4 hide iframe">
+                In jump.html,we call the previous 'onCrossDomainCall' function:
+<pre><code>
+&lt;script&gt;
+    //We are now in A.com
+    parent.onCrossDomainCall(location.search.match(/msg=(\w+)/)[1]);
+&lt;/script&gt;
+</code></pre>
+                </big>
+                <big class="step step-5 hide">
+                We get the alert.The "yes" message is from <i>http://www.B.com/login.php</i>.
+<pre class="courier">
+|------------------------|
+|                        |
+|          yes           |
+|                        |
+|                        |
+|------------------------|
+</pre>
+                <p>Do you understand?</p>
+                <p>You know,we can use another iframe <b>IN</b> the iframe instead of doing location assignment,think about <code>parent.parent</code>.</p>
+                </big>
+            </div>
         </div>
     </body>
     <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
-    <script src="script/step.js"></script>
+    <script src="main.js"></script>
 </html>
