@@ -16,8 +16,11 @@ var curStep = +(location.hash.match(/#step\-(\d)/) || [0, 0])[1];
 var $steps = $('.step');
 
 function stepTo(step) {
-  if (step < 0) step = 0;
-  else if (step >= $steps.length) step = $steps.length - 1;
+  if (step < 0) {
+    step = 0;
+  } else if (step >= $steps.length) {
+    step = $steps.length - 1;
+  }
 
   curStep = step;
 
