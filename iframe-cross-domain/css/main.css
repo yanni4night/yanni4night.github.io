@@ -9,6 +9,11 @@ body {
 body {
   background: #84c720 url(../img/bg/green.jpg) center top no-repeat;
   background-size: 100% auto;
+  -o-transition: all 1s;
+  -moz-transition: all 1s;
+  -webkit-transition: all 1s;
+  -ms-transition: all 1s;
+  transition: all 1s;
 }
 .courier {
   font-family: 'Courier New', arial, sans-serif;

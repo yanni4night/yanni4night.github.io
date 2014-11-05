@@ -8,12 +8,6 @@ html,body
     overflow:hidden
 }
 
-body
-{
-    background:#84c720 url(../img/bg/green.jpg) center top no-repeat;
-    background-size:100% auto
-}
-
 .transition(@time:2s){
     -o-transition:all @time; 
     -moz-transition:all @time; 
@@ -26,6 +20,13 @@ body
     -ms-transform:scale(@s); 
     -moz-transform:scale(@s); 
     transform:scale(@s); 
+}
+
+body
+{
+    background:#84c720 url(../img/bg/green.jpg) center top no-repeat;
+    background-size:100% auto;
+    .transition(1s);
 }
 
 .courier{

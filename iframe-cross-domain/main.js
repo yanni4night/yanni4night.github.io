@@ -1,6 +1,39 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Copyright (C) 2014 yanni4night.com
+ * bg.js
+ *
+ * changelog
+ * 2014-11-05[10:02:50]:authorized
+ *
+ * @author yanni4night@gmail.com
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+
+var imgs = ['black', 'grey', 'red', 'green', 'cyan', 'yellow'];
+
+var idx = 0;
+
+var getimg = function(idx) {
+    return 'img/bg/' + imgs[idx] + '.jpg';
+};
+
+var prefetch = function(idx) {
+    new Image().src = getimg(idx);
+};
+
+var run = function() {
+    $('body').css('background-image', 'url(' + getimg(idx) + ')');
+    idx = (1 + idx) % imgs.length;
+    prefetch(idx);
+};
+
+prefetch(0);
+setInterval(run, 1e4);
+},{}],2:[function(require,module,exports){
+/**
+ * Copyright (C) 2014 yanni4night.com
  * step.js
  *
  * changelog
@@ -10,6 +43,8 @@
  * @version 0.1.0
  * @since 0.1.0
  */
+
+require('./bg');
 
 var curStep = +(location.hash.match(/#step\-(\d)/) || [0, 0])[1];
 
@@ -51,4 +86,4 @@ $(document).keyup(function(e) {
     stepTo(--curStep);
   }
 });
-},{}]},{},[1]);
+},{"./bg":1}]},{},[2]);

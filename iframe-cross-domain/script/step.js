@@ -10,6 +10,8 @@
  * @since 0.1.0
  */
 
+require('./bg');
+
 var curStep = +(location.hash.match(/#step\-(\d)/) || [0, 0])[1];
 
 var $steps = $('.step');
