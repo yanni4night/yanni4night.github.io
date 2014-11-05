@@ -22,6 +22,9 @@ module.exports = function(grunt) {
             all: ['script/*.js']
         },
         less: {
+            options: {
+                compress: true
+            },
             main: {
                 src: 'css/main.less',
                 dest: 'css/main.css'
