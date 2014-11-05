@@ -10,6 +10,8 @@
  * @since 0.1.0
  */
 
+"use strict";
+
 var imgs = ['black', 'grey', 'red', 'green', 'cyan', 'yellow'];
 
 var idx = 0;

@@ -12,6 +12,15 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jshint: {
+            options: {
+                node: true,
+                strict: true,
+                browser: true,
+                jquery: true
+            },
+            all: ['script/*.js']
+        },
         less: {
             main: {
                 src: 'css/main.less',
@@ -25,7 +34,7 @@ module.exports = function(grunt) {
             },
             script: {
                 files: ['script/*.js'],
-                tasks: ['browserify', 'uglify']
+                tasks: ['jshint', 'browserify', 'uglify']
             }
         },
         browserify: {
@@ -42,9 +51,11 @@ module.exports = function(grunt) {
         }
     });
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
 
     grunt.registerTask('default', ['less', 'browserify', 'uglify']);
+    grunt.registerTask('test', ['default']);
 };
