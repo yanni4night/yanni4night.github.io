@@ -12,7 +12,7 @@
 
 "use strict";
 
-var imgs = ['black', 'grey', 'red', 'green', 'cyan', 'yellow'];
+var imgs = ['grey', 'red', 'cyan', 'yellow'];
 
 var idx = 0;
 
