@@ -72,7 +72,7 @@ module.exports = (grunt)=>
                 files: [ '<%= src %>/css/*.less' ],
                 tasks: [ 'less' ]
             js:
-                files: [ '<%= src %>/js/*.js' ],
+                files: [ '<%= src %>/js/{,*/}/*.js' ],
                 tasks: [ 'jshint','browserify', 'uglify']
             html:
                 files: [ '<%= html %>/*.html' ],

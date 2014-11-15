@@ -1,0 +1,28 @@
+[{
+    "name": "bower",
+    "file": "xxx.md"
+}, {
+    "name": "npm",
+    "file": "xxx.md"
+}, {
+    "name": "node",
+    "file": "xxx.md"
+}, {
+    "name": "jquery",
+    "file": "xxx.md"
+}, {
+    "name": "grunt",
+    "file": "xxx.md"
+}, {
+    "name": "angularjs",
+    "file": "xxx.md"
+}, {
+    "name": "emberjs",
+    "file": "xxx.md"
+}, {
+    "name": "yeoman",
+    "file": "xxx.md"
+}, {
+    "name": "coffee",
+    "file": "xxx.md"
+}]
