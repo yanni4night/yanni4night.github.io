@@ -71,7 +71,6 @@
                     self.scrollStop();
                 }
             }).mouseleave(function() {
-                console.log('mouseleave');
                 this.scrollStop();
             }.bind(this));
 
@@ -99,7 +98,7 @@
             this.showIndex(idx);
         },
         scrollStop: function() {
-            if(!this.scrolling){
+            if (!this.scrolling) {
                 return;
             }
             this.scrollStopInter = setTimeout(function() {
@@ -120,7 +119,7 @@
             var sW = this.$container.width();
             var maxX = sW / 2 - (0.5) * this.itemW;
             var minX = sW / 2 - (this.$children.length - 1 + 0.5) * this.itemW;
-            
+
             this.scrolling = true;
 
             clearTimeout(this.calcuInter);

@@ -16,7 +16,7 @@
         <li class="item f-f f-m f-c" ng-repeat="item in notes" notes-list-completed><a href="{{item.url}}">{{item.date}}</a></li>
       </ul>
     </nav>
-    <article class="article" ng-controller="articleController">
+    <article class="article" ng-controller="articleController" ng-cloak>
       {{currentNote.milestone}}
     </article>
   </body>
