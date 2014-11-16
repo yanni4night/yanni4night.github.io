@@ -31,28 +31,20 @@
 
         this.maxScrollStep = 30;
 
-        var onIndex = this.onIndex = 0;
+        this.onIndex = 0;
         this.$container = $container;
-        var $slider = this.$slider = $container.find(opt.slider);
-        var $children = this.$children = $slider.find(opt.child);
+        this.$slider = $container.find(opt.slider);
 
-        if (!$children.length) {
-            return;
-        }
-
-        $slider.data('data-slider', this);
-
-        var itemW = this.itemW = $children.eq(onIndex).addClass('on').outerWidth() + parseInt($children.css('margin-left')) + parseInt($children.css('margin-right'));
-        $slider.width(itemW * $children.length);
-
+        this.initialized = false;
 
         this.init().showIndex();
-
     }
 
     AutoSlider.prototype = {
         init: function() {
             var self = this;
+
+            self.update();
             //window resize
             $(window).resize(function() {
                 this.showIndex();
@@ -93,12 +85,26 @@
 
             return this;
         },
+        update: function() {
+            var $children = this.$children = this.$slider.find(this.opt.child);
+
+            if (!$children.length) {
+                return this;
+            }
+
+            this.itemW = $children.eq(this.onIndex).addClass('on').outerWidth() + parseInt($children.css('margin-left')) + parseInt($children.css('margin-right'));
+            this.$slider.width(this.itemW * $children.length);
+
+            this.initialized = true;
+
+            return this;
+        },
         calculateIndex: function() {
             var idx = Math.floor((this.$container.width() / 2 - parseInt(this.$slider.css('left'))) / this.itemW);
             this.showIndex(idx);
         },
         scrollStop: function() {
-            if (!this.scrolling) {
+            if (!this.scrolling || !this.initialized) {
                 return;
             }
             this.scrollStopInter = setTimeout(function() {
@@ -113,7 +119,7 @@
 
         },
         scroll: function(right) {
-            if (this.scrolling) {
+            if (this.scrolling || !this.initialized) {
                 return;
             }
             var sW = this.$container.width();
@@ -136,6 +142,11 @@
 
         },
         showIndex: function(idx) {
+
+            if (!this.initialized) {
+                return false;
+            }
+
             var sW = this.$container.width();
             if (undefined === idx) {
                 idx = this.onIndex;
@@ -154,7 +165,7 @@
             this.$slider.stop().animate({
                 left: sW / 2 - (idx + 0.5) * this.itemW
             });
-
+            return true;
         }
     };
 
