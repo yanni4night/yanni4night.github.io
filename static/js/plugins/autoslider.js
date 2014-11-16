@@ -41,15 +41,22 @@
 
 
         this.init().showIndex();
-        $slider.mousemove(function() {});
+        
     }
 
     AutoSlider.prototype = {
         init: function() {
+            //window resize
             $(window).resize(function() {
                 this.showIndex();
             }.bind(this));
 
+            //hover
+            this.$slider.mousemove(function(e) {
+                console.log(e);
+            });
+
+            //<-keys->
             var moveInter;
             $(document).keydown(function(e) {
                 var destIdx;
@@ -85,7 +92,7 @@
             this.opt.onSelect.call(this, idx);
 
             this.$slider.stop().animate({
-                'left': sW / 2 - (idx + 0.5) * this.itemW
+                left: sW / 2 - (idx + 0.5) * this.itemW
             });
 
         }

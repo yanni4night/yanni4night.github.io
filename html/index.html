@@ -13,7 +13,7 @@
     <h1 class="caption">Github Timeline</h1>
     <nav class="navigation" ng-controller="navController">
       <ul class="notes-list">
-        <li class="item f-f f-m f-c" ng-repeat="item in notes | orderBy:item.date" notes-list-completed><a href="{{item.url}}">{{item.date}}</a></li>
+        <li class="item f-f f-m f-c" ng-repeat="item in notes" notes-list-completed><a href="{{item.url}}">{{item.date}}</a></li>
       </ul>
     </nav>
     <article class="article" ng-controller="articleController">

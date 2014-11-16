@@ -1,6 +1,10 @@
 [{
+    "date": "2014-11-16",
+    "milestone": "向yeoman官方确认了刚刚发布的0.18.0版本的generator包含了一个无法正确解析<%%=%>语法的bug",
+    "url": "https://github.com/yeoman/generator/issues/700"
+},{
     "date": "2014-11-15",
-    "milestone": "向bower注册了insight，帮助前端对齐设计稿的开发组件",
+    "milestone": "向bower注册了insight，帮助前端对齐设计稿的开发工具",
     "url": "http://bower.io/search/?q=insight"
 }, {
     "date": "2014-11-06",
@@ -20,7 +24,7 @@
     "url": "https://www.npmjs.org/package/filestamp"
 }, {
     "date": "2014-08-14",
-    "milestone": "向npm提交了yjsdoc，grunt-yjsdoc，一套自动生成doc的工具",
+    "milestone": "向npm提交了yjsdoc，grunt-yjsdoc，一套自动生成doc的工具，用于搜狗Passport SDK的开发",
     "url": "https://www.npmjs.org/package/grunt-yjsdoc"
 }, {
     "date": "2014-04-19",

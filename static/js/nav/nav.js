@@ -30,7 +30,7 @@ navModule.controller('navController', ['$rootScope', '$scope', '$timeout', 'note
                 onSelect: function(idx) {
                     $timeout(function() {
                         setNewCurrentNote($scope.notes[idx]);
-                    }, 0);
+                    });
                 }
             });
         });
