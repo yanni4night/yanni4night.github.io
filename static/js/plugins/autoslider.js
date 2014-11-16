@@ -11,11 +11,11 @@
  */
 "use strict";
 (function(factory) {
-if (typeof define === "function" && define.amd) {
-    define(["jquery"], factory);
-} else {
-    factory(jQuery);
-}
+    if (typeof define === "function" && define.amd) {
+        define(["jquery"], factory);
+    } else {
+        factory(jQuery);
+    }
 }(function($) {
     function AutoSlider($container, options) {
 
@@ -28,6 +28,8 @@ if (typeof define === "function" && define.amd) {
         this.scrollStep = 30;
 
         this.mouseWidth = 300;
+
+        this.maxScrollStep = 30;
 
         var onIndex = this.onIndex = 0;
         this.$container = $container;
@@ -49,26 +51,27 @@ if (typeof define === "function" && define.amd) {
     }
 
     AutoSlider.prototype = {
-            init: function() {
-                var self = this;
-                //window resize
-                $(window).resize(function() {
-                    this.showIndex();
-                }.bind(this));
+        init: function() {
+            var self = this;
+            //window resize
+            $(window).resize(function() {
+                this.showIndex();
+            }.bind(this));
 
-                //hover
-                this.$container.mousemove(function(e) {
-                        if (e.pageX < self.mouseWidth || $(this).width() - e.pageX < self.mouseWidth) {
-                            self.scroll(e.pageX > self.mouseWidth);
-                            if (e.pageX < self.mouseWidth) {
-                                self.scrollStep = 60 * ((self.mouseWidth - e.pageX) / self.mouseWidth);
-                            } else {
-                                self.scrollStep = 60 * ((self.mouseWidth - $(this).width() + e.pageX) / self.mouseWidth);
-                        }
+            //hover
+            this.$container.mousemove(function(e) {
+                if (e.pageX < self.mouseWidth || $(this).width() - e.pageX < self.mouseWidth) {
+                    self.scroll(e.pageX > self.mouseWidth);
+                    if (e.pageX < self.mouseWidth) {
+                        self.scrollStep = self.maxScrollStep * ((self.mouseWidth - e.pageX) / self.mouseWidth);
                     } else {
-                        self.scrollStop();
+                        self.scrollStep = self.maxScrollStep * ((self.mouseWidth - $(this).width() + e.pageX) / self.mouseWidth);
                     }
-                }).mouseleave(function() {
+                } else {
+                    self.scrollStop();
+                }
+            }).mouseleave(function() {
+                console.log('mouseleave');
                 this.scrollStop();
             }.bind(this));
 
@@ -91,9 +94,24 @@ if (typeof define === "function" && define.amd) {
 
             return this;
         },
+        calculateIndex: function() {
+            var idx = Math.floor((this.$container.width() / 2 - parseInt(this.$slider.css('left'))) / this.itemW);
+            this.showIndex(idx);
+        },
         scrollStop: function() {
-            clearTimeout(this.scrollInter);
-            this.scrolling = false;
+            if(!this.scrolling){
+                return;
+            }
+            this.scrollStopInter = setTimeout(function() {
+                clearTimeout(this.scrollInter);
+                this.scrolling = false;
+
+                clearTimeout(this.calcuInter);
+                this.calcuInter = setTimeout(function() {
+                    this.calculateIndex();
+                }.bind(this), 1e3);
+            }.bind(this), 5e2);
+
         },
         scroll: function(right) {
             if (this.scrolling) {
@@ -102,7 +120,11 @@ if (typeof define === "function" && define.amd) {
             var sW = this.$container.width();
             var maxX = sW / 2 - (0.5) * this.itemW;
             var minX = sW / 2 - (this.$children.length - 1 + 0.5) * this.itemW;
+            
             this.scrolling = true;
+
+            clearTimeout(this.calcuInter);
+
             this.scrollInter = setInterval(function() {
                 var dest = parseInt(this.$slider.css('left')) + (right ? -1 : 1) * this.scrollStep;
                 if (dest < minX) {
@@ -135,11 +157,11 @@ if (typeof define === "function" && define.amd) {
             });
 
         }
-};
+    };
 
-$.fn.autoSlider = function(options) {
-    $.each(this, function(idx, slider) {
-        new AutoSlider($(slider), options);
-    });
-};
+    $.fn.autoSlider = function(options) {
+        $.each(this, function(idx, slider) {
+            new AutoSlider($(slider), options);
+        });
+    };
 }));
