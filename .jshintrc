@@ -1,4 +1,5 @@
 {
+  "node": true,
   "browser": true,
   "esnext": true,
   "bitwise": true,
@@ -18,6 +19,7 @@
   "jquery": true,
   "globals":{
     "angular": true,
-    "require": true
+    "require": true,
+    "define": true
   }
 }

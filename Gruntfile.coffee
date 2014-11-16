@@ -12,7 +12,7 @@ module.exports = (grunt)=>
             options:
                 jshintrc: '.jshintrc'
             all:
-                src: ['<%= src %>/js/*.js']
+                src: ['<%= src %>/js/{,*/}/*.js','!<%= src %>/js/lib/*.js']
         browserify:
             js:
                 expand: true,
@@ -73,7 +73,7 @@ module.exports = (grunt)=>
                 tasks: [ 'less' ]
             js:
                 files: [ '<%= src %>/js/{,*/}/*.js' ],
-                tasks: [ 'jshint','browserify', 'uglify']
+                tasks: [ 'jshint','browserify']
             html:
                 files: [ '<%= html %>/*.html' ],
                 tasks: [ 'copy:html', 'stamp', 'htmlmin']
