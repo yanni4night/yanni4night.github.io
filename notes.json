@@ -1,54 +1,53 @@
-[
-    {
-        "date": "2014-11-15",
-        "milestone": "向bower提交了insight，帮助前端对齐设计稿的开发组件"
-    },
-    {
-        "date": "2014-11-06",
-        "milestone": "向npm提交了grunt-web-swig，利用swig生成静态页的grunt插件"
-    },
-    {
-        "date": "2014-09-20",
-        "milestone": "向jQuery提交了修复Chrome30~34下获取text-decoration返回值bug的commit，rejected，理由是jQuery只保证兼容Chrome的最新2个版本"
-    },
-    {
-        "date": "2014-08-20",
-        "milestone": "向npm提交了node-ssi，解释nginx的SSI语法的工具"
-    },
-    {
-        "date": "2014-08-16",
-        "milestone": "向npm提交了filestamp，文件时间戳计算工具；urljoin，智能合并URL的工具"
-    },
-    {
-        "date": "2014-08-14",
-        "milestone": "向npm提交了yjsdoc，grunt-yjsdoc，一套自动生成doc的工具"
-    },
-    {
-        "date": "2014-04-19",
-        "milestone": "向npm提交了grunt-web-stamp，自动计算文件时间戳的grunt插件"
-    },
-    {
-        "date": "2014-02-17",
-        "milestone": "修改stiches，支持按照特定比例值输出，该repo是一个HTML5版的CSS Sprite生成工具"
-    },
-    {
-        "date": "2013-12-21",
-        "milestone": "向node-readability提交了修复特定环境下崩溃问题的commit，merged，该repo是readability的node版本"
-    },
-    {
-        "date": "2013-12-16",
-        "milestone": "向pip提交了ursa2，为node-ursa的python版本"
-    },
-    {
-        "date": "2013-12-08",
-        "milestone": "向r.js提交能处理css内含GET参数的import的commit，rejected，理由是没有必要"
-    },
-    {
-        "date": "2013-11-20",
-        "milestone": "向Sublime的Package Control提交了CustomInsert插件"
-    },
-    {
-        "date": "2013-09-09",
-        "milestone": "向npm提交了node-ursa，一个前端开发与构建环境"
-    }
-]
+[{
+    "date": "2014-11-15",
+    "milestone": "向bower注册了insight，帮助前端对齐设计稿的开发组件",
+    "url": "http://bower.io/search/?q=insight"
+}, {
+    "date": "2014-11-06",
+    "milestone": "向npm提交了grunt-web-swig，利用swig生成静态页的grunt插件",
+    "url": "https://www.npmjs.org/package/grunt-web-swig"
+}, {
+    "date": "2014-09-20",
+    "milestone": "向jQuery提交了修复Chrome30~34下获取text-decoration返回值bug的commit，rejected，理由是jQuery只保证兼容Chrome的最新2个版本",
+    "url": "https://github.com/jquery/jquery/pull/1659"
+}, {
+    "date": "2014-08-20",
+    "milestone": "向npm提交了node-ssi，解释nginx的SSI语法的工具",
+    "url": "https://www.npmjs.org/package/node-ssi"
+}, {
+    "date": "2014-08-16",
+    "milestone": "向npm提交了filestamp，文件时间戳计算工具；urljoin，智能合并URL的工具",
+    "url": "https://www.npmjs.org/package/filestamp"
+}, {
+    "date": "2014-08-14",
+    "milestone": "向npm提交了yjsdoc，grunt-yjsdoc，一套自动生成doc的工具",
+    "url": "https://www.npmjs.org/package/grunt-yjsdoc"
+}, {
+    "date": "2014-04-19",
+    "milestone": "向npm提交了grunt-web-stamp，自动计算文件时间戳的grunt插件",
+    "url": "https://www.npmjs.org/package/grunt-web-stamp"
+}, {
+    "date": "2014-02-17",
+    "milestone": "修改stiches，支持按照特定比例值输出，该repo是一个HTML5版的CSS Sprite生成工具",
+    "url": "https://github.com/yanni4night/stitches"
+}, {
+    "date": "2013-12-21",
+    "milestone": "向node-readability提交了修复特定环境下崩溃问题的commit，merged，该repo是readability的node版本",
+    "url": "https://github.com/luin/node-readability/pull/19"
+}, {
+    "date": "2013-12-16",
+    "milestone": "向pip提交了ursa2，为node-ursa的python版本",
+    "url": "https://pypi.python.org/pypi/ursa2/0.0.12"
+}, {
+    "date": "2013-12-08",
+    "milestone": "向r.js提交能处理css内含GET参数的import的commit，rejected，理由是没有必要",
+    "url": "https://github.com/jrburke/r.js/pull/581"
+}, {
+    "date": "2013-11-20",
+    "milestone": "向Sublime的Package Control提交了CustomInsert插件",
+    "url": "https://github.com/wbond/package_control_channel/pull/2384"
+}, {
+    "date": "2013-09-09",
+    "milestone": "向npm提交了node-ursa，一个前端开发与构建环境",
+    "url": "https://www.npmjs.org/package/node-ursa"
+}]
