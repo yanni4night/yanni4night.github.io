@@ -11,11 +11,11 @@
  */
 "use strict";
 (function(factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["jquery"], factory);
-    } else {
-        factory(jQuery);
-    }
+if (typeof define === "function" && define.amd) {
+    define(["jquery"], factory);
+} else {
+    factory(jQuery);
+}
 }(function($) {
     function AutoSlider($container, options) {
 
@@ -24,6 +24,10 @@
             child: 'li',
             onSelect: $.noop
         }, options || {});
+
+        this.scrollStep = 30;
+
+        this.mouseWidth = 300;
 
         var onIndex = this.onIndex = 0;
         this.$container = $container;
@@ -41,20 +45,32 @@
 
 
         this.init().showIndex();
-        
+
     }
 
     AutoSlider.prototype = {
-        init: function() {
-            //window resize
-            $(window).resize(function() {
-                this.showIndex();
-            }.bind(this));
+            init: function() {
+                var self = this;
+                //window resize
+                $(window).resize(function() {
+                    this.showIndex();
+                }.bind(this));
 
-            //hover
-            this.$slider.mousemove(function(e) {
-                console.log(e);
-            });
+                //hover
+                this.$container.mousemove(function(e) {
+                        if (e.pageX < self.mouseWidth || $(this).width() - e.pageX < self.mouseWidth) {
+                            self.scroll(e.pageX > self.mouseWidth);
+                            if (e.pageX < self.mouseWidth) {
+                                self.scrollStep = 60 * ((self.mouseWidth - e.pageX) / self.mouseWidth);
+                            } else {
+                                self.scrollStep = 60 * ((self.mouseWidth - $(this).width() + e.pageX) / self.mouseWidth);
+                        }
+                    } else {
+                        self.scrollStop();
+                    }
+                }).mouseleave(function() {
+                this.scrollStop();
+            }.bind(this));
 
             //<-keys->
             var moveInter;
@@ -74,6 +90,29 @@
             }.bind(this));
 
             return this;
+        },
+        scrollStop: function() {
+            clearTimeout(this.scrollInter);
+            this.scrolling = false;
+        },
+        scroll: function(right) {
+            if (this.scrolling) {
+                return;
+            }
+            var sW = this.$container.width();
+            var maxX = sW / 2 - (0.5) * this.itemW;
+            var minX = sW / 2 - (this.$children.length - 1 + 0.5) * this.itemW;
+            this.scrolling = true;
+            this.scrollInter = setInterval(function() {
+                var dest = parseInt(this.$slider.css('left')) + (right ? -1 : 1) * this.scrollStep;
+                if (dest < minX) {
+                    dest = minX;
+                } else if (dest > maxX) {
+                    dest = maxX;
+                }
+                this.$slider.css('left', dest + 'px');
+            }.bind(this), 20);
+
         },
         showIndex: function(idx) {
             var sW = this.$container.width();
@@ -96,11 +135,11 @@
             });
 
         }
-    };
+};
 
-    $.fn.autoSlider = function(options) {
-        $.each(this, function(idx, slider) {
-            new AutoSlider($(slider), options);
-        });
-    };
+$.fn.autoSlider = function(options) {
+    $.each(this, function(idx, slider) {
+        new AutoSlider($(slider), options);
+    });
+};
 }));
