@@ -19,13 +19,21 @@ html,body{
 .navigation{
     .notes-list{
         .item{
+            &:hover{
+                opacity: 0.5;
+            }
             &.on{
                 opacity: 1;
                 transform:scale(1.2);
             }
-            &:hover{
-                opacity: 0.5;
+            a{  
+                &:hover{
+                    text-decoration: underline;
+                }
+                text-decoration: none;
+                color:inherit;
             }
+            cursor: pointer;
             opacity: 0.2;
             float: left;
             margin: 50px 20px;
