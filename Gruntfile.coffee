@@ -79,4 +79,4 @@ module.exports = (grunt)=>
                 tasks: [ 'copy:html', 'stamp', 'htmlmin']
     }
 
-    grunt.registerTask 'default', [ 'clean', 'jshint' , 'browserify', 'uglify', 'less', 'copy', 'stamp', 'htmlmin' ]
+    grunt.registerTask 'default', [ 'clean', 'jshint' , 'browserify', 'uglify', 'uglify', 'less', 'copy', 'stamp', 'htmlmin' ]
