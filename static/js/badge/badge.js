@@ -29,7 +29,8 @@ badgeModule.controller('badgeController', ['$scope', function($scope) {
         dependency: true,
         withGrunt: true,
         codeship: false,
-        bowerVersion: false
+        bowerVersion: false,
+        pipVersion:false
     };
 
     $scope.onSubmit = function(e) {
