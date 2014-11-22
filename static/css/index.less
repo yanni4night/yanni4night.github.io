@@ -6,13 +6,25 @@ html,body{
     font-family: 'Courier New',arial,sans-serif;
     background: #333;
     height: 100%;
+    color: #fff;
 }
+a{
+    color:#fff;
+    &:link{
+        text-decoration: none;
+    }
+}
+
+.tc{text-align: center;}
+.fixed{position: fixed;}
+.relative{position: relative;}
+.absolute{position: absolute;}
+
 .caption{
     width: 100%;
     font-size: 4em;
     color:#fff;
     text-align: center;
-    position: fixed;
     left: 0;
     top: 20px;
 }
@@ -76,4 +88,40 @@ html,body{
     text-align: center;
     font-size: 22px;
     color: #fff;
+}
+
+.badge-form{
+    fieldset{
+        border: 1px solid #fff;
+        padding: 10px;
+    }
+    .row{
+        .label{
+            width: 180px;
+            padding-right: 1em;
+        }
+        input[type="text"]{
+            color: #484848;
+            display: block;
+            font-size: 18px;
+            border: 0;
+            border-radius: 5px;
+            padding: 5px 1em;
+        }
+        .badge-cbs{
+            label{
+                padding: 5px 0;
+            }
+        }
+        padding:5px 0;
+    }
+    margin: 0 auto;
+    width: 800px;
+}
+
+footer{
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 30px;
+    border-top: 1px #707070 solid;
 }
