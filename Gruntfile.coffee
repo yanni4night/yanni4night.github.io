@@ -85,9 +85,12 @@ module.exports = (grunt)->
         done = this.async()
         request 'http://www.jshint.com/docs/options/', (error, response, body)=>
             if !error && (response.statusCode == 200)
-                optionsTableHTML = (body.match /<table[\s\S]+?<\/table>/g)[0]
+                optionsTableHTML = ''
+                tables = (body.match /<table[\s\S]+?<\/table>/mg) || []
+                tables.forEach (table)->
+                    optionsTableHTML += table
                 jshintSrc = grunt.file.read 'html/jshint.html'
-                jshintSrc = jshintSrc.replace /<table[\s\S]+?<\/table>/, optionsTableHTML
+                jshintSrc = jshintSrc.replace /<table[\s\S]+<\/table>/, optionsTableHTML
                 grunt.file.write 'html/jshint.html', jshintSrc
             else
                 console error
