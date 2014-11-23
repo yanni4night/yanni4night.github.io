@@ -1,4 +1,6 @@
-module.exports = (grunt)=>
+request = require 'request'
+
+module.exports = (grunt)->
     (require 'time-grunt') grunt
     (require 'load-grunt-tasks') grunt
 
@@ -78,5 +80,19 @@ module.exports = (grunt)=>
                 files: [ '<%= html %>/*.html' ],
                 tasks: [ 'copy:html', 'stamp', 'htmlmin']
     }
+
+    grunt.registerTask 'curl-jshint-options', 'Curl options table', ()->
+        done = this.async()
+        request 'http://www.jshint.com/docs/options/', (error, response, body)=>
+            if !error && (response.statusCode == 200)
+                optionsTableHTML = (body.match /<table[\s\S]+?<\/table>/g)[0]
+                jshintSrc = grunt.file.read 'html/jshint.html'
+                jshintSrc = jshintSrc.replace /<table[\s\S]+?<\/table>/, optionsTableHTML
+                grunt.file.write 'html/jshint.html', jshintSrc
+            else
+                console error
+            done()
+
+
 
     grunt.registerTask 'default', [ 'clean', 'jshint' , 'browserify', 'uglify', 'uglify', 'less', 'copy', 'stamp', 'htmlmin' ]

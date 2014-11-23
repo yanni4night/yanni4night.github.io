@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html ng-app="badgePageApp">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="render" content="webkit"/>
+    <meta name="author" content="yanni4night@gmail.com"/>
+    <title>Jshint --yanni4night.github.io</title>
+    <link rel="stylesheet" href="dist/static/css/jshint.css"/>
+    <script src="dist/static/js/lib/underscore.min.js"></script>
+    <script src="dist/static/js/lib/jquery.min.js"></script>
+    <script src="dist/static/js/lib/backbone.js"></script>
+  </head>
+  <body class="box flex">
+  <table class='options table table-bordered table-striped'><tr>
+<td class='name' id='bitwise'><a href='#bitwise'>bitwise</a></td>
+<td class='desc'><p>This option prohibits the use of bitwise operators such as <code>^</code> (XOR), <code>|</code> (OR)
+and others. Bitwise operators are very rare in JavaScript programs and quite
+often <code>&amp;</code> is simply a mistyped <code>&amp;&amp;</code>.</p></td>
+</tr>
+<tr>
+<td class='name' id='camelcase'><a href='#camelcase'>camelcase</a></td>
+<td class='desc'><p>This option allows you to force all variable names to use either camelCase
+style or UPPER_CASE with underscores.</p></td>
+</tr>
+<tr>
+<td class='name' id='curly'><a href='#curly'>curly</a></td>
+<td class='desc'><p>This option requires you to always put curly braces around blocks in loops and
+conditionals. JavaScript allows you to omit curly braces when the block consists
+of only one statement, for example:</p>
+
+<pre><code>while (day)
+  shuffle();</code></pre>
+
+<p>However, in some circumstances, it can lead to bugs (you&#39;d think that <code>sleep()</code>
+is a part of the loop while in reality it is not):</p>
+
+<pre><code>while (day)
+  shuffle();
+  sleep();</code></pre></td>
+</tr>
+<tr>
+<td class='name' id='eqeqeq'><a href='#eqeqeq'>eqeqeq</a></td>
+<td class='desc'><p>This options prohibits the use of <code>==</code> and <code>!=</code> in favor of <code>===</code> and <code>!==</code>. The
+former try to coerce values before comparing them which can lead to some
+unexpected results. The latter don&#39;t do any coercion so they are generally
+safer. If you would like to learn more about type coercion in JavaScript,
+we recommend <a href="http://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/">Truth, Equality and JavaScript</a>
+by Angus Croll.</p></td>
+</tr>
+<tr>
+<td class='name' id='es3'><a href='#es3'>es3</a></td>
+<td class='desc'><p>This option tells JSHint that your code needs to adhere to ECMAScript 3
+specification. Use this option if you need your program to be executable
+in older browsers—such as Internet Explorer 6/7/8/9—and other legacy
+JavaScript environments.</p></td>
+</tr>
+<tr>
+<td class='name' id='forin'><a href='#forin'>forin</a></td>
+<td class='desc'><p>This option requires all <code>for in</code> loops to filter object&#39;s items. The for in
+statement allows for looping through the names of all of the properties of an
+object including those inherited throught the prototype chain. This behavior can
+lead to unexpected items in your object so it is generally safer to always
+filter inherited properties out as shown in the example:</p>
+
+<pre><code>for (key in obj) {
+  if (obj.hasOwnProperty(key)) {
+    // We are sure that obj[key] belongs to the object and was not inherited.
+  }
+}</code></pre>
+
+<p>For more in-depth understanding of <code>for in</code> loops in JavaScript, read
+<a href="http://javascriptweblog.wordpress.com/2011/01/04/exploring-javascript-for-in-loops/">Exploring JavaScript for-in loops</a>
+by Angus Croll.</p></td>
+</tr>
+<tr>
+<td class='name' id='freeze'><a href='#freeze'>freeze</a></td>
+<td class='desc'><p>This options prohibits overwriting prototypes of native objects such as
+<code>Array</code>, <code>Date</code> and so on.</p>
+
+<pre><code>/* jshint freeze:true */
+Array.prototype.count = function (value) { return 4; };
+// -&gt; Warning: Extending prototype of native object: &#39;Array&#39;.</code></pre></td>
+</tr>
+<tr>
+<td class='name' id='immed'><a href='#immed'>immed</a></td>
+<td class='desc'><p>This option prohibits the use of immediate function invocations without wrapping
+them in parentheses. Wrapping parentheses assists readers of your code in
+understanding that the expression is the result of a function, and not the
+function itself.</p></td>
+</tr>
+<tr>
+<td class='name' id='indent'><a href='#indent'>indent</a></td>
+<td class='desc'><p>This option sets a specific tab width for your code.</p></td>
+</tr>
+<tr>
+<td class='name' id='latedef'><a href='#latedef'>latedef</a></td>
+<td class='desc'><p>This option prohibits the use of a variable before it was defined. JavaScript
+has function scope only and, in addition to that, all variables are always
+moved—or hoisted— to the top of the function. This behavior can lead to some
+very nasty bugs and that&#39;s why it is safer to always use variable only after
+they have been explicitly defined.</p>
+
+<p>Setting this option to &quot;nofunc&quot; will allow function declarations to be ignored.</p>
+
+<p>For more in-depth understanding of scoping and hoisting in JavaScript, read
+<a href="http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting">JavaScript Scoping and Hoisting</a>
+by Ben Cherry.</p></td>
+</tr>
+<tr>
+<td class='name' id='newcap'><a href='#newcap'>newcap</a></td>
+<td class='desc'><p>This option requires you to capitalize names of constructor functions.
+Capitalizing functions that are intended to be used with <code>new</code> operator is just
+a convention that helps programmers to visually distinguish constructor functions
+from other types of functions to help spot mistakes when using <code>this</code>.</p>
+
+<p>Not doing so won&#39;t break your code in any browsers or environments but it will
+be a bit harder to figure out—by reading the code—if the function was supposed
+to be used with or without new. And this is important because when the function
+that was intended to be used with <code>new</code> is used without it, <code>this</code> will point to
+the global object instead of a new object.</p></td>
+</tr>
+<tr>
+<td class='name' id='noarg'><a href='#noarg'>noarg</a></td>
+<td class='desc'><p>This option prohibits the use of <code>arguments.caller</code> and <code>arguments.callee</code>.
+Both <code>.caller</code> and <code>.callee</code> make quite a few optimizations impossible so they
+were deprecated in future versions of JavaScript. In fact, ECMAScript 5 forbids
+the use of <code>arguments.callee</code> in strict mode.</p></td>
+</tr>
+<tr>
+<td class='name' id='noempty'><a href='#noempty'>noempty</a></td>
+<td class='desc'><p>This option warns when you have an empty block in your code. JSLint was
+originally warning for all empty blocks and we simply made it optional.
+There were no studies reporting that empty blocks in JavaScript break your code
+in any way.</p></td>
+</tr>
+<tr>
+<td class='name' id='nonbsp'><a href='#nonbsp'>nonbsp</a></td>
+<td class='desc'><p>This option warns about &quot;non-breaking whitespace&quot; characters. These characters
+can be entered with option-space on Mac computers and have a potential of
+breaking non-UTF8 web pages.</p></td>
+</tr>
+<tr>
+<td class='name' id='nonew'><a href='#nonew'>nonew</a></td>
+<td class='desc'><p>This option prohibits the use of constructor functions for side-effects. Some
+people like to call constructor functions without assigning its result to any
+variable:</p>
+
+<pre><code>new MyConstructor();</code></pre>
+
+<p>There is no advantage in this approach over simply calling <code>MyConstructor</code> since
+the object that the operator <code>new</code> creates isn&#39;t used anywhere so you should
+generally avoid constructors like this one.</p></td>
+</tr>
+<tr>
+<td class='name' id='plusplus'><a href='#plusplus'>plusplus</a></td>
+<td class='desc'><p>This option prohibits the use of unary increment and decrement operators.
+Some people think that <code>++</code> and <code>--</code> reduces the quality of their coding styles
+and there are programming languages—such as Python—that go completely without
+these operators.</p></td>
+</tr>
+<tr>
+<td class='name' id='quotmark'><a href='#quotmark'>quotmark</a></td>
+<td class='desc'><p>This option enforces the consistency of quotation marks used throughout your
+code. It accepts three values: <code>true</code> if you don&#39;t want to enforce one
+particular style but want some consistency, <code>&quot;single&quot;</code> if you want to allow only
+single quotes and <code>&quot;double&quot;</code> if you want to allow only double quotes.</p></td>
+</tr>
+<tr>
+<td class='name' id='undef'><a href='#undef'>undef</a></td>
+<td class='desc'><p>This option prohibits the use of explicitly undeclared variables. This option
+is very useful for spotting leaking and mistyped variables.</p>
+
+<pre><code>/*jshint undef:true */
+
+function test() {
+  var myVar = &#39;Hello, World&#39;;
+  console.log(myvar); // Oops, typoed here. JSHint with undef will complain
+}</code></pre>
+
+<p>If your variable is defined in another file, you can use <code>/*global ... */</code>
+directive to tell JSHint about it.</p></td>
+</tr>
+<tr>
+<td class='name' id='unused'><a href='#unused'>unused</a></td>
+<td class='desc'><p>This option warns when you define and never use your variables. It is very
+useful for general code cleanup, especially when used in addition to <code>undef</code>.</p>
+
+<pre><code>/*jshint unused:true */
+
+function test(a, b) {
+  var c, d = 2;
+
+  return a + d;
+}
+
+test(1, 2);
+
+// Line 3: &#39;b&#39; was defined but never used.
+// Line 4: &#39;c&#39; was defined but never used.</code></pre>
+
+<p>In addition to that, this option will warn you about unused global variables
+declared via <code>/*global ... */</code> directive.</p>
+
+<p>This can be set to <code>vars</code> to only check for variables, not function parameters,
+or <code>strict</code> to check all variables and parameters.  The default (true) behavior
+is to allow unused parameters that are followed by a used parameter.</p></td>
+</tr>
+<tr>
+<td class='name' id='strict'><a href='#strict'>strict</a></td>
+<td class='desc'><p>This option requires all functions to run in ECMAScript 5&#39;s strict mode.
+<a href="https://developer.mozilla.org/en/JavaScript/Strict_mode">Strict mode</a> is a way
+to opt in to a restricted variant of JavaScript. Strict mode eliminates some
+JavaScript pitfalls that didn&#39;t cause errors by changing them to produce errors.
+It also fixes mistakes that made it difficult for the JavaScript engines to
+perform certain optimizations.</p>
+
+<p><em>Note:</em> This option enables strict mode for function scope only. It <em>prohibits</em>
+the global scoped strict mode because it might break third-party widgets on your
+page. If you really want to use global strict mode, see the <em>globalstrict</em>
+option.</p></td>
+</tr>
+<tr>
+<td class='name' id='maxparams'><a href='#maxparams'>maxparams</a></td>
+<td class='desc'><p>This option lets you set the max number of formal parameters allowed per
+function:</p>
+
+<pre><code>/*jshint maxparams:3 */
+
+function login(request, onSuccess) {
+  // ...
+}
+
+// JSHint: Too many parameters per function (4).
+function logout(request, isManual, whereAmI, onSuccess) {
+  // ...
+}</code></pre></td>
+</tr>
+<tr>
+<td class='name' id='maxdepth'><a href='#maxdepth'>maxdepth</a></td>
+<td class='desc'><p>This option lets you control how nested do you want your blocks to be:</p>
+
+<pre><code>/*jshint maxdepth:2 */
+
+function main(meaning) {
+  var day = true;
+
+  if (meaning === 42) {
+    while (day) {
+      shuffle();
+
+      if (tired) { // JSHint: Blocks are nested too deeply (3).
+          sleep();
+      }
+    }
+  }
+}</code></pre></td>
+</tr>
+<tr>
+<td class='name' id='maxstatements'><a href='#maxstatements'>maxstatements</a></td>
+<td class='desc'><p>This option lets you set the max number of statements allowed per function:</p>
+
+<pre><code>/*jshint maxstatements:4 */
+
+function main() {
+  var i = 0;
+  var j = 0;
+
+  // Function declarations count as one statement. Their bodies
+  // don&#39;t get taken into account for the outer function.
+  function inner() {
+    var i2 = 1;
+    var j2 = 1;
+
+    return i2 + j2;
+  }
+
+  j = i + j;
+  return j; // JSHint: Too many statements per function. (5)
+}</code></pre></td>
+</tr>
+<tr>
+<td class='name' id='maxcomplexity'><a href='#maxcomplexity'>maxcomplexity</a></td>
+<td class='desc'><p>This option lets you control cyclomatic complexity throughout your code.
+Cyclomatic complexity measures the number of linearly independent paths through
+a program&#39;s source code. Read more about
+<a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic complexity on Wikipedia</a>.</p></td>
+</tr>
+<tr>
+<td class='name' id='maxlen'><a href='#maxlen'>maxlen</a></td>
+<td class='desc'><p>This option lets you set the maximum length of a line.</p></td>
+</tr></table>
+  <footer class="tc"><a href="http://yanni4night.com/">yanni4night.com</a> &copy;2014</footer>
+</body>
+<script src="dist/static/js/badge.js"></script>
+</html>
