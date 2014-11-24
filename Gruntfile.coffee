@@ -29,7 +29,8 @@ module.exports = (grunt)->
                 dest: '<%= dist %>'
         less:
             options:
-                compress: true
+                compress: true,
+                strictMath: true
             css:
                 expand: true,
                 cwd: '.',
@@ -85,12 +86,13 @@ module.exports = (grunt)->
         done = this.async()
         request 'http://www.jshint.com/docs/options/', (error, response, body)=>
             if !error && (response.statusCode == 200)
-                optionsTableHTML = ''
-                tables = (body.match /<table[\s\S]+?<\/table>/mg) || []
-                tables.forEach (table)->
-                    optionsTableHTML += table
+                keys = []
+                reg = /<td\s+class='name'\s+id='(\w+)'>\s*?<a\s+?href='#(\1)'>(\1)<\/a>\s*?<\/td>/g
+                while(rep = (reg.exec(body)))
+                    keys.push rep[1]
+
                 jshintSrc = grunt.file.read 'html/jshint.html'
-                jshintSrc = jshintSrc.replace /<table[\s\S]+<\/table>/, optionsTableHTML
+                jshintSrc = jshintSrc.replace /<script id="keys">[\s\S]*?<\/script>/, '<script id="keys">var keys=["' + keys.join('","') + '"];</script>'
                 grunt.file.write 'html/jshint.html', jshintSrc
             else
                 console error

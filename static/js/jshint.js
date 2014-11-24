@@ -11,17 +11,6 @@
  */
 "use strict";
 
-/*
-var options = _.map($('td.name'), function(td) {
-    return $(td).text();
-});
-
-console.debug(options);*/
-
-$('td.name').each(function(idx, td) {
-    $('<input type="checkbox" class="key"/>').insertBefore($(td).find('a'));
-});
-
 var Item = Backbone.Model.extend({
     defaults: {
         key: ''
@@ -33,6 +22,9 @@ var ItemList = Backbone.Collection.extend({
     model: Item,
     toFinalJSON: function() {
         var ret = {};
+        if(!this.models.length){
+            return '';
+        }
         _.each(this.models, function(item) {
             ret[item.get('key')] = true;
         });
@@ -46,6 +38,31 @@ var ItemList = Backbone.Collection.extend({
 });
 
 var itemsList = new ItemList();
+
+
+var Table = Backbone.View.extend({
+    el: $('#table'),
+    template: _.template($('#tpl').html()),
+    events: {
+        'change input[type=checkbox]': 'toggleCheck'
+    },
+    render: function() {
+        this.$el.find('tbody').html(this.template({
+            keys: window.keys
+        }));
+    },
+    toggleCheck: function(e) {
+        if ($(e.target).prop('checked')) {
+            var item = new Item();
+            item.set('key', $(e.target).attr('data-key'));
+            itemsList.add(item);
+        } else {
+            itemsList.removeKey($(e.target).attr('data-key'));
+        }
+    }
+});
+
+new Table().render();
 
 var Panel = Backbone.View.extend({
     el: $('#output'),
@@ -61,16 +78,3 @@ var Panel = Backbone.View.extend({
 });
 
 new Panel();
-
-var onChecked = function() {
-    var key = $(this).parents('td.name').text();
-    var checked = $(this).parents('td.name').find('input.key').prop('checked');
-    if (checked) {
-        var item = new Item();
-        item.set('key', key);
-        itemsList.add(item);
-    } else {
-        itemsList.removeKey(key);
-    }
-};
-$(document).delegate('input.key', 'change', onChecked);
