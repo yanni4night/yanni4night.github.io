@@ -90,10 +90,7 @@ module.exports = (grunt)->
                 reg = /<td\s+class='name'\s+id='(\w+)'>\s*?<a\s+?href='#(\1)'>(\1)<\/a>\s*?<\/td>/g
                 while(rep = (reg.exec(body)))
                     keys.push rep[1]
-
-                jshintSrc = grunt.file.read 'html/jshint.html'
-                jshintSrc = jshintSrc.replace /<script id="keys">[\s\S]*?<\/script>/, '<script id="keys">var keys=["' + keys.join('","') + '"];</script>'
-                grunt.file.write 'html/jshint.html', jshintSrc
+                grunt.file.write 'jshint.json', JSON.stringify(keys, null ,2)
             else
                 console error
             done()
