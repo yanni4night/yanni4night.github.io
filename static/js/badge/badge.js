@@ -27,6 +27,8 @@ badgeModule.controller('badgeController', ['$scope', function($scope) {
         travis: true,
         appveyor: true,
         dependency: true,
+        devDependency: true,
+        coveralls: false,
         withGrunt: true,
         codeship: false,
         bowerVersion: false,
