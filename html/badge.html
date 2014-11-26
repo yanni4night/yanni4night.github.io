@@ -63,7 +63,7 @@
         <img ng-if="badges.dependency" ng-src="https://david-dm.org/{{user}}/{{project}}.svg" alt="David-dm"/>
         <img ng-if="badges.devDependency" ng-src="https://david-dm.org/{{user}}/{{project}}/dev-status.svg" alt="David-dm"/>
         <img ng-if="badges.coveralls" ng-src="https://coveralls.io/repos/{{user}}/{{project}}/badge.png" alt="Coveralls"/>
-        <img ng-if="badges.withGrunt" ng-src="http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg" alt="Grunt"/>
+        <img ng-if="badges.withGrunt" ng-src="https://cdn.gruntjs.com/builtwith.png" alt="Grunt"/>
         <img ng-if="badges.bowerVersion" ng-src="https://badge.fury.io/bo/{{project}}.svg" alt="Bower version"/>
         <img ng-if="badges.pipVersion" ng-src="https://badge.fury.io/py/{{project}}.svg" alt="Pypi version"/>
       </fieldset>
@@ -124,7 +124,7 @@
 
 <pre ng-if="badges.withGrunt">
 [grunt-url]:http://gruntjs.com/
-[grunt-image]: http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg
+[grunt-image]: https://cdn.gruntjs.com/builtwith.png
 </pre>
 
 <pre ng-if="badges.bowerVersion">
