@@ -1,4 +1,8 @@
 [{
+    "date": "2014-11-27",
+    "milestone": "向npm提交了grunt-copy-bower，自动拷贝bower文件的grunt插件",
+    "url": "https://www.npmjs.org/package/grunt-copy-bower"
+}, {
     "date": "2014-11-20",
     "milestone": "向npm提交了django，一个python Django框架模板引擎的wrapper，可用于Express.js",
     "url": "https://www.npmjs.org/package/django"
