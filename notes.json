@@ -1,4 +1,8 @@
 [{
+    "date": "2014-12-01",
+    "milestone": "Promise/A+ implementation,npm:p.js,bower:p-js",
+    "url": "https://www.npmjs.org/package/p.js"
+},{
     "date": "2014-11-27",
     "milestone": "向npm提交了grunt-copy-bower，自动拷贝bower文件的grunt插件",
     "url": "https://www.npmjs.org/package/grunt-copy-bower"
