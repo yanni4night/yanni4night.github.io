@@ -8,11 +8,11 @@
     "url": "https://www.npmjs.org/package/p.js"
 },{
     "date": "2014-11-27",
-    "milestone": "向npm提交了grunt-copy-bower，自动拷贝bower文件的grunt插件",
+    "milestone": "published 'grunt-copy-bower' to npm",
     "url": "https://www.npmjs.org/package/grunt-copy-bower"
 }, {
     "date": "2014-11-20",
-    "milestone": "向npm提交了django，一个python Django框架模板引擎的wrapper，可用于Express.js",
+    "milestone": "published 'django' to npm",
     "url": "https://www.npmjs.org/package/django"
 }, {
     "date": "2014-11-16",
@@ -20,11 +20,11 @@
     "url": "https://github.com/yeoman/generator/issues/700"
 }, {
     "date": "2014-11-15",
-    "milestone": "向bower注册了insight，帮助前端对齐设计稿的开发工具",
+    "milestone": "registered 'insight' to bower",
     "url": "http://bower.io/search/?q=insight"
 }, {
     "date": "2014-11-06",
-    "milestone": "向npm提交了grunt-web-swig，利用swig生成静态页的grunt插件",
+    "milestone": "published 'grunt-web-swig' to npm",
     "url": "https://www.npmjs.org/package/grunt-web-swig"
 }, {
     "date": "2014-09-20",
@@ -32,11 +32,11 @@
     "url": "https://github.com/jquery/jquery/pull/1659"
 }, {
     "date": "2014-08-20",
-    "milestone": "向npm提交了node-ssi，解释nginx的SSI语法的工具",
+    "milestone": "published 'node-ssi' to npm",
     "url": "https://www.npmjs.org/package/node-ssi"
 }, {
     "date": "2014-08-16",
-    "milestone": "向npm提交了filestamp，文件时间戳计算工具；urljoin，智能合并URL的工具",
+    "milestone": "published 'filestamp' to npm",
     "url": "https://www.npmjs.org/package/filestamp"
 }, {
     "date": "2014-08-14",
