@@ -1,4 +1,8 @@
 [{
+    "date": "2014-12-05",
+    "milestone": "Contributed to http://www.emberjs.cn",
+    "url": "http://www.emberjs.cn"
+},{
     "date": "2014-12-01",
     "milestone": "Promise/A+ implementation,npm:p.js,bower:p-js",
     "url": "https://www.npmjs.org/package/p.js"
