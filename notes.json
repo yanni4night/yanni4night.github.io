@@ -1,4 +1,8 @@
 [{
+    "date": "2014-12-20",
+    "milestone": "published xconsole to bower",
+    "url": "https://github.com/yanni4night/xconsole"
+},{
     "date": "2014-12-05",
     "milestone": "Contributed to http://www.emberjs.cn",
     "url": "http://www.emberjs.cn"
