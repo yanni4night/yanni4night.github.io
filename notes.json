@@ -1,4 +1,8 @@
 [{
+    "date": "2015-01-27",
+    "milestone": "fixed a bug in Makefile",
+    "url": "https://github.com/jonas/tig/issues/362"
+},{
     "date": "2014-12-20",
     "milestone": "published xconsole to bower",
     "url": "https://github.com/yanni4night/xconsole"

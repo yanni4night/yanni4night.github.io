@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><title>Chrome 39 test</title><style type="text/css">html,body{padding: 0;margin: 0}
+        output{
+            display: block;
+            margin: 1em 0;
+        }
+        .ua{
+            color:cyan;
+            font-family: monospace;
+        }
+        .test {
+        color: #fff;
+        height: 100px;
+        background: blue;
+        padding: 1em;
+        }
+        .new{
+            background: yellow;
+            color:red;
+            padding: 10px;
+        }
+        .ht{
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .ht li{
+            width: 100%;
+            padding: 0;margin: 0;
+            border-bottom: 1px dashed #cdd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        img{
+            max-width: 100%;
+            cursor: pointer;
+        }
+        .blur{
+            -webkit-filter:blur(5px);
+            -moz-filter:blur(5px);
+            -ms-filter:blur(5px);
+            filter:blur(5px);
+            width: 50%;
+        }</style><script>function toggleBlur(img){
+            img.classList.toggle('blur');
+        }</script></head><body><h1>Open:<a href="http://yanni4night.github.io/chrome39.html?kw=%F4%E4%B4%E4">http://yanni4night.github.io/chrome39.html?kw=%F4%E4%B4%E4</a></h1><div class="test"><output class="ua"><script>document.write(navigator.userAgent)</script></output><output class="result"></output></div><h1>Click each image to experience:</h1><ul class="ht"><li><span>1</span> <img class="blur" src="static/img/no_computed.jpg?t=956992" alt="No computed style" onclick="toggleBlur(this)"></li><li><span>2</span> <img class="blur" src="static/img/has_computed.jpg?t=767808" alt="Has computed style" onclick="toggleBlur(this)"></li><li><span>3</span> <img class="blur" src="static/img/no_style.jpg?t=230528" alt="No style" onclick="toggleBlur(this)"></li></ul></body><script>var isChrome39 = navigator.userAgent.match(/Chrome\/39/);
+    var hasSpecialQuery = /(%\w\w)+/.test(location.search);
+    var $result = document.querySelector('.test .result');
+    if(isChrome39){
+        if(hasSpecialQuery){
+            $result.innerHTML = 'You are running on <b>Chrome 39</b> kernel,this blue DIV may not show its styles in <strong>DevTools</strong>';
+        }
+        else{
+            $result.innerHTML = 'You have to set a query with some special value,like "%F4%E4%B4%E4" or "%E7%FA%E7%EA"';
+        }
+    }else{
+        $result.innerHTML = 'This page is for debugging under Chrome 39.';
+    }
+
+    (isChrome39&&hasSpecialQuery)&&setTimeout(function(){
+        var div = document.createElement('div');
+        div.className = div.id  = 'new';
+        div.innerHTML = 'This is a new DIV created by JavaScript,still show no style in DevTools';
+        document.body.insertBefore(div, document.querySelector('body>.test').nextSibling);
+    },3e+3);</script></html>
