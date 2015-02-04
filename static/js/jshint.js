@@ -29,7 +29,10 @@ var ItemList = Backbone.Collection.extend({
         _.each(this.models, function(item) {
             ret[item.get('key')] = true;
         });
-        return JSON.stringify(ret, null, 2);
+        return ret;
+    },
+    toFinalJSONStr: function() {
+        return JSON.stringify(this.toFinalJSON(), null, 2);
     },
     removeKey: function(key) {
         this.remove(this.where({
@@ -75,18 +78,39 @@ var Table = Backbone.View.extend({
 
 new Table();
 
-var Panel = Backbone.View.extend({
-    el: $('#output'),
+var JSONPanel = Backbone.View.extend({
+    el: $('.output.j_json'),
     initialize: function() {
         this.listenTo(checkedItemList, 'add', this.onNewAdded);
         this.listenTo(checkedItemList, 'remove', this.onNewAdded);
     },
     render: function() {
-        this.$el.text(checkedItemList.toFinalJSON());
+        this.$el.text(checkedItemList.toFinalJSONStr());
     },
     onNewAdded: function() {
         this.render();
     }
 });
 
-new Panel();
+new JSONPanel();
+
+
+var CommentPanel = Backbone.View.extend({
+    el: $('.output.j_comment'),
+    initialize: function() {
+        this.listenTo(checkedItemList, 'add', this.onNewAdded);
+        this.listenTo(checkedItemList, 'remove', this.onNewAdded);
+    },
+    render: function() {
+        var comment = '';
+        $.each(checkedItemList.toFinalJSON(), function(key) {
+            comment += '/*jshint ' + key + ':true*/\n';
+        });
+        this.$el.text(comment);
+    },
+    onNewAdded: function() {
+        this.render();
+    }
+});
+
+new CommentPanel();
