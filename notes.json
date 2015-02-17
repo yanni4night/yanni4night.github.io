@@ -1,4 +1,8 @@
 [{
+    "date": "2015-02-17",
+    "milestone": "issue for twig.js",
+    "url": "https://github.com/justjohn/twig.js/issues/121"
+},{
     "date": "2015-01-27",
     "milestone": "fixed a bug in Makefile",
     "url": "https://github.com/jonas/tig/issues/362"
