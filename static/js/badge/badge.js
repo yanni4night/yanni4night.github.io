@@ -14,8 +14,8 @@
 var badgeModule = angular.module('badgeModule', []);
 
 badgeModule.controller('badgeController', ['$scope', function($scope) {
-    $scope.user = 'yanni4night';
-    $scope.project = 'django';
+    $scope.user = 'pantojs';
+    $scope.project = 'panto-transformer';
 
     $scope.appveyorKey = 'bsu9w9ar8pboc2nj';
     $scope.codeshipUUID = '79da7240-5481-0132-ea32-42ab35009c21';
@@ -25,11 +25,11 @@ badgeModule.controller('badgeController', ['$scope', function($scope) {
         npmVersion: true,
         npmDownload: true,
         travis: true,
-        appveyor: true,
+        appveyor: false,
         dependency: true,
         devDependency: true,
         coveralls: false,
-        withGrunt: true,
+        withGrunt: false,
         codeship: false,
         bowerVersion: false,
         pipVersion:false
