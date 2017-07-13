@@ -12,8 +12,8 @@ cd ../gh-pages
 
 git add -A
 
-now=`date +%Y%m%d%H%M%S`
+now=`date +%Y/%m/%d-%H:%M:%S`
 
-git commit -m "publish $now"
+git commit --allow-empty -m "publish $now"
 
 git push origin gh-pages
