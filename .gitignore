@@ -1,5 +1,5 @@
-._*
-*DS_Store
-.swp
-node_modules
-bower_components
+_site
+.sass-cache
+.jekyll-metadata
+.DS_Store
+Thumbs.db
