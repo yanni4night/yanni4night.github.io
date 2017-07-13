@@ -1,0 +1,17 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>yanni4night.github.io</ShortName>
+    <Description>Search Yanni4night</Description>
+    <Contact>yanni4night@gmail.com</Contact>
+    <Tag>yanni4night</Tag>
+    <LongName>Yanni4night Blog Search</LongName>
+    <Query role="example" searchTerms="dpr"/>
+    <Developer>yanni4night@gmail.com</Developer>
+    <Attribution>Search data google.com</Attribution>
+    <Image width="16" height="16" type="image/png">https://yanni4night.github.io/favicon.png</Image>
+    <Url type="text/html" method="get" template="https://www.google.com/search?q={searchTerms}&amp;sitesearch=https%3A%2F%2Fyanni4night.github.io"/>
+    <SyndicationRight>open</SyndicationRight>
+    <AdultContent>false</AdultContent>
+    <Language>zh-cn</Language>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>
