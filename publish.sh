@@ -2,7 +2,7 @@
 
 rm -rf ../gh-pages
 
-git clone -b gh-pages git@github.com:yanni4night/yanni4night.github.io.git ../gh-pages
+git clone --depth=1 -b gh-pages git@github.com:yanni4night/yanni4night.github.io.git ../gh-pages
 
 rm -rf ../gh-pages/*
 
