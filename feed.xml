@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-07-13T13:38:51+08:00</updated><id>/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
+</subtitle><entry><title type="html">2016 前端开发巡礼</title><link href="/2016/12/18/2016-front-end.html" rel="alternate" type="text/html" title="2016 前端开发巡礼" /><published>2016-12-18T00:00:00+08:00</published><updated>2016-12-18T00:00:00+08:00</updated><id>/2016/12/18/2016-front-end</id><content type="html" xml:base="/2016/12/18/2016-front-end.html">&lt;p&gt;本文首发于 &lt;a href=&quot;http://www.infoq.com/cn/articles/2016-review-frontend&quot;&gt;http://www.infoq.com/cn/articles/2016-review-frontend&lt;/a&gt;，此处为原稿。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;2016年马上过去了，像过去六年中的每一年一样，Web前端领域又产生了“面目全非”而又“耳目一新”的变化，不但旧事物持续不断地被淘汰，新事物也难保坐久江山，大有岌岌可危之势。开源界如群雄逐鹿，不断生产新的概念、新的框架、新的工具，去年中一些流行的技术今年大多得到了进一步的演进和升级，活跃度非常高，却仍然不能保证前端的未来属于它们。在今年整体资本市场冷却的大环境下，&lt;em&gt;to B&lt;/em&gt;业务的创业公司显现出了较强的生命力，这种类型的业务也给Web前端的工作带来了明显的差异性，工程师整体技能方向也展露出一丝不一样的分支。本文将从下至上、由低到高的维度盘点过去一年中Web前端领域发生的重要事件以及影响未来2017的关键性因素。视野所限，不尽完整。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;一更新的网络与软件环境&quot;&gt;一、更新的网络与软件环境&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-http2-的持续普及&quot;&gt;1.1 HTTP/2 的持续普及&lt;/h3&gt;
+
+&lt;p&gt;今年中，几乎所有的现代桌面浏览器都已经支持了HTTP/2协议，移动端依靠降级为Spdy依旧可以覆盖几乎所有平台，这样使得从协议上优化页面的性能成为了可能。&lt;/p&gt;
+
+&lt;p&gt;同时，前端静态资源打包的必要性成为了一定程度上的争论焦点，打包合并作为传统的前端性能优化方案，它的存留对前端工程化影响极大，Facebook公司著名的静态资源动态打包方案的优越性也会被弱化。社区上多篇文章纷纷发表对HTTP/2的性能实验数据，却不仅相同。&lt;/p&gt;
+
+&lt;p&gt;在2017年，我们相信所有大型站点都会切换HTTP/2，但依旧不会放弃对静态资源打包合并的依赖。而且。对于Server Push等高级特性，也不会有太多的应用。&lt;/p&gt;
+
+&lt;h3 id=&quot;12-internet-explorer-8&quot;&gt;1.2 Internet Explorer 8&lt;/h3&gt;
+
+&lt;p&gt;三年前还在考虑兼容IE6的前端技术社区，在前不久天猫宣布不再支持IE8后又引起了一股躁动。IE8是Windows XP操作系统支持的最高IE版本，放弃IE8意味着放弃了使用IE的所有XP用户。&lt;/p&gt;
+
+&lt;p&gt;其实在2016年的今天，前端社区中框架、工具的发展早已不允许IE8的存在，angular 早在1.3版本就果断放弃了IE8，React 也在年初的v15版本上宣布放弃。在PC领域，你依旧可以使用像Backbone一样的其它框架继续对IE进行支持，但无论是从研发效率上还是从运行时效率上，放弃它都是更好的选择。&lt;/p&gt;
+
+&lt;p&gt;由于对HTML5兼容性不佳，在2017年，相信IE9也会逐渐被社区放弃，以取得更好的性能、更少的代码体积。&lt;/p&gt;
+
+&lt;h2 id=&quot;二如何编写javascript&quot;&gt;二、如何编写(Java)Script&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-es2016es2017babel&quot;&gt;2.1 ES2016？ES2017？babel！&lt;/h3&gt;
+
+&lt;p&gt;去年定稿的ES2015（亦称ES6）带来了大量令人激动的新语言特性，并快速被V8和SpiderMonkey所实现。但由于浏览器版本碎片化问题，目前编写生产环境代码仍然以ES5为主。今年年中发布的ES2017带来的新特性数量少的可怜，但这正好给了浏览器厂商消化ES2015的时间，在ES2017到来之前喘口气——是的，明年的ES2017势必又会带来一大波新特性。&lt;/p&gt;
+
+&lt;p&gt;JS解释引擎对新特性的支持程度并不能阻碍狂热的开发者使用他们，在接下来的很长时间，业界对babel的依赖必然有增无减。babel生态对下一代ECMAScript的影响会进一步加大，人们通过先增加新的babel-plugin，后向ECMA提案的方式成为了ECMAScript进化的常态。开发者编写的代码能直接运行在浏览器上的会越来越少。&lt;/p&gt;
+
+&lt;p&gt;但使用babel导致的编译后代码体积增大的问题并没有被特别关注，由于polyfill可能被重复引入，部署到生产环境的代码带有相当一部分冗余。&lt;/p&gt;
+
+&lt;h3 id=&quot;22-typescript&quot;&gt;2.2 TypeScript&lt;/h3&gt;
+
+&lt;p&gt;作为ECMAScript语言的超集，TypeScript在今年取得了优异的成绩，angular 2放弃了传说中的AtScript，成为了TypeScript的最大客户。人们可以像编写Java一样编写JavaScript，有效提升了代码的表述性和类型安全性。&lt;/p&gt;
+
+&lt;p&gt;但凡事有两面，TypeScript的特快也在不断升级，在生产环境中，你可能需要一套规范来约束开发者，防止滥用导致的不兼容，这反而增加了学习成本、应用复杂性和升级安全性。个中优劣，仍需有大量的工程实践去积累经验。&lt;/p&gt;
+
+&lt;p&gt;此外，TypeScript也可以看做一种转译器，与babel有着类似的新特性支持。在2017年，我们期待TypeScript与babel会发展成怎样的一种微妙关系。&lt;/p&gt;
+
+&lt;h3 id=&quot;23-promisegenerator-与-asyncawait&quot;&gt;2.3 promise、generator 与 async/await&lt;/h3&gt;
+
+&lt;p&gt;在回调地狱问题上，近两年我们不断被新的方案乱花了眼。过去我们会利用&lt;a href=&quot;http://npm.org/async&quot;&gt;async&lt;/a&gt;来简化异步流的设计，直到“正房”Promise的到来。但它们只是callback模式的语法糖，并没有完全消除callback的使用。&lt;/p&gt;
+
+&lt;p&gt;ES2015带来的generator/yield似乎成为了解决异步编程的一大法宝，虽然它并非为解决异步编程所设计的。但generaor的运行是十分繁琐的，因此另一个工具&lt;a href=&quot;http://npmjs.org/co&quot;&gt;co&lt;/a&gt;又成为了使用generator的必备之选。Node.js社区的koa框架初始就设计为使用generator编写洋葱皮一样的控制流。&lt;/p&gt;
+
+&lt;p&gt;但昙花一现，转眼间async/await的语法，配合Promise编写异步代码的方式立即席卷整个前端社区，虽然async/await仍然在ES2017的草案中，但在今天，不写async/await立刻显得你的设计落后社区平均水平一大截。&lt;/p&gt;
+
+&lt;p&gt;在Node.js上，v7已经支持在harmony参数下的async/await直接解释，在明年4月份的v8中，将会正式支持，届时，koa 2的正式版也会发布，几乎完全摒弃了generator。&lt;/p&gt;
+
+&lt;h3 id=&quot;24-fetch&quot;&gt;2.4 fetch&lt;/h3&gt;
+
+&lt;p&gt;受到回调问题的影响，传统的&lt;code class=&quot;highlighter-rouge&quot;&gt;XMLHttpRequest&lt;/code&gt;有被&lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; API 取代之势。如今，成熟的polyfill如&lt;a href=&quot;http://npmjs.org/whatwg-fetch&quot;&gt;whatwg-fetch&lt;/a&gt;、&lt;a href=&quot;http://npmjs.org/node-fetch&quot;&gt;node-fetch&lt;/a&gt;、&lt;a href=&quot;http://npmjs.org/isomorphic-fetch&quot;&gt;isomorphic-fetch&lt;/a&gt;在npm上的每日下载量都非常大，即便对于兼容性不好的移动端，开发者也不愿使用繁琐的Ajax。借助async/await的语法，使用fetch API能让代码更简洁。&lt;/p&gt;
+
+&lt;h2 id=&quot;三nodejs服务与工具&quot;&gt;三、node.js服务与工具&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-koa-2&quot;&gt;3.1 Koa 2&lt;/h3&gt;
+
+&lt;p&gt;Koa与流行的Express属于“同根生”的关系，它们由同一团队打造。相比Express，新的Koa框架更轻量、更灵活。但Koa的设计在短时间内曾经出现了较大的变动，这主要受到了async/await语法对异步编程的影响。在v2版本中，koa的middleware抛弃generator转而支持async，所有第三方middleware实现，要么自行升级，要么使用&lt;a href=&quot;http://npmjs.org/koa-convert&quot;&gt;koa-convert&lt;/a&gt;进行包装转换。&lt;/p&gt;
+
+&lt;p&gt;目前koa在node.js社区的HTTP服务端框架中受到关注度比较高，不过其在npm上latest目前仍处于1.x阶段，预计在2017年4月份发布node.js v8后，就会升级到2.x。&lt;/p&gt;
+
+&lt;p&gt;Koa的轻量级设计意味着你需要大量第三方中间件去实现一个完整的web应用，目前鲜有看到对koa的大规模重度使用，因此也就对其无从评价。相信在明年，越来越多的产品应该会尝试部署koa 2，届时，对第三方资源的依赖冲突也会尖锐起来，这需要一个过程才能让koa的生态完备起来。预计在2018年，我们会得到一个足够健壮的koa技术栈。这会促进node.js在服务端领域的扩展，轻量级的web服务将会逐渐成为市场上的主流。&lt;/p&gt;
+
+&lt;h2 id=&quot;四框架纷争&quot;&gt;四、框架纷争&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-jquery已死&quot;&gt;4.1 jQuery已死？&lt;/h3&gt;
+
+&lt;p&gt;今年六月份jQuery发布了3.0版本，距离2.0发布已经有三年多的时间，但重大的更新几乎没有。由于老旧浏览器的逐渐放弃和升级，jQuery需要处理的浏览器兼容性问题越来越少，专注于API易用性和效率越来越多。&lt;/p&gt;
+
+&lt;p&gt;随着如angular、react、ember、vue等大量具备视图数据单双向绑定能力的框架被普及，使用jQuery编写指令式的代码操作DOM的人越来越少。早在2015年便有人声称jQuery已死，社区中也进行了大量雷同的讨论，今天我们看到确实jQuery的地位已大不如前，著名的sizzle选择器在今天已完全可由&lt;em&gt;querySelector*&lt;/em&gt;原生方法替代，操作DOM也可以由框架根据数据的变动自动完成。&lt;/p&gt;
+
+&lt;p&gt;明年jQuery在构建大型前端产品的过程中的依赖会被持续弱化，但其对浏览器特性的理解和积淀将对现有的和未来的类angular的MVVM框架的开发依旧具有很大的借鉴意义。&lt;/p&gt;
+
+&lt;h3 id=&quot;42-angular-2&quot;&gt;4.2 angular 2&lt;/h3&gt;
+
+&lt;p&gt;好事多磨，angular 2的正式版终于在今年下半年发布，相比于1.x，新的版本几乎是完全重新开发的框架，已经很难从设计中找到1.x的影子。陡峭的学习曲线也随之而来，npm、ES2015 Modules、decorator、TypeScript、zone.js、rxjs、JIT/AOT、e2e test，几乎都是业界这两年中的最新概念，这着实给初学者带来了不小的困难。&lt;/p&gt;
+
+&lt;p&gt;angular 2也更面向于开发单页应用（SPA），这是对ES2015 Modules语法描述的模块进行打包（bundle）的必然结果，因此angular 2也更依赖于webpack等“bundler”工具。&lt;/p&gt;
+
+&lt;p&gt;虽然angular 声称支持TypeScript、ECMAScript和Dart三种语言，不过显然业界对Dart没什么太大兴趣，而对于ECMAScript和TypeScript，两种语言模式下angular 2在API和构建流程上都有着隐式的（文档标注不明的）差异化，这必然会给开发者以困扰。加上业界第三方工具和组件的支持有限，TypeScript几乎是现在开发者唯一的选择。&lt;/p&gt;
+
+&lt;p&gt;此外，angular团队已声明并没有完全放弃对1.x组件的支持，通过特有的兼容API，你可以在2.x中使用针对1.x开发的组件。鉴于不明确的风险，相信很少有团队愿意这样折腾。&lt;/p&gt;
+
+&lt;p&gt;现在在产品中使用angular 2，在架构上，你需要考虑生产环境和开发环境下两种完全不同的构建模式，也就是JIT和AOT，这需要你有两套不一样的编译流程和配置文件。在不同环境下模块是否符合期望，可以用e2e、spec等方式来进行自动化测试，好的，那么angular 2的测试API又可能成了技术壁垒，它的复杂度可能更甚angular本身。可以确信，在业务压力的迫使下，绝大部分团队都会放弃编写测试。&lt;/p&gt;
+
+&lt;p&gt;总之angular 2是一个非常具有竞争力的框架，其设计非常具有前瞻性，但也由于太过复杂，很多特性都会成为鸡肋，被开发者所无视。由于react*和vue的竞争，angular 2对社区的影响肯定不如其前辈1.x版本，且其更高级的特性如Server Render还没有被工程化实践，因此相信业界还会持续观望，甚至要等到下一个4.x版本的发布。&lt;/p&gt;
+
+&lt;h3 id=&quot;43-vue-20&quot;&gt;4.3 vue 2.0&lt;/h3&gt;
+
+&lt;p&gt;vue绝对是类MVVM框架中的一匹黑马，由作者一人打造，更可贵的是作者还是华人。vue在社区内的影响非常之大，特别是2.0的发布，社区快速生产出了无数基于vue的解决方案，这主要还是受益于其简单的接口API和友好的文档。可见作为提供商，产品的简单易用性显得尤为重要。在性能上，vue基于ES5 setter，得到了比angular 1.x脏检查机制成倍的性能提升。而2.0在模块化上又更进一步，开发难度更低，维护性更好。可以说vue准确地戳中了普通web开发者的痛点。在国内，vue与weex达成了合作，期待能给社区带来怎样的惊喜。&lt;/p&gt;
+
+&lt;h3 id=&quot;44-react&quot;&gt;4.4 react&lt;/h3&gt;
+
+&lt;p&gt;目前看来，react似乎仍是今年最流行的数据视图层解决方案，并且几乎已经成为了每名前端工程师的标配技能。今年react除了版本从0.14直接跃升至15，放弃了IE8以外，并没有更多爆发式的发展。人们对于使用JSX语法编写web应用已经习以为常，就像过去十年间写jQuery一样。&lt;/p&gt;
+
+&lt;p&gt;react的代码在维护性能上显而易见，如果JSX编写得当，在重渲染性能上也具备优势，但如果只部署在浏览器环境中，那么首屏性能将会受到负面影响，毕竟在现阶段，纯前端渲染仍然快不过后端渲染，况且后端具备天生的chunked分段输出优势。我们在业界中可以看到一些负面的案例，比如某新闻应用利用react全部改写的case，就是对react的一种误用，完全不顾其场景劣势。&lt;/p&gt;
+
+&lt;p&gt;围绕着react发展的替代品和配套工具依旧很活跃，&lt;a href=&quot;https://github.com/developit/preact&quot;&gt;preact&lt;/a&gt;以完全兼容的API和小巧的体积为卖点，&lt;a href=&quot;https://github.com/trueadm/inferno&quot;&gt;inferno&lt;/a&gt;以更快的速度为卖点，等等。每个框架都想在Virtual DOM上有所创新，但它们的提升都不是革命性的，由此而带来的第三方插件不兼容性，这种风险是开发者不愿承担的，笔者认为它们最大的意义在于能为react的内部实现提供另外的思路。就像在自然界，生物多样性是十分必要的，杂交能带来珍贵的进化优势。&lt;/p&gt;
+
+&lt;h3 id=&quot;45-react-native&quot;&gt;4.5 react-native&lt;/h3&gt;
+
+&lt;p&gt;今年是react-native（一下简称RN）支持双端开发的第一年，不断有团队分享了自己在RN上的实践成果，似乎前途一片大好，RN确实有效解决了传统客户端受限于发版周期、H5受限于性能的难题，做到了鱼和熊掌兼得的理想目标。&lt;/p&gt;
+
+&lt;p&gt;但我们仍然需要质疑：首先，RN目前以两周为周期发布新版本，没有LTS，每个版本向前不兼容。也就是说，你使用0.39.0的版本编写bundle代码，想运行在0.35.0的runtime上，这几乎会100%出问题。在这种情况下，如何制定客户端上RN的升级策略？如果升级，那么业务上如何针对一个以上的runtime版本编写代码？如果不升级，那么这意味着你需要自己维护一个LTS。要知道目前每个RN的版本都会有针对前版本的bug fix，相信没有团队有精力可以在一个老版本上同步这些，如果不能，那业务端面对的将是一个始终存在bug的runtime，其开发心理压力可想而知。&lt;/p&gt;
+
+&lt;p&gt;其次，虽然RN声称支持Android与iOS双端，但在实践中却存在了极多系统差异性，有些体现在了RN文档中，有一些则体现在了issue中，包括其它一些问题，github上RN的近700个issue足以让人望而却步。如果不能高效处理开发中遇到的各种匪夷所思的问题，那么工期就会出现严重风险。此外，RN在Android和iOS上的性能也不尽相同，Android上更差一些，即便你完成了整个业务功能，却还要在性能优化上消耗精力。并且无论如何优化，单线程模型既要实现流畅的转场动画，又要操作一系列数据，需要很高的技巧才能保证可观的性能表现。在具体的实践中，对于H5，往往由于时间关系，业务上先会上一个还算过得去的版本，过后再启动性能优化。然而对于RN，很有可能达到“过得去”的标准都需要大量的重构工作。&lt;/p&gt;
+
+&lt;p&gt;再次，RN虽然以Native渲染元素，但毕竟是运行在JavaScript Core内核之上，依旧是单线程，相对于H5这并没有对性能有革命性质的提升。Animated动画、大ListView滚动都是老生常谈的性能瓶颈，为了解决一些复杂组件所引起的性能和兼容性问题，诸多团队纷纷发挥主动能动性，自己建设基于Native的高性能组件，这有两方面问题，一是不利于分发共享，因为它严重依赖特定的客户端环境，二是它仍依赖客户端发版，仍需要客户端的开发，违背了RN最最重要的初衷。可以想象，在大量频繁引用Native组件后，RN又退化成了H5+Hybrid模式，其UI的高性能优势将会在设备性能不断升级下被削弱，同时其无stable版本反而给开发带来了更多不可预测的风险变量。&lt;/p&gt;
+
+&lt;p&gt;最后，RN仍然难以调试和测试，特别是依赖了特定端上组件之后，本地的自动化测试几乎成为了不可能，而绝大多数客户端根本不支持自动化测试。而调试只能利用remote debugger有限的能力，在性能分析上都十分不便。&lt;/p&gt;
+
+&lt;p&gt;可以说RN的出现带给了移动开发以独特的新视角，使得利用JavaScript开发Native成为了可能，NativeScript、Weex等类似的解决方案也发展开来。显然RN目前最大的问题仍然是不够成熟和稳定，利用RN替代Native依然存在着诸多风险，这对于重量级的、长期维护的客户端产品可能并不是特别适合，比如Facebook自己。RN的优势显而易见，但其问题也是严重的，需要决策者对个方面利弊都有所了解，毕竟这种试错的成本不算小。&lt;/p&gt;
+
+&lt;p&gt;由于时间关系，市场上并没有一个产品在RN的应用上有着足够久的实践经验，大部分依然属于“我们把RN部署到客户端了”的阶段，我们也无法预测这门技术的长久表现，现在评价RN的最终价值还为时尚早。在2017年，期待RN团队能做出更长足的进步，但不要太乐观，以目前的状态来看，想达到stable状态还是有着相当大的难度。&lt;/p&gt;
+
+&lt;h3 id=&quot;46-redux-与-mobx&quot;&gt;4.6 redux 与 mobx&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/reactjs/redux&quot;&gt;redux&lt;/a&gt; 成功成为了 react 技术栈中的最重要成员之一。与vue一样，redux也是凭借着比其它Flux框架更简单易懂的API才能脱颖而出。不过已经很快有人开发厌烦它每写一个应用都要定义action、reducer、store以及一大堆函数式调用的繁琐做法了。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;mobxjs.github.io/mobx&quot;&gt;mobx&lt;/a&gt;也是基于ES5 setter，让开发者可以不用主动调用action函数就可以触发视图刷新，它只需要一个store对象以及几个decorator就能完成配置，确实比redux简单得多。&lt;/p&gt;
+
+&lt;p&gt;在数据到视图同步上，无论使用什么样的框架，都有一个至关重要的问题是需要开发者自己操心，那就是在众多数据变动的情形下，如何保证视图以最少的但合理的频率去刷新，以节省极其敏感的性能消耗。在redux或mobx上都会出现这个问题，而mobx尤甚。为了配合提升视图的性能，你依然需要引入action、transaction等高级概念。在控制流与视图分离的架构中，这是开发者无可避免的关注点，而对于angular、vue，框架会帮你做很多事情，开发者需要考虑的自然少了许多。&lt;/p&gt;
+
+&lt;h3 id=&quot;47-bootstrap-4&quot;&gt;4.7 bootstrap 4&lt;/h3&gt;
+
+&lt;p&gt;bootstrap 4处于&lt;a href=&quot;https://v4-alpha.getbootstrap.com/&quot;&gt;alpha&lt;/a&gt;阶段已经非常久了，即使现在3.x已经停止了维护，它似乎受到了twitter公司业务不景气的影响，github上的&lt;a href=&quot;https://github.com/twbs/bootstrap/issues&quot;&gt;issue&lt;/a&gt;还非常多。bootstrap是建设内部平台最佳的CSS框架，特别是对于那些对前端不甚了解的后端工程师。我们不清楚bootstrap还能坚持多久，如果twitter不得不放弃它，最好的归宿可能是把它交给第三方开源社区去维护。&lt;/p&gt;
+
+&lt;h2 id=&quot;五工程化与架构&quot;&gt;五、工程化与架构&lt;/h2&gt;
+
+&lt;h3 id=&quot;51-rollup-与-webpack-2&quot;&gt;5.1 rollup 与 webpack 2&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://rollupjs.org/&quot;&gt;rollup&lt;/a&gt;是近一年兴起的又一打包工具，其最大卖点是可以对ES2015 Modules的模块直接打包，以及引入了Tree-Shaking算法。通过引入babel-loader，webpack一样可以对ES2015 Modules进行打包，于是rollup的亮点仅在于Tree-Shaking，这是一种能够去除冗余，减少代码体积的技术。通过分析AST（抽象语法树），rollup可以发现那些不会被使用的代码，并去除它。&lt;/p&gt;
+
+&lt;p&gt;不过Tree-Shaking即将不是rollup的专利了，webpack 2也将支持，并也原生支持ES6 Modules。这可以说是“旁门左道”对主流派系进行贡献的一个典型案例。&lt;/p&gt;
+
+&lt;p&gt;webpack是去年大热的打包工具，俨然已经成为了替代grunt/gulp的最新构建工具，但显然并不是这样。笔者一直认为webpack作为一个&lt;em&gt;module bundler&lt;/em&gt;，做了太多与其无关的事情，从而表象上看来这就是一个工程构建工具。经典的构建需要有任务的概念，然后控制任务的执行顺序，这正是Ant、Grunt、Gulp做的事情。webpack不是这样，它最重要的概念是&lt;em&gt;entry&lt;/em&gt;，一个或者多个，它必须是类JavaScript语言编写的磁盘文件，所有其它如CSS、HTML都是围绕着entry被处理的。估计你很难一眼从配置文件中看出webpack对当前项目进行了怎样的“构建”，不过似乎社区中并没有人提出过异议，一切都运行得很好。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;题外话：如果使用webpack构建一个没有任何JavaScript代码的工程？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;新的angular 2使用webpack 2编译效果更加，不过，已经提了一年的webpack 2，至今仍处于beta阶段，好在现在已经rc，相信离release不远了。&lt;/p&gt;
+
+&lt;h3 id=&quot;52-npmjspmbower与yarn&quot;&gt;5.2 npm、jspm、bower与yarn&lt;/h3&gt;
+
+&lt;p&gt;在模块管理器这里，npm依旧是王者，但要说明的是，npm的全称是&lt;code class=&quot;highlighter-rouge&quot;&gt;node package mamager&lt;/code&gt;，主要用来管理运行在node上的模块，但现在却托管了大量只能运行在浏览器上的模块。造成这种现象的几个原因：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;webpack的大量使用，使得前端也可以并习惯于使用CommonJS类型的模块；&lt;/li&gt;
+  &lt;li&gt;没有更合适的替代者，bower以前不是，以后更不会是&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;前端的模块化规范过去一直处于战国纷争的年代。在node上CommonJS没什么意见。在浏览器上，虽然现在有了ES2015 Modules，却缺少了模块加载器，未来可能是&lt;a href=&quot;https://github.com/systemjs/systemjs&quot;&gt;SystemJS&lt;/a&gt;，但现在仍处于草案阶段。无论哪种，都仍处于JavaScript语言层面，而完整的前端模块化还要包括CSS与HTML，以及一些二进制资源。目前最贴近的方案也就只能是JSX+CSS in JS的模式了，这在webpack环境下大行其道。这种现象甚至影响了angular 2、ember 2等框架的设计。从这点看来，jspm只是一个加了层包装的壳子，完全没有任何优势。&lt;/p&gt;
+
+&lt;p&gt;npm本身也存在着各种问题，这在实践中总会影响效率、安全以及一致性，Facebook果断地出品了yarn——npm的替代升级版，支持离线模式、严格的依赖版本管理等在工程中非常实用的特性。&lt;/p&gt;
+
+&lt;p&gt;至于前端模块化，JavaScript有CommonJS和ES2015 Modules就够了，但工程中的组件，可能还需要在不同的框架环境中重复被开发，它们依旧不兼容。未来的话，webcomponents可能是一个比较优越的方案。&lt;/p&gt;
+
+&lt;h3 id=&quot;53-同构&quot;&gt;5.3 同构&lt;/h3&gt;
+
+&lt;p&gt;同构的设计在软件行业早就被提出，不过在web前端，还是在node.js、特别是react的出现后，才真正成为了可能，因为react内核的运行并不依赖于浏览器DOM环境。&lt;/p&gt;
+
+&lt;p&gt;react的同构是一个比较低成本的方案，只要注意代码的执行环境，前后端确实可以共享很大一部分代码，随之带来的一大收益是有效克服了SPA这种前端渲染的页面在首屏性能上的瓶颈，这是所有具备视图能力的框架angular、vue、react等的共性问题，而现在，它们都在一种程度上支持server render。&lt;/p&gt;
+
+&lt;p&gt;可以想到的做前后端同构面临的几个问题：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;静态资源如何引入，CSS in JS模式需要考虑在node.js上的兼容性；&lt;/li&gt;
+  &lt;li&gt;数据接口如何fetch，在浏览器上是Ajax，在node.js上是什么；&lt;/li&gt;
+  &lt;li&gt;如何做路由同构，浏览器无刷新切换页面，新路由在服务端可用；&lt;/li&gt;
+  &lt;li&gt;大量DOM渲染如何避免阻塞node.js的执行进程&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;目前github上star较多的同构框架包括vue的&lt;a href=&quot;https://github.com/nuxt/nuxt.js&quot;&gt;nuxt&lt;/a&gt;和react的&lt;a href=&quot;https://github.com/zeit/next.js&quot;&gt;next.js&lt;/a&gt;，以及数据存储全包的&lt;a href=&quot;https://www.meteor.com/&quot;&gt;meteor&lt;/a&gt;。可以肯定的是，不论它们是否能部署在生产环境中，都不可能满足你的所有需求，适当的重新架构是必要的，在这个新的领域，没有太多的经验可以借鉴。&lt;/p&gt;
+
+&lt;h2 id=&quot;六未来技术与职业培养&quot;&gt;六、未来技术与职业培养&lt;/h2&gt;
+
+&lt;h3 id=&quot;61-大数据方向&quot;&gt;6.1 大数据方向&lt;/h3&gt;
+
+&lt;p&gt;越来越多做&lt;em&gt;toB&lt;/em&gt;业务的公司对前端的需求都是在数据可视化上，或者更通俗一些——报表。这个部分在从前通常都是前端工程师嗤之以鼻的方向，认为无聊、没技术。不过在移动端时代，特别是大数据时代，对此类技能的需求增多，技术的含金量也持续提升。根据“面向工资编程”的原则，一定会有大量工程师加入进来。&lt;/p&gt;
+
+&lt;p&gt;对这个方向的技术技能要求是canvas、webgl，但其实绝大多数需求都不需要你直接与底层API打交道，已经有大量第三方工具帮你做到了，不乏非常优秀的框架。如百度的&lt;a href=&quot;http://echarts.baidu.com/&quot;&gt;echarts&lt;/a&gt;，国外的&lt;a href=&quot;http://www.chartjs.org/&quot;&gt;chart.js&lt;/a&gt;、&lt;a href=&quot;http://www.highcharts.com/&quot;&gt;highcharts&lt;/a&gt;、&lt;a href=&quot;http://d3js.org/&quot;&gt;d3.js&lt;/a&gt;等等，特别是d3.js，几乎是大数据前端方向的神器，非常值得学习。&lt;/p&gt;
+
+&lt;p&gt;话说回来，作为工程师，心存忧患意识，一定不能以学会这几款工具就满足，在实际的业务场景中，更多的需要你扩展框架，生产自己的组件，这需要你具备一定的数学、图形和opengl底层知识，可以说是非常大的技术壁垒和入门门槛。&lt;/p&gt;
+
+&lt;h3 id=&quot;62-webvr&quot;&gt;6.2 webVR&lt;/h3&gt;
+
+&lt;p&gt;今年可以说是VR技术爆发式的一年，市场上推出了多款VR游戏设备，而淘宝更是开发出了平民的&lt;em&gt;buy+&lt;/em&gt;购物体验，等普及开来，几乎可以颠覆传统的网上购物方式。&lt;/p&gt;
+
+&lt;p&gt;VR的开发离不开对3D环境的构建，webVR标准还在草案阶段，&lt;a href=&quot;https://aframe.io/&quot;&gt;A-Frame&lt;/a&gt;可以用来体验，另一个&lt;a href=&quot;https://threejs.org/&quot;&gt;three.js&lt;/a&gt;框架是一个比较成熟的构建3D场景的工具，除了能在未来的VR应用中大显身手，同样也在构建极大丰富的3D交互移动端页面中显得必不可少，淘宝就是国内这方面的先驱。&lt;/p&gt;
+
+&lt;h3 id=&quot;63-webassembly&quot;&gt;6.3 webassembly&lt;/h3&gt;
+
+&lt;p&gt;asm.js已发展成&lt;a href=&quot;http://webassembly.org/&quot;&gt;webassembly&lt;/a&gt;，由谷歌、微软、苹果和Mozilla四家共同推动，似乎是非常喜人乐见的事情，毕竟主要浏览器内核厂商都在这里了。不过合作的一大问题就是低效，今年终于有了可以演示的demo，允许编写C++代码来运行在浏览器上了，你需要下载一大堆依赖库，以及一次非常耗时的编译，不过好歹是个进步。&lt;/p&gt;
+
+&lt;p&gt;短时间内，我们都不太可能改变使用JavaScript编写前端代码的现状，Dart失败了，只能期望于未来的webassembly。有了它，前端在运行时效率、安全性都会上一个台阶，其它随之而来的问题，就只能等到那一天再说了。&lt;/p&gt;
+
+&lt;h3 id=&quot;64-webcomponents&quot;&gt;6.4 webcomponents&lt;/h3&gt;
+
+&lt;p&gt;webcomponent能带给我们什么呢？HTML Template、Shadow DOM、Custom Element和HTML Import，是的，非常完美的组件化系统。angular、react的组件化系统中，都是以Custom Element的方式组合HTML，但这都是假象，它们最终都会被编译成JavaScript才会执行。但webcomponents不一样，Custom Element原生就可以被浏览器解析，DOM元素本身的方法都可以自定义，而且元素内部的子元素、样式，由于Shadow DOM的存在，不会污染全局空间，真正成为了一个沙箱，组件化就应该是这个样子，外部只关心接口，不关心也不能操纵内部的实现。&lt;/p&gt;
+
+&lt;p&gt;当前的组件化，无不依赖于某一特定的框架环境，或者是angular，或者是react，想移植就需要翻盘推倒重来，也就是说他们是不兼容的。有了webcomponents，作为浏览器厂商共同遵循和支持的标准，这一现状将极有可能被改写。&lt;/p&gt;
+
+&lt;p&gt;未来的前端组件化分发将不会是npm那么简单，可能只是引用一个html文件，更有可能的是包含CSS、HTML、JavaScript和其它二进制资源的一个目录。&lt;/p&gt;
+
+&lt;p&gt;目前只有最新的Chrome完全支持webcomponents的所有特性，所以距离真正应用它还尚需时日。由于技术上的限制，webcomponents polyfill的能力都非常受限，Shadow DOM不可能实现，而其它三者则更多需要离线编译实现，可以参考vue 2的实现，非常类似于webcomponents。&lt;/p&gt;
+
+&lt;h3 id=&quot;65-关于微信小程序&quot;&gt;6.5 关于微信小程序&lt;/h3&gt;
+
+&lt;p&gt;微信小程序对于今年不得不说，却也无话可说。依托于庞大的用户量，微信官方出品了自有的一套开发技术栈，只能说给繁杂的前端开发又填了一个角色——微信前端工程师，此外，从技术上，笔者确实无语。&lt;/p&gt;
+
+&lt;h2 id=&quot;七总结&quot;&gt;七、总结&lt;/h2&gt;
+
+&lt;p&gt;最后还有几点需要说明。&lt;/p&gt;
+
+&lt;h3 id=&quot;71-工程化&quot;&gt;7.1 工程化&lt;/h3&gt;
+
+&lt;p&gt;首先，现在业界都在大谈前端工程化，人人学构建，个个会打包。鄙人认为，工程化的要点在于“平衡诸方案利弊，取各指标的加权收益最大化”。仅仅加入了项目构建是远远不够的，在实践中，我们经常需要考虑的方向大可以分为两种：一是研发效率，这直接应该响应业务需求的能力；二是运行时性能，这直接影响用户的使用体验，同时也是产品经理所关心的。这两点都直接影响了公司的收入和业绩。&lt;/p&gt;
+
+&lt;p&gt;具体到细节的问题上来，比如说：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;静态资源如果组织和打包，对于具备众多页面的产品，考虑到不断的迭代更新，如何打包能让用户的代码下载量最少（性能）？不要说使用webpack打成一个包，也不要说编译commonchunk就万事大吉了，难道还需要不断地调整编译脚本（效率）？改错了怎么办？有测试方案么？&lt;/li&gt;
+  &lt;li&gt;利用angular特别是react构建纯前端渲染页面，首屏性能如何保证（性能）？引入服务端同构渲染，好的，那么服务端由谁来编写？想来必是由前端工程师来编写，那么服务端的数据层架构是怎么样的？运维角度看，前端如何保证服务的稳定（效率）？&lt;/li&gt;
+  &lt;li&gt;组件化方案如何制定（效率）？如果保证组件的分发和引用的便捷性？如何保证组件在用户端的即插即用（性能）？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;对于工程师来说，首先需要量化每个指标的权重，然后对于备选方案，逐个计算加权值，取最大值者，这才是科学的技术选型方法论。&lt;/p&gt;
+
+&lt;p&gt;然而在业界，很少能看到针对工程化的更深入分享和讨论，大多停留在“哪个框架好”，“使用XXX实现XXX”的阶段，往往是某一特定方向的优与劣，很少有科学的全局观。甚至只看到了某一方案的优势，对其弊端和可持续性避而不谈。造成这种现状的原因是多方面的，一是技术上，工程师能力的原因并没有考虑得到，二是政治上，工程师需要快速实现某一目标，以取得可见的KPI收益，完成团队的绩效目标，但更多的可能是，国内绝大多数产品的复杂性都还不够高，根本无需考虑长久的可持续发展和大规模的团队合作对于技术方案的影响。&lt;/p&gt;
+
+&lt;p&gt;因此，你必须接受的现状是，无论你是否使用CSS预处理器、使用webpack还是grunt、使用react还是angular，使用RN还是Hybrid，对于产品极有可能都不是那么地敏感和重要，往往更取决于决策者的个人喜好。&lt;/p&gt;
+
+&lt;h3 id=&quot;72-角色定位&quot;&gt;7.2 角色定位&lt;/h3&gt;
+
+&lt;p&gt;确实，近两年，web前端工程师开始不够老实，要么用node.js插手服务端开发，要么用RN插手客户端开发。如何看待这些行为呢？&lt;/p&gt;
+
+&lt;p&gt;鄙人以为，涉足服务端开发是没问题的，因为只涉及到渲染层面，还是属于“前端”的范畴的。况且，在实际的工程实践中，已经可以证明，优秀的前端研发体系确实离不开服务端的参与，想想Facebook的BigPipe。不过，这需要服务端良好的分层架构，数据与渲染完全解耦分离，后端工程师只负责业务数据的CRUD，并提供接口，前端工程师从接口中获取数据，并推送到浏览器上。数据解耦是比接口解耦更加优越的方案。因此现在只要你的服务端架构允许，node.js作为web服务已经比较成熟，前端负责服务端渲染是完全没有问题的。&lt;/p&gt;
+
+&lt;p&gt;前端涉足客户端开发也是合理的，毕竟都运行在用户端，也属于前端的范畴。抛开阿里系的weex鄙人不甚了解，NativeScript、RN都还缺乏大规模持续使用的先例，这是与涉足服务端领域的不同，客户端上的方案都还不够成熟，工具的限制阻碍了前端向客户端的转型，仍然需要时间的考验。不过时间可能不会很多，未来的web技术依托高性能硬件以及普及的webgl、webrtc、Payment API等能力，在性能和功能上都会挑战Native的地位。最差的情况，还可以基于Hybrid，利用Native适当扩展能力，这就是合作而非竞争关系了。&lt;/p&gt;
+
+&lt;p&gt;总之前端工程师的&lt;strong&gt;本&lt;/strong&gt;仍然在浏览器上，就这一点，范围就足够广使得没人有敢言自己真正“精通”前端。如果条件允许的话，特别是技术成熟之后，涉猎其它领域也是鼓励的。&lt;/p&gt;
+
+&lt;h3 id=&quot;73-写在最后&quot;&gt;7.3 写在最后&lt;/h3&gt;
+
+&lt;p&gt;在各种研发角色中，前端注定是一个比较心累的一个。每一年的年末，我们都能看到几乎完全不一样的世界，这背后是无数前端人烧脑思考、激情迸发的结果。无论最终产品的流行与否，都推动着前端技术领域的高速更新换代。正是印证了那一句“唯有变化为不变”。作为业务线的研发工程师，我们的职责是甄选最佳组合方案，取得公司利益最大化。这个“最佳”的涉猎面非常广，取决于设计者的技术视野广度，也有关于决策者的管理经验，从来都不是一件简单的事。&lt;/p&gt;
+
+&lt;p&gt;未来的web前端开发体验一定是更丰富的，依托webcomponents的标准化组件体系，基于webassembly的高性能运行时代码，以及背靠HTTP/2协议的高速资源加载，前端工程师不必在性能上、兼容性上分散太多精力，从而可以专注于开发具备丰富式交互体验的下一代web APP，可能是VR，也可能是游戏。&lt;/p&gt;
+
+&lt;p&gt;在迎接2017的同时，我们仍然要做好心理准备，新的概念、新的框架和工具以及新的语法依旧会源源不断的生产出来，不完美的现状也依旧会持续。&lt;/p&gt;
+
+&lt;p&gt;由于水平有限，笔者在上述内容中难免有失偏颇，请多包涵。&lt;/p&gt;</content><author><name></name></author><summary type="html">本文首发于 http://www.infoq.com/cn/articles/2016-review-frontend，此处为原稿。</summary></entry><entry><title type="html">谈高质量的技术分享社区</title><link href="/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq.html" rel="alternate" type="text/html" title="谈高质量的技术分享社区" /><published>2016-11-17T10:23:40+08:00</published><updated>2016-11-17T10:23:40+08:00</updated><id>/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq</id><content type="html" xml:base="/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq.html">&lt;p&gt;由于团队架构调整，今年初夏到秋末可谓在公司无所事事，业余做了两件事：&lt;/p&gt;
+
+&lt;h6 id=&quot;1-申请了两个公司专利&quot;&gt;1. 申请了两个公司专利&lt;/h6&gt;
+
+&lt;p&gt;目前第一个的奖金马上到手，扣税后也就只能买两件普通价格的女人衣服。话说这年月想以专利来致富是不可能了，首先公司已经不在那个冲量的阶段了，现在对质量有些要求，你的交底书首先要经过部分专利负责人的审核，确定确实可能有一定价值，公司才会提交给专利代理撰写申请材料。据我一个在专利局相关部门的同学讲，国家对专利的审核也愈加严格了。&lt;/p&gt;
+
+&lt;h6 id=&quot;2-向社区投了一篇文章&quot;&gt;2. 向社区投了一篇文章&lt;/h6&gt;
+
+&lt;p&gt;为infoQ写了篇&lt;a href=&quot;http://www.infoq.com/cn/articles/constructe-tool-optimize-for-complex-web-front-end-projects&quot;&gt;首发稿件&lt;/a&gt;，基本没有读者反馈，归根到底，我认为还是里面的内容太过抽象，不当面解释，看文字是很难看懂的，即便有图例，也是很复杂的图。&lt;/p&gt;
+
+&lt;p&gt;之所以投到infoQ，其实也属无奈，在国内，你基本找不到所谓的“高质量技术分享社区”，无论&lt;a href=&quot;http://www.csdn.net/&quot;&gt;csdn&lt;/a&gt;、&lt;a href=&quot;https://segmentfault.com/&quot;&gt;segmentfault&lt;/a&gt;，还是&lt;a href=&quot;http://gold.xitu.io/&quot;&gt;掘金&lt;/a&gt;，都充斥着大量水帖、扫盲帖和问题帖，所谓的专栏也名不副实，整个网站俨然已经成了论坛。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;国人普遍不太信任国人的文章和观点，只要你发表出来了，有三种结果，第一无人问津，原因一般是没人看得懂你在缩写什么；第二大家普遍点赞，原因一般也是看不太懂，但不觉明厉；第三是开始在评论区撕逼，读者与作者撕，读者与读者撕，基本观点是你这么做太low了，可以这样这样做等等。第三种情况是你能看到的大多数，虽然第一种最多，但你也看不见。由于担心自己的观点得不到认可，即便是最资深的从业者，也很少有人有信心在这类社区上发表自己的技术成果，明明想免费得分享，却招来一通骂，何苦呢？&lt;/p&gt;
+
+&lt;p&gt;但想达到高质量内容的门槛，还是需要大量资深从业者的贡献。强制作者以共享版权2.0协议发布文章是不现实的，没有人愿意辛勤劳动而没有报酬。如果以购买版权或者首发权的方式付费，予以报酬，那么确实可以鼓励作者，但随之带来另一个重大问题————文章的价值无从衡量，着会导致：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;社区媒体不愿付出高昂的价格去购买无法衡量价值的文章，技术文章不同于新闻，仁者见仁、智者见智，况且抛开场景谈技术都是耍流氓，因此&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">由于团队架构调整，今年初夏到秋末可谓在公司无所事事，业余做了两件事：</summary></entry><entry><title type="html">贴吧无线 Web 的 HTTPS 改造实践</title><link href="/tieba/https/2016/11/16/tieba-web-https.html" rel="alternate" type="text/html" title="贴吧无线 Web 的 HTTPS 改造实践" /><published>2016-11-16T00:00:00+08:00</published><updated>2016-11-16T00:00:00+08:00</updated><id>/tieba/https/2016/11/16/tieba-web-https</id><content type="html" xml:base="/tieba/https/2016/11/16/tieba-web-https.html">&lt;h2 id=&quot;1-背景&quot;&gt;1. 背景&lt;/h2&gt;
+
+&lt;p&gt;百度公司一直都面临着严峻的安全威胁和数据隐私风险，未加密的HTTP业务流量被第三方监听、追踪甚至劫持，进而导致用户的访问页面被篡改、passport认证信息被窃取、个人数据被泄漏、下载的安装包被替换等安全问题。这些攻击产生了巨大的利益，已经成为黑色或者灰色产业成规模地运营；这些攻击不但发生在诱饵WIFI热点上，也发生在某些骨干网上；这些攻击威胁着用户的安全和隐私，也给百度的声誉和利益带来巨大损失。&lt;/p&gt;
+
+&lt;p&gt;全站HTTPS化改造，可以有效的解决网络劫持、隐私泄漏等严重安全问题，这在百度连接人与服务，打造支付闭环的背景下，显得极其重要。在政策层面上，也对公司在安全和拥护隐私保护方面提出了更高的要求。另一方面，由于HTTP2.0在主流浏览器实现上强制要求HTTPS，这一技术变革也无法避免。&lt;/p&gt;
+
+&lt;p&gt;贴吧是一个具有十余年历史的老产品，拥有庞大的用户群体，每日PV数十亿量级。它暴露在HTTP下的不安全性将会比其它产品线对用户的影响更严重、范围更广。为了响应公司技术委员会和安全工作组的号召，贴吧在2016年Q2启动了改造HTTPS的改造工作。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-评估&quot;&gt;2. 评估&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-范围&quot;&gt;2.1 范围&lt;/h3&gt;
+
+&lt;p&gt;贴吧多年的业务运营，造成了前端代码十分繁杂和分散，从功能机时代的无线WAP页面，到现今的智能手机H5版本（以下简称“智能版”）、PAD版和PC版都有部署，时间跨度在5年以上，很多代码都已经找不到负责人，因此踩坑的几率极大。为了尽可能地降低对用户的影响，同时使得整个改造周期不要拉得太长，我们决定分端改造，先改造智能版。&lt;/p&gt;
+
+&lt;h3 id=&quot;22流程&quot;&gt;2.2流程&lt;/h3&gt;
+
+&lt;p&gt;由于智能版相对与贴吧PC版与移动客户端来说关注度不高，一开始我们采取的改造流程非常简单：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;建设HTTPS开发环境&lt;/li&gt;
+  &lt;li&gt;改造代码&lt;/li&gt;
+  &lt;li&gt;QA验证&lt;/li&gt;
+  &lt;li&gt;小流量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上线的流程是有致命问题的，我们后面会提到。&lt;/p&gt;
+
+&lt;h3 id=&quot;23-细节&quot;&gt;2.3 细节&lt;/h3&gt;
+
+&lt;p&gt;无效的HTTPS证书会导致现代浏览器主动阻塞请求，在PC上，可以通过手动放行来强行加载页面和资源，在移动端上，一些浏览器（如Safari）则不提供此功能，从而无法加载页面。如果手动安装信任证书，则过于繁琐，在测试过程中不具有实际可操作性。&lt;/p&gt;
+
+&lt;p&gt;真实的HTTPS证书只存在于公司的线上环境中，应用于_*.baidu.com_，因此，我们申请了一台线上机器，但不接入任何用户流量。在内网环境，需要绑hosts，就可以像正常一样去访问了。&lt;/p&gt;
+
+&lt;h2 id=&quot;3-改造&quot;&gt;3. 改造&lt;/h2&gt;
+
+&lt;p&gt;迁移HTTPS在代码上需要改动的点主要包括：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;域名代理；&lt;/li&gt;
+  &lt;li&gt;资源路径；&lt;/li&gt;
+  &lt;li&gt;跳转页面；&lt;/li&gt;
+  &lt;li&gt;动态链接；&lt;/li&gt;
+  &lt;li&gt;CORS；&lt;/li&gt;
+  &lt;li&gt;白名单&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;考虑到小流量模式下，HTTP与HTTPS是共存的，因此应以相对协议“&lt;strong&gt;//&lt;/strong&gt;”引用所有的静态资源和iframe，用同一套代码支持两种协议。注意在PC的IE8浏览器上，使用相对协议引用CSS会造成两次下载行为。这个bug仅影响加载性能，但贴吧的IE8浏览器用户并不多，且本次改造仅涉及无线端，因此暂不予考虑。&lt;/p&gt;
+
+&lt;h3 id=&quot;31-域名代理&quot;&gt;3.1 域名代理&lt;/h3&gt;
+
+&lt;p&gt;注意你可能无法将所有的资源都简单地替换为HTTPS或相对协议，因为有些域名，比如说引用的第三方资源，可能并不支持HTTPS。这种情况下，我们有两种方案：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如果是静态不变资源，将其下载，上传到我们的CDN服务器上，比如图片；&lt;/li&gt;
+  &lt;li&gt;如果资源的内容可能会被改变，使用代理域名代理其地址&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;代理是改造HTTPS过程中所必不可少的，即使是百度自己的域名，也有非常多的并没有部署HTTPS证书，因此我们对于不支持的域名，直接使用了代理域名进行了替换，这是一个已经存在的公司内部代理服务。这种域名替换可以是硬性的，即无论当前页面是处于HTTP下还是处于HTTPS下，都走HTTPS的代理域名——HTTP页面下完全允许加载HTTPS的资源；也可以是软性的，仅在HTTPS下使用代理域名。&lt;/p&gt;
+
+&lt;p&gt;主要特别注意的是，代理可能需要&lt;strong&gt;透传&lt;/strong&gt;HTTP协议的&lt;a href=&quot;http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.5.1&quot;&gt;end-to-end&lt;/a&gt;头部以及所有search参数，当然也包括负载。如果有可能地话，GET、POST之外的其它method最好也能予支持。例如我们有一个地址：&lt;em&gt;http://www.test.com/a/b/c?d=1&amp;amp;e=2&lt;/em&gt;，在替换为地理地址后则可能为 &lt;em&gt;https://www.proxy.com/a/b/c?d=1&amp;amp;e=2&lt;/em&gt;，路径和参数是不变的。&lt;/p&gt;
+
+&lt;h3 id=&quot;32-资源路径&quot;&gt;3.2 资源路径&lt;/h3&gt;
+
+&lt;p&gt;我们在这里把资源分为静态资源和框架资源（即iframe），仅感官差异，但并无实质区别。&lt;/p&gt;
+
+&lt;p&gt;HTTPS页面中加载的非HTTPS资源被称为&lt;strong&gt;Mixed Content&lt;/strong&gt;。理论上，Mixed Content会对HTTPS的页面造成安全威胁。不同的浏览器对Mixed Content的处理方式不尽相同。如果你使用过IE6，就一定会被一个提示“是否只查看安全传送的网页内容?”信息的确认对话框搅扰过，如果你点击了“是”的话，那么所有Mixed Content都&lt;strong&gt;不会&lt;/strong&gt;被加载，反之都会加载。后来的IE则默认允许加载Mixed Content图片，但script和css则仍需要用户确认。现代浏览器大多遵循了W3C的&lt;a href=&quot;https://www.w3.org/TR/mixed-content/&quot;&gt;Mixed Content&lt;/a&gt;规范，将Mixed Content分为Optionally-blockable和Blockable两类。&lt;/p&gt;
+
+&lt;p&gt;前者包含危险系数较小，即使被篡改也无大碍的资源，比如SVG、图片、声音和视频。它们默认会被加载，但浏览器会在控制台打印警告信息。对于Chrome来讲，只要有一个Mixed Content资源，地址栏协议前面的绿色小锁就会变为灰色的感叹号&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/72f96cbajw1f7kbk1y7dij205500ldft.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;后者包含的资源被篡改则更容易引起严重的后果，比如css、script、字体以及iframe。默认情况下它们是禁止被加载的。&lt;/p&gt;
+
+&lt;p&gt;这两种Mixed Content的行为都可以通过&lt;a href=&quot;http://www.w3.org/TR/CSP2/&quot;&gt;CSP&lt;/a&gt;来自定义。&lt;/p&gt;
+
+&lt;h4 id=&quot;321-静态资源&quot;&gt;3.2.1 静态资源&lt;/h4&gt;
+
+&lt;p&gt;贴吧的静态资源托管于CDN上，主要有两个域名。显然此域名必须支持HTTPS，好在这个前置依赖已经ready，并不需要我们推动改造。&lt;/p&gt;
+
+&lt;p&gt;在HTML页面中加载的所有css和script，都是在运行时拼接的URL。其中域名部分是从配置文件中读取的，因此只要修改该配置文件即可。但还有更多的单case外链资源的URL是硬编码到代码中的，这部分需要挨个文件搜索排查。&lt;/p&gt;
+
+&lt;p&gt;除了css和script这两种静态资源外，无线页面上还有视频、声音和图像等媒体静态资源我们也尽可能地替换为HTTPS协议，虽然可能影响页面整体的性能，但这是值得的。&lt;/p&gt;
+
+&lt;p&gt;如果一个js脚本加载了另一个js脚本会怎么样呢？这对于一些独立的组件（如广告）来说非常常见。你必须确保被异步加载的js也要通过HTTPS去下载。如果不能，那么你可能需要一些非技术手段去解决它。我们推动了其它部门进行了相应的改造，这里往往是整个项目的风险点，因为如果你不是对所有业务都熟悉的话，那么依赖于外部则很容易让进度被阻塞。&lt;/p&gt;
+
+&lt;h4 id=&quot;322-iframe地址&quot;&gt;3.2.2 iframe地址&lt;/h4&gt;
+
+&lt;p&gt;iframe的地址同css和script一样，必须保证与页面协议一致（除非配置了CSP），否则不能加载。这非常严重，因为很多跨域技术（如passport）和广告都会使用iframe，直接影响KPI指标与收入。&lt;/p&gt;
+
+&lt;h3 id=&quot;33-跳转页面&quot;&gt;3.3 跳转页面&lt;/h3&gt;
+
+&lt;p&gt;采用HTTPS的网站，一般都会下发&lt;a href=&quot;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&quot;&gt;HSTS&lt;/a&gt;指令， 从而让浏览器直接发起HTTPS请求。对于不支持HSTS头部的浏览器，需要服务器回复一次302响应以强迫浏览器以HTTPS访问。我们希望用户能尽可能地在HTTPS协议下浏览页面，包括站内和站外的，因此，需要修改a链接的href属性。&lt;/p&gt;
+
+&lt;p&gt;贴吧可链接至百度的其它很多产品线，但他们并非都支持HTTPS（目前百科、文库等都不支持），因此在修改外链之前一定要确保目标站点的HTTPS协议可用性。&lt;/p&gt;
+
+&lt;h3 id=&quot;34-动态链接&quot;&gt;3.4 动态链接&lt;/h3&gt;
+
+&lt;p&gt;其实，贴吧无线页面中的资源往往是动态部分占绝大多数，即URL是从服务端输出给前端的，无法通过硬编码的方式修改协议属性。这些URL中，有些域名是支持HTTPS的，但还有些不是。&lt;/p&gt;
+
+&lt;p&gt;我们的解决方案是使用正则表达式去匹配并替换，为此，我们提供了三个PHP函数，以供不同场景之用：&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function ssl_url_replace($url){} // 替换这个URL字符串
+function ssl_richtext_replace($text){} // 替换富文本中的URL
+function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符串
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在HTTP协议下访问，这三个函数均直接返回原参数；在HTTPS下访问，则会尝试匹配参数中的URL，并替换为HTTPS地址，一般是代理服务器地址（如果原域名支持HTTPS，则直接替换协议即可）。&lt;/p&gt;
+
+&lt;p&gt;动态链接部分的改造量是所有类型工作中最大的，其代码分布非常之广，有相当一部分是由QA通过bug发现的。对于&lt;em&gt;ssl_url_replace()&lt;/em&gt;的使用，往往伴随着&lt;em&gt;&lt;img /&gt;&lt;/em&gt;标签或者&lt;em&gt;background&lt;/em&gt;以及&lt;em&gt;background-image&lt;/em&gt;内联属性。而对于其它两个函数，则很难通过搜索源代码找到其位置。&lt;/p&gt;
+
+&lt;h3 id=&quot;35-cors&quot;&gt;3.5 CORS&lt;/h3&gt;
+
+&lt;p&gt;即 &lt;a href=&quot;https://en.wikipedia.org/wiki/Cross-origin_resource_sharing&quot;&gt;Cross-Origin Resource Sharing&lt;/a&gt;，是一种优雅的跨域通信方式，通过配置一些服务器响应头来实现。在贴吧的无线页面中，_CORS_被用于两种场景：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;加载CDN域名上的字体文件（现代浏览器要求字体文件必须同域，除非配置CORS）；&lt;/li&gt;
+  &lt;li&gt;向其它域上传图片&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果_CORS_的目标域名支持HTTPS，则增加响应头部即可，成本很低，字体文件即是这样的一个例子。但如果不支持的话，百度的代理服务器并不方便配置这样复杂的头部，因此我们不得不花费一周的时间申请了一个新域名并做了相应的配置。&lt;/p&gt;
+
+&lt;h3 id=&quot;36-白名单&quot;&gt;3.6 白名单&lt;/h3&gt;
+
+&lt;p&gt;即便如此，仍然有些页面是无法在HTTPS协议下运行的，包括：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;嵌入了第三方的不支持HTTPS的资源或iframe；&lt;/li&gt;
+  &lt;li&gt;遗失源代码的页面；&lt;/li&gt;
+  &lt;li&gt;暂且不想迁移的页面&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;是的，确实有少量的页面我们无法找到源代码，也就不能通过修改源代码来迁移到HTTPS下。至于第三方资源，贴吧目前有嵌入其它公司H5游戏的业务，目前几乎不可能推动其改造HTTPS。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;虽然迁移HTTPS的大部分工作是替换链接，但URL出现的场景很多，特别要注意不要被依赖的第三方拖住进度。因此，前期的准备是十分必要的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-检验&quot;&gt;4. 检验&lt;/h2&gt;
+
+&lt;p&gt;检查阶段由开发期间的QA测试以及小流量期间的数据观察构成。QA遍历所有重要业务，寻找可能的缺陷与故障。这是一项很繁杂的任务，但我们的QA以极高的测试覆盖度完成了任务，直至上线后也几乎没有发现任何致命缺陷。&lt;/p&gt;
+
+&lt;p&gt;贴吧的几乎所有页面都接入了公司内部的性能检测平台，数据显示，虽然接入了TLS套接层，使用了大量的正则替换函数，但页面的性能几乎没有受到影响。&lt;/p&gt;
+
+&lt;p&gt;开启1%小流量时，一切正常。不过随着小流量比例的增加，异常紧接而来，PV/UV等核心KPI指标开始大幅下滑，并有用户报告页面打不开。但是内网查看没有任何问题复现，经过服务端的一系列排查也一直没有发现任何问题。我们怀疑部分用户的设备在TLS1.0的使用上有问题，因此执行了一次线上统计：关闭所有的HTTPS小流量，在页面上检查对HTTPS连接的访问情况。&lt;/p&gt;
+
+&lt;p&gt;为了模拟真实的地址环境，我们创建了一个贴吧域名的空图片URL，使用JavaScript脚本加载它并检测请求结果，伪代码大概是这样的：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;track&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'success'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onerror&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;track&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'failure'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://www.abc.com/empty.gif?'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其中&lt;em&gt;track()&lt;/em&gt;是统计函数。我们最终得到的是一个成功与失败的分布比例，这个数值经过计算后十分接近100%，于是我们认为用户访问HTTPS的通路没有问题。&lt;/p&gt;
+
+&lt;p&gt;然而事实并非如此，经过较长时间的排查后，发现问题仍出在服务端，具体原因与公司的网络接入层架构有关，这里不表，但导致的后果是——大部分用户都不可能与服务端HTTPS所使用的443端口建立连接！&lt;/p&gt;
+
+&lt;p&gt;那为什么之前我们统计到的访问HTTPS的成功率这么高呢？&lt;/p&gt;
+
+&lt;p&gt;这个时候，我们才忽然意识到统计的方法可能有问题。这是一个特别特别小的图片，如果能访问到的话，应该是瞬间的（2G网络很比较慢，但统计数据表明我们的2G用户微乎其微），如果由于不能与服务器建立连接，那么报错的时延会非常地长，也就是&lt;em&gt;onerror&lt;/em&gt;很晚才会被调用，这个时间可能达10几秒以上，而我们统计的页面，用户一般不会停留这么久。这个现象的后果是，失败的计数很多都丢失了，成功率自然很高。&lt;/p&gt;
+
+&lt;p&gt;为了验证这个猜测，我们修改了统计代码，不再一直等待&lt;em&gt;onerror&lt;/em&gt;被触发：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onerror&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    
+    &lt;span class=&quot;nx&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://www.abc.com/empty.gif?'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;track&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'success'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;track&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'failure'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;关键在于&lt;em&gt;setTimeout&lt;/em&gt;，它让程序最多等待一秒就发送了结果。经过这样的修改，我们再来看统计结果，就与理论值很接近了，验证了之前的猜测。虽然这种方案会误杀那种访问很慢但能访问得到的情况，但根据以往经验，这部分量级很少，并且我们的目标并非严格定量地统计它，这仅是一个短期的临时统计方案。&lt;/p&gt;
+
+&lt;h2 id=&quot;5-总结&quot;&gt;5. 总结&lt;/h2&gt;
+
+&lt;p&gt;HTTPS改造实际上并没有太多的技巧可言，很大程度上都是一种“体力活”。但体力活并非“蛮干”，依然需要评估到所有可能的情况。我们得到的经验教训是：首先应对线上环境进行正确可信的检查，上一节中我们遇到的问题并非仅由一个原因造成的，有很多环节都可以发现问题并及时止损，但每一个环节我们都由于或行政或技术的原因与真相失之交臂，不能不说是遗憾。但反过来想我们确实达到了踩坑的目的，有效地防止了对PC端这一大头的影响，算是有一定的收获吧。其次，提前确认依赖外部团队业务的实现部分，因为你无法控制他们的资源与排期，容易拖慢你的进度。&lt;/p&gt;
+
+&lt;p&gt;在未来的HTTPS持续改造中，我们的流程将是：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;验证线上HTTPS环境，保证通道畅通&lt;/li&gt;
+  &lt;li&gt;评估所有依赖，必要时发起合作，确定时间点接洽&lt;/li&gt;
+  &lt;li&gt;建设HTTPS开发环境&lt;/li&gt;
+  &lt;li&gt;改造代码，尽可能所有流量都走HTTPS&lt;/li&gt;
+  &lt;li&gt;QA验证，全量覆盖，确保所有重要业务运行正常&lt;/li&gt;
+  &lt;li&gt;小流量，可采用log函数递增方式缓慢开启流量，观察统计指标&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">1. 背景</summary></entry><entry><title type="html">再谈移动 Web 上的吸底布局</title><link href="/fixed/%E5%90%B8%E5%BA%95/2016/06/30/fixed-bottom-bar.html" rel="alternate" type="text/html" title="再谈移动 Web 上的吸底布局" /><published>2016-06-30T12:20:39+08:00</published><updated>2016-06-30T12:20:39+08:00</updated><id>/fixed/%E5%90%B8%E5%BA%95/2016/06/30/fixed-bottom-bar</id><content type="html" xml:base="/fixed/%E5%90%B8%E5%BA%95/2016/06/30/fixed-bottom-bar.html">&lt;p&gt;吸底布局也就是固定在页面底部，无论页面本身滚动到哪了。其最佳实现方式是使用 &lt;em&gt;position:fixed&lt;/em&gt;，然而对于移动端来讲坑要多得多。&lt;/p&gt;
+
+&lt;p&gt;如果仅仅是吸顶的话，也就是对 fixed 的支持，也存在悲惨的过去，比如 Android 2.x 只有在特定的 viewport 设置下才会生效，iOS 在 8 以前要么不支持要么带有明显的漂移 bug。现在好多了，较新的版本都能很好地支持。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;但对吸底来讲还不一样，就是因为 &lt;strong&gt;软键盘是从底部弹起的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;软键盘弹起后，吸底的元素应该具有怎样的行为呢，这没有规范说明，于是 iOS 与 Android，Android 的不同版本之间，都各行其是。分歧在于，软键盘并非当前软件的一部分，如果它弹起了，页面的 &lt;em&gt;window&lt;/em&gt; 大小到底变没变呢？&lt;/p&gt;
+
+&lt;p&gt;比较一致的是，两个平台上 &lt;em&gt;resize&lt;/em&gt; 事件都没有被触发。但在部分 Android 机型上，如果页面的内容不能填充屏幕的高度，则页面确实会缩短，即 &lt;em&gt;document.body.scrollHeight&lt;/em&gt; 会变小。其它 Android 和 iOS 则不会改变。&lt;/p&gt;
+
+&lt;p&gt;iOS 在软键盘弹起后非常一致地都将吸底的元素留在原处，并没上浮到键盘上面，而一些 Android 则会上浮。&lt;/p&gt;
+
+&lt;p&gt;两种策略很难说谁对谁错，iOS 可能有充足的理由不上浮：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;window 大小并没有变；&lt;/li&gt;
+  &lt;li&gt;上浮可能导致内容区被遮挡&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;但很多人的第一印象是应该要上浮，就像部分 Android 做的那样。在 window 尺寸未变时，这反倒成了一种奇怪的行为，毕竟 fixed 不代表 &lt;em&gt;always-visible&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;如果不依赖 fixed，使用 JavaScript 动态计算的话，需要知道软键盘的高度，在 iOS 上一些客户端的内嵌 Webview 中，这是可能的，因为键盘弹起后 &lt;em&gt;window.innerHeight&lt;/em&gt; 这个值变化了，等于真正可视区域的高度。于是我们可以这样做：&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nc&quot;&gt;.bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;40px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fixed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;transition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.3s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollTop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.bottom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'position'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'absolute'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'bottom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;fixed 已经被 absolute 代替，动态计算 &lt;em&gt;.bottom&lt;/em&gt; 元素相对于 body 的距离。注意当内容不足时，body 的高度要小于屏幕的高度。&lt;/p&gt;
+
+&lt;p&gt;效果看下面的影片：&lt;/p&gt;
+
+&lt;video src=&quot;/images/fixed/fixed.mp4&quot; controls=&quot;controls&quot; preload=&quot;preload&quot; width=&quot;360&quot; height=&quot;640&quot;&gt;&lt;/video&gt;
+
+&lt;p&gt;不过这不但仅适用于 iOS，也仅在部分客户端上有效，Safari 是无效的。关于这种对吸顶元素的需求，应该还是避免。&lt;/p&gt;</content><author><name></name></author><summary type="html">吸底布局也就是固定在页面底部，无论页面本身滚动到哪了。其最佳实现方式是使用 position:fixed，然而对于移动端来讲坑要多得多。</summary></entry><entry><title type="html">Gitbook 插件的问题</title><link href="/gitbook/plugin/2016/06/28/gitbook-plugins.html" rel="alternate" type="text/html" title="Gitbook 插件的问题" /><published>2016-06-28T16:03:03+08:00</published><updated>2016-06-28T16:03:03+08:00</updated><id>/gitbook/plugin/2016/06/28/gitbook-plugins</id><content type="html" xml:base="/gitbook/plugin/2016/06/28/gitbook-plugins.html">&lt;p&gt;&lt;a href=&quot;https://www.gitbook.com/&quot;&gt;Gitbook&lt;/a&gt; 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。&lt;/p&gt;
+
+&lt;p&gt;```[type]
+[content]
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;type&lt;/em&gt; 处是这段代码的解析类型，常用的有各种语言语法以及 &lt;em&gt;flowchat&lt;/em&gt;、&lt;em&gt;sequence&lt;/em&gt; 等扩展类型，这些扩展类型都需要引入运行时解析的js脚本。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Gitbook 通过注册插件，无需手动引入js：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// book.json&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;plugins&quot;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;katex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;然后运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;gitbook install&lt;/code&gt; 下载插件。&lt;/p&gt;
+
+&lt;p&gt;打开浏览器再浏览页面时，gitbook 已经将插件中声明的样式和脚本都注入到了页面当中。&lt;/p&gt;
+
+&lt;p&gt;但这有一个很大的问题，可以声明的脚本是个数组，你可以将任意数量的js注入到页面中，于是乎广大插件作者自然而然将依赖库放进去了，包括 jQuery，Raphael，Underscore 等等，你会看到：&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;..plugin-a/book/jquery.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;..plugin-a/book/plugin-a.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;..plugin-b/book/jquery.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;..plugin-b/book/plugin-b.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;是的，一个以上的插件将 jQuery 注入进去了，而 jQuery 是会向全局作用域暴露 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt; 对象的，后面的会覆盖前面的，这导致很多插件都不能工作了。&lt;/p&gt;
+
+&lt;p&gt;目前官网还没有给出解决方案，对于不得不使用的插件，需要手动改造一番，尽量少向全局暴露对象。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/js-sequence-diagram-full&quot;&gt;js-sequence-diagram-full&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/mathjax-full&quot;&gt;mathjax-full&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/mermaid-full&quot;&gt;mermaid-full &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/flowchart-full&quot;&gt;flowchart-full&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Gitbook 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。</summary></entry><entry><title type="html">同构场景下的复杂前端构建</title><link href="/%E6%9E%84%E5%BB%BA/build/%E5%90%8C%E6%9E%84/2016/06/25/panto.html" rel="alternate" type="text/html" title="同构场景下的复杂前端构建" /><published>2016-06-25T22:34:52+08:00</published><updated>2016-06-25T22:34:52+08:00</updated><id>/%E6%9E%84%E5%BB%BA/build/%E5%90%8C%E6%9E%84/2016/06/25/panto</id><content type="html" xml:base="/%E6%9E%84%E5%BB%BA/build/%E5%90%8C%E6%9E%84/2016/06/25/panto.html">&lt;p&gt;提到 Web 前端工程化，&lt;strong&gt;构建&lt;/strong&gt;，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的&lt;a href=&quot;https://github.com/sogou-ufo/ursa&quot;&gt;构建工具&lt;/a&gt;，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;当时接手的一个腾讯的产品，其构建工具使用了包括 Shell、PHP、&lt;a href=&quot;http://ant.apache.org/&quot;&gt;Ant&lt;/a&gt; 内的多种技术，非常繁杂，而且其重要构成部分 Ant 的任务扩展需要 Java 编写，成本并不低，也刚刚好也并没有额外的扩展需求，因此也就一直使用下去了。&lt;/p&gt;
+
+&lt;p&gt;不过伴随着 NodeJS 的发展，2013 年，&lt;a href=&quot;http://gruntjs.com&quot;&gt;grunt&lt;/a&gt; 已经开始出现，2014 年，&lt;a href=&quot;http://gulpjs.com&quot;&gt;gulp&lt;/a&gt; 也出现了。它们的适当使用都能更好地完成构建工作。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://webpack.github.io/&quot;&gt;Webpack&lt;/a&gt; 虽然也在同时期发展，但直到近两年才被广泛应用。同时，在百度，&lt;a href=&quot;http://fis.baidu.com&quot;&gt;FIS&lt;/a&gt; 也支撑着许多公司级的产品。&lt;/p&gt;
+
+&lt;p&gt;业务架构决定了选用何种构建工具，甚至是否需要像 &lt;a href=&quot;http://emberjs.com/&quot;&gt;Ember&lt;/a&gt; 一样自建工具。缺失场景冒然地比较它们是不合理不明智的，因为显然它们并非替代关系，只不过相互之间有些重合。&lt;/p&gt;
+
+&lt;p&gt;现在来看一个同构设计的复杂前端工程，它有以下特殊需求：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;一份使用 ES2015 语法编写的 JavaScript 既需要编译成 CommonJS 格式运行在 Server 端，又需要编译成 AMD 格式，压缩合并运行在浏览器端；&lt;/li&gt;
+  &lt;li&gt;为简便起见，使用 NPM 发布的前端 JavaScript Library 也允许编译到前端运行，包括所有依赖；&lt;/li&gt;
+  &lt;li&gt;HTML 模板既可能作为 Server 端的运行时模板，也可能被浏览器加载作为前端模板；&lt;/li&gt;
+  &lt;li&gt;未被处理的文件需要原封不动拷贝至配置的对应目录中&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;先来看 FIS，这是一款有一定集成度的工具，即无需任何配置和插件都可以完成一定的构建任务。&lt;/p&gt;
+
+&lt;p&gt;来看其构建思路：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/fex-team/fis3/master/doc/docs/api/img/fis-compile-flow.png&quot; alt=&quot;fis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;FIS 定义了几个主要编译阶段，每个阶段可以插入更多的扩展。在编译期，FIS 会遍历所有项目下的文件，对不同的文件采取不同的转换策略，最终都会再次写在磁盘的目的目录中。这样的好处是不会遗漏任何文件，比如新增文件类型，即使不做任何处理，都会出现在目的目录中。缺点是，一个源文件就只能有一个输出文件。在同构项目中，常常一个文件有两个甚至更多的输出，做到这一点，FIS 比较困难，但能做到，只要多次读取一份源文件，但这在配置上不够直观。&lt;/p&gt;
+
+&lt;p&gt;再来看 Webpack，它天生支持编译 NPM module，对于 browserify 式的打包非常方便。但 Webpack 至少需要一个 &lt;em&gt;entry&lt;/em&gt;，即入口，因为它需要知道从哪开始分析依赖。无论从哪里看，Webpack 对于那种单页应用都更友好一些，在复杂的工程中，页面不可能仅有一个，一个页面中的 JavaScript 运行入口也可能不止一个，同时，将一个源文件编译成多个也几乎无法支持。这使得 Webpack 的应用场景比较狭隘。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://webpack.github.io/assets/what-is-webpack.png&quot; alt=&quot;webpack&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Grunt 与 Gulp 集成化最低，也最灵活，通过配合插件，可以完成任意任务。相比之下，Gulp 基于流的处理，会比 Grunt 基于文件的处理来说更易控制，处理也更快。两者都是基于文件选择器的，因此对于没有选择到的文件，必然会遗漏。同时，对于不同选择器选择到的相同文件，也会读取不止一次。&lt;/p&gt;
+
+&lt;p&gt;基于以上考虑，对于更复杂的要求更高的同构项目，单单是使用现有的构建工具，要么不能完成任务，要么实现起来非常 tricky。重新审视构建这件事，其实要做的事情非常纯粹——读取文件，将文件内容按照规则进行转换，再写到目的磁盘上。构建的重点是顺序，因为必然会有文件对文件的依赖，而这种依赖关系，要么像 FIS 一样预先定义，要么像 Webpack 一样自动分析，亦或像 Grunt/Gulp 一样自己定义。当然自己定义的灵活性最高，但基于有限文件选择器作为执行入口的方式，必然会无法处理未被选择的文件。&lt;/p&gt;
+
+&lt;p&gt;现在我们设想一种合适的工具，对以上提到的各种问题进行改进：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;自定义处理流程和顺序；&lt;/li&gt;
+  &lt;li&gt;允许处理遗留文件；&lt;/li&gt;
+  &lt;li&gt;尽量减少源文件读取次数；&lt;/li&gt;
+  &lt;li&gt;快速增量文件处理&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;一个典型的应用场景：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/panto/stream.png&quot; alt=&quot;stream&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;基于以上需求，我做出的一个原型工具 &lt;a href=&quot;http://pantojs.xyz/&quot;&gt;PantoJS&lt;/a&gt;。它的实现原理非常简单：基于文件选择器定义处理流，但不立即运行，在每个流上挂载多个有序的转换器（Transformer），负责转换文件的内容。在最后统一进行构建时，每个流在每个转换器上都会缓存处理后的文件内容，只要文件没有改动，该转换器后面连接的多个分支转换器都会直接从该转换器上实时获取结果，而无需再次读取文件和转换。这也就支持了增量文件后项目的快速构建。另外，多个流在读取同一个文件时是有缓存的，即只会读取磁盘一次。最后，未被选择的文件则为遗留文件，按照预定义的遗留文件规则进行处理。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PantoJS&lt;/code&gt; 支持文件繁殖，即一个文件在转换器上能够生成多个文件。理论上，它能够支持任意需求的构建工作，但由于缓存和流的设计，仍有以下缺陷：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;流之间不能相互访问，而转换器允许访问原始文件，因此无能保证源文件被读取一次以内；&lt;/li&gt;
+  &lt;li&gt;内存消耗较高（可以适当做磁盘缓存）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不过我认为这种轻量级的设计才能承担越来越繁重的前端项目构建任务。通过不断扩展转换器，其潜力非常大。&lt;/p&gt;</content><author><name></name></author><summary type="html">提到 Web 前端工程化，构建，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的构建工具，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。</summary></entry><entry><title type="html">从 margin-bottom 到 writing-mode</title><link href="/writing-mode/2016/04/19/writing-mode.html" rel="alternate" type="text/html" title="从 margin-bottom 到 writing-mode" /><published>2016-04-19T22:48:45+08:00</published><updated>2016-04-19T22:48:45+08:00</updated><id>/writing-mode/2016/04/19/writing-mode</id><content type="html" xml:base="/writing-mode/2016/04/19/writing-mode.html">&lt;p&gt;一个有趣的事实是，不论 &lt;em&gt;margin&lt;/em&gt; 还是 &lt;em&gt;padding&lt;/em&gt;，都可以设置百分比值：&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;.content&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;直观上来讲，&lt;em&gt;margin-left&lt;/em&gt;、&lt;em&gt;margin-right&lt;/em&gt;、&lt;em&gt;padding-left&lt;/em&gt;、&lt;em&gt;padding-right&lt;/em&gt; 是相对于&lt;a href=&quot;https://drafts.csswg.org/css-box/#containing-block&quot;&gt;包含框&lt;/a&gt;的宽度，而 &lt;em&gt;margin-top&lt;/em&gt;、&lt;em&gt;margin-bottom&lt;/em&gt;、&lt;em&gt;padding-top&lt;/em&gt;、&lt;em&gt;padding-bottom&lt;/em&gt; 相对于包含框的高度。然而根据 CSS 规范，这8个值&lt;strong&gt;&lt;em&gt;一般&lt;/em&gt;&lt;/strong&gt;都是相对于包含框的宽度，究其原因还是排版的习惯需要所致。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;世界上大部分的现代语言书写习惯，或者从左到右，或者从右到左，都是横排，因此一般宽度受限，向下无限延伸，高度不定，因此相对于高度计算边距值意义不大。&lt;/p&gt;
+
+&lt;p&gt;古代汉语文字有着垂直从右到左书写的习惯，比如千家万户门前的对联，比如书法：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/writing-mode/calligraphy.jpg&quot; alt=&quot;书法&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;为了实现这种排版，我们通过设置 &lt;em&gt;writing-mode&lt;/em&gt; 和 &lt;em&gt;direction&lt;/em&gt; 实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;.content&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;writing-mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vertical-lr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rtl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这种设置除了影响文字的排列外，也相应影响了 &lt;em&gt;padding&lt;/em&gt; 和 &lt;em&gt;margin&lt;/em&gt; 在百分比取值下的参照物：即相对于包含框的高度而非宽度。&lt;/p&gt;
+
+&lt;p&gt;值得一提的是，另一个常见 CSS 特性的行为也会因此被改变：外边距合并。通常情况下，发生外边距合并的是两个相邻块级元素的垂直外边距，在垂直文字布局情形下，发生合并的是水平外边距。&lt;/p&gt;
+
+&lt;p&gt;CSS 排版布局中在具有不对称行为时，一定也存在着某种默认的行为设置。比如使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;margin:auto&lt;/code&gt; 能使水平居中而非垂直居中。&lt;/p&gt;</content><author><name></name></author><summary type="html">一个有趣的事实是，不论 margin 还是 padding，都可以设置百分比值：</summary></entry><entry><title type="html">有序 BigPipe</title><link href="/chunk/bigpipe/2016/04/06/ordered-bigpipe.html" rel="alternate" type="text/html" title="有序 BigPipe" /><published>2016-04-06T16:13:12+08:00</published><updated>2016-04-06T16:13:12+08:00</updated><id>/chunk/bigpipe/2016/04/06/ordered-bigpipe</id><content type="html" xml:base="/chunk/bigpipe/2016/04/06/ordered-bigpipe.html">&lt;p&gt;&lt;img src=&quot;/images/bigpipe/shenshen.jpg&quot; alt=&quot;纪念此猫&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;概念&quot;&gt;概念&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BigPipe&lt;/code&gt; 的原理是使用 &lt;em&gt;HTTP/1.1&lt;/em&gt; 的 &lt;strong&gt;chunk&lt;/strong&gt; 能力分片多线程加载页面的不同部分，以降低白屏/首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;在移动端，JavaScript 脚本渲染页面存在可观的性能问题，频繁的 &lt;em&gt;reflow&lt;/em&gt;/&lt;em&gt;repaint_将会很大程度影响页面首次展示的视觉体验。既然 JavaScript 脚本在前端不适合做渲染者的角色，那么我们考虑将渲染放在服务端，这也就是传统的 _C/S&lt;/em&gt; 模式。但是因此前面提到的顺序问题，服务器必须保证整个页面文档是按照顺序输出的，加上 &lt;em&gt;chunk&lt;/em&gt; 能力，我们得到的是一种退化的 &lt;em&gt;BigPipe&lt;/em&gt;：可以降低首屏时间，但会限制整个页面的最终输出时间，我们叫它 &lt;em&gt;Ordered BigPipe&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;应用 &lt;em&gt;Ordered BigPipe&lt;/em&gt; 的前提是你的页面可以分解为相互独立的，自上而下的页面片，每个页面片在 &lt;em&gt;chunk&lt;/em&gt; 通道中依次输出：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; S ---------------
+     /  \ \ \ \
+    /    \ \ \ \
+ C ---------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用 &lt;em&gt;PHP&lt;/em&gt; 语言可能是这样的：&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Demo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;style.css&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;header&amp;gt;&amp;lt;/header&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;article&amp;gt;&amp;lt;/article&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;footer&amp;gt;&amp;lt;/footer&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;script.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;以上页面分为四段进行输出。由于 Server 不必查询到页面所需要的全部数据，因此可以大大提高系统的响应速度，进而有效降低白屏与首屏时间。&lt;/p&gt;
+
+&lt;h2 id=&quot;实现&quot;&gt;实现&lt;/h2&gt;
+
+&lt;h3 id=&quot;server&quot;&gt;Server&lt;/h3&gt;
+
+&lt;p&gt;上面提到，Server 需要分段获取数据，那么如何定义每段的数据需求呢？两种方式：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；&lt;/li&gt;
+  &lt;li&gt;由前端自由划分段落，主动向 Server 索取数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;显然，第二种方式，虽然实现更复杂，然而更灵活，解耦更好。&lt;/p&gt;
+
+&lt;p&gt;首先定义模型 &lt;code class=&quot;highlighter-rouge&quot;&gt;DataProvider&lt;/code&gt;，它的定义是：一组可查询的相关联数据的最小单位。例如查询用户信息和查询用户最近发言两个 &lt;em&gt;DataProvider&lt;/em&gt;：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user_id:
+name:
+address:
+mobile:
+gender:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user_id:
+user_recent_posts:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;既不能单独查询 &lt;em&gt;user_profile.address&lt;/em&gt;，也不能同时查询 &lt;em&gt;user_profile&lt;/em&gt; 和 &lt;em&gt;user_recent_posts&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;合理地规划 &lt;em&gt;DataProvider&lt;/em&gt; 有助于提升效能。&lt;/p&gt;
+
+&lt;p&gt;接下来，在段中声明它所需要的所有 &lt;em&gt;DataProvider&lt;/em&gt; 列表：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;data-providers:
+     - user_profile
+     - user_recent_posts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样，Server 端可以收集所有的段以及它们依赖的 &lt;em&gt;DataProvider&lt;/em&gt;：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;segment:
+    user_profile
+segment:
+    user_profile
+    user_recent_posts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;按照先后顺序，依次查询每个 &lt;em&gt;DataProvider&lt;/em&gt; 的数据，一旦满足最上面段所需要的数据，则进行一次页面输出。以下面的依赖为例：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sg1:
+    dp1
+    dp2
+sg2:
+    dp1
+    dp3
+sg3:
+    dp2
+    dp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;那么 &lt;em&gt;DataProvider&lt;/em&gt; 按顺序排列后为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dp1-&amp;gt;dp2-&amp;gt;dp3-&amp;gt;dp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;段组成的队列为:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    |sg1| 
+    |sg2|
+    |sg3|
+    -----
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;首先填充 dp1 的数据，发现 sg1 的需求并不能满足，接着填充 dp2 的数据，这时 sg1 得到满足，出队，进行页面渲染输出，但 sg2 还不能。&lt;/p&gt;
+
+&lt;p&gt;紧接着填充 dp3 的数据，sg2 进行渲染输出。同样的道理，在填充 dp4 之后，sg3 也可以开始渲染了，直到队列中为空。&lt;/p&gt;
+
+&lt;h3 id=&quot;前端&quot;&gt;前端&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;Ordered BigPipe&lt;/em&gt; 的前提是服务端渲染。&lt;/p&gt;
+
+&lt;p&gt;“段”实际上是一种前端的模型，它代表页面可垂直划分的片段，不支持嵌套，因为嵌套会带来潜在的标签不闭合风险。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;-----------------------------------
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;                               \
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&amp;gt;&lt;/span&gt;                            \  
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;&lt;/span&gt;                    Segment
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;   /
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;                              /
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;-------------------------------
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;article&amp;gt;&lt;/span&gt;-------------------------------
+                                            \
+                                             Segment    
+                                            /
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/article&amp;gt;&lt;/span&gt;------------------------------
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;----------------
+                                            \
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;                                  Segment
+                                            /
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;-------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Ordered BigPipe&lt;/em&gt; 仅适用于垂直无嵌套排列的页面。&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象</title><link href="/chrome/json/performance/resource/timing/2016/04/05/json-encode-performanceresourcetiming.html" rel="alternate" type="text/html" title="Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象" /><published>2016-04-05T11:32:35+08:00</published><updated>2016-04-05T11:32:35+08:00</updated><id>/chrome/json/performance/resource/timing/2016/04/05/json-encode-performanceresourcetiming</id><content type="html" xml:base="/chrome/json/performance/resource/timing/2016/04/05/json-encode-performanceresourcetiming.html">&lt;p&gt;利用 &lt;a href=&quot;http://nightmarejs.org&quot;&gt;nightmare&lt;/a&gt; 做下线性能对比分析中，少不了要获取 &lt;a href=&quot;https://www.w3.org/TR/resource-timing/#performanceresourcetiming&quot;&gt;PerformanceResourceTiming&lt;/a&gt; 数据：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getEntriesByType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'resource'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;但运行 &lt;em&gt;nightmare&lt;/em&gt; 的 NodeJS 环境与运行 &lt;a href=&quot;https://www.w3.org/TR/performance-timeline/#dom-performance-getentriesbytype&quot;&gt;getEntriesByType&lt;/a&gt; 的 Browser 环境之间只能传输简单数据类型如 string、boolean、number，故下面的写法不可行：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nightmare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;evaluate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getEntriesByType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'resource'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;当不得不写成这样时：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nightmare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;evaluate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getEntriesByType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'resource'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;你会发现返回值是这样的：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;https://...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;entryType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;resource&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;startTime&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1059.82&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;duration&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;413.96500000000015&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;显然这比我们见过的 &lt;em&gt;PerformanceResourceTiming&lt;/em&gt; 对象少了好多字段。&lt;/p&gt;
+
+&lt;p&gt;转向 Chrome，执行类似的操作，发现这并非 &lt;em&gt;nightmare&lt;/em&gt; 的问题，而是 blink 内核的bug。Safari 由于不支持 &lt;em&gt;getEntriesByType&lt;/em&gt; 而无法测试，Firefox 则输出正常：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;https://...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;entryType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;resource&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;startTime&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;4326.712201&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;duration&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1264.9166809999997&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;initiatorType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;xmlhttprequest&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;redirectStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;redirectEnd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;fetchStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;4326.712201&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;domainLookupStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;domainLookupEnd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;connectStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;connectEnd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;secureConnectionStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;requestStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;responseStart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;responseEnd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5591.628882&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;造成该现象的原因是，序列化 JSON 时，字段取的是 &lt;a href=&quot;https://www.w3.org/TR/performance-timeline/#performanceentry&quot;&gt;PerformanceEntry&lt;/a&gt; 而非其子类 &lt;a href=&quot;https://www.w3.org/TR/resource-timing/#performanceresourcetiming&quot;&gt;PerformanceResourceTiming&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;目前，&lt;a href=&quot;https://twitter.com/&quot;&gt;twitter&lt;/a&gt; 员工提出的该 &lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=592171&quot;&gt;bug&lt;/a&gt; 与我先前&lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=587713&quot;&gt;提出的&lt;/a&gt;雷同，代码上已经被修复，等待 Chrome 50 的发版。&lt;/p&gt;</content><author><name></name></author><summary type="html">利用 nightmare 做下线性能对比分析中，少不了要获取 PerformanceResourceTiming 数据：</summary></entry><entry><title type="html">滚动区内消失的右边距</title><link href="/margin/missing/css/2016/03/28/missing-right-margin.html" rel="alternate" type="text/html" title="滚动区内消失的右边距" /><published>2016-03-28T17:13:57+08:00</published><updated>2016-03-28T17:13:57+08:00</updated><id>/margin/missing/css/2016/03/28/missing-right-margin</id><content type="html" xml:base="/margin/missing/css/2016/03/28/missing-right-margin.html">&lt;p&gt;观察&lt;a href=&quot;/example/miss-right-margin.html&quot;&gt;这个&lt;/a&gt;页面，在可滚动区域内部，为 &lt;em&gt;.content&lt;/em&gt; 元素定义的右边距消失了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/missing-right-margin/missing.jpg&quot; alt=&quot;Missing Right Margin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;StackOverflow 上有关于这个现象的详细&lt;a href=&quot;http://stackoverflow.com/questions/11695354/css-right-margin-does-not-work-inside-a-div-with-overflow-scroll&quot;&gt;解释&lt;/a&gt;，简单来讲这就是 CSS 这么&lt;a href=&quot;https://www.w3.org/TR/CSS21/visudet.html#blockwidth&quot;&gt;要求&lt;/a&gt;的。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;但是回过来想一想 CSS 为什么这么要求？这还要从边距和滚动条的意义说起。&lt;strong&gt;边距&lt;/strong&gt;，顾名思义，就是定义本元素与四周元素的距离的，在元素排列的方向上（一般是ltr），如果后面没有元素，那么边距也就没有意义了。&lt;strong&gt;滚动条&lt;/strong&gt;，其目的是提供一种能显示后代元素完整内容的方式，既然是内容，那么其右侧边距的渲染便没有了意义。以上两个概念综合到一起，当子元素内容大于父元素激活滚动条时，右侧的边距便被当做0处理。在 rtl 的排列中，相应的，是左边距。&lt;/p&gt;
+
+&lt;p&gt;其实，如果给容器 &lt;em&gt;.container&lt;/em&gt; 定义内边距，会发现其右侧内边距也会“消失”，这与 &lt;em&gt;.content&lt;/em&gt; 的右外边距“消失”是一个道理。&lt;/p&gt;
+
+&lt;p&gt;这个现象会直接影响容器 &lt;em&gt;.container&lt;/em&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;scrollWidth&lt;/code&gt; 属性以及滚动条最大滚动量。&lt;/p&gt;
+
+&lt;p&gt;另外先入为主应当显示右边距的想法应该是与 iframe 混淆了。iframe中的页面元素可以有外边距，这属于另一个文档（document）了，与本文情形不同。&lt;/p&gt;</content><author><name></name></author><summary type="html">观察这个页面，在可滚动区域内部，为 .content 元素定义的右边距消失了。</summary></entry></feed>

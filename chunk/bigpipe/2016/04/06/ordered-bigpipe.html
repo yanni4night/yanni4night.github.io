@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>有序 BigPipe</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/chunk/bigpipe/2016/04/06/ordered-bigpipe.html">
+  <link rel="alternate" type="application/rss+xml" title="人过不留名 雁过不留声" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">人过不留名 雁过不留声</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">有序 BigPipe</h1>
+    <p class="post-meta">
+      <time datetime="2016-04-06T16:13:12+08:00" itemprop="datePublished">
+        
+        Apr 6, 2016
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><img src="/images/bigpipe/shenshen.jpg" alt="纪念此猫" /></p>
+
+<h2 id="概念">概念</h2>
+
+<p><code class="highlighter-rouge">BigPipe</code> 的原理是使用 <em>HTTP/1.1</em> 的 <strong>chunk</strong> 能力分片多线程加载页面的不同部分，以降低白屏/首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。</p>
+
+<!-- more -->
+
+<p>在移动端，JavaScript 脚本渲染页面存在可观的性能问题，频繁的 <em>reflow</em>/<em>repaint_将会很大程度影响页面首次展示的视觉体验。既然 JavaScript 脚本在前端不适合做渲染者的角色，那么我们考虑将渲染放在服务端，这也就是传统的 _C/S</em> 模式。但是因此前面提到的顺序问题，服务器必须保证整个页面文档是按照顺序输出的，加上 <em>chunk</em> 能力，我们得到的是一种退化的 <em>BigPipe</em>：可以降低首屏时间，但会限制整个页面的最终输出时间，我们叫它 <em>Ordered BigPipe</em>。</p>
+
+<p>应用 <em>Ordered BigPipe</em> 的前提是你的页面可以分解为相互独立的，自上而下的页面片，每个页面片在 <em>chunk</em> 通道中依次输出：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> S ---------------
+     /  \ \ \ \
+    /    \ \ \ \
+ C ---------------
+</code></pre>
+</div>
+
+<p>使用 <em>PHP</em> 语言可能是这样的：</p>
+
+<div class="language-php highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;title&gt;</span>Demo<span class="nt">&lt;/title&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+<span class="cp">&lt;?php</span>
+<span class="nb">flush</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+        <span class="nt">&lt;header&gt;&lt;/header&gt;</span>
+<span class="cp">&lt;?php</span>
+<span class="nb">flush</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+        <span class="nt">&lt;article&gt;&lt;/article&gt;</span>
+<span class="cp">&lt;?php</span>
+<span class="nb">flush</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+        <span class="nt">&lt;footer&gt;&lt;/footer&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>以上页面分为四段进行输出。由于 Server 不必查询到页面所需要的全部数据，因此可以大大提高系统的响应速度，进而有效降低白屏与首屏时间。</p>
+
+<h2 id="实现">实现</h2>
+
+<h3 id="server">Server</h3>
+
+<p>上面提到，Server 需要分段获取数据，那么如何定义每段的数据需求呢？两种方式：</p>
+
+<ol>
+  <li>前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；</li>
+  <li>由前端自由划分段落，主动向 Server 索取数据</li>
+</ol>
+
+<p>显然，第二种方式，虽然实现更复杂，然而更灵活，解耦更好。</p>
+
+<p>首先定义模型 <code class="highlighter-rouge">DataProvider</code>，它的定义是：一组可查询的相关联数据的最小单位。例如查询用户信息和查询用户最近发言两个 <em>DataProvider</em>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>user_id:
+name:
+address:
+mobile:
+gender:
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>user_id:
+user_recent_posts:
+</code></pre>
+</div>
+
+<p>既不能单独查询 <em>user_profile.address</em>，也不能同时查询 <em>user_profile</em> 和 <em>user_recent_posts</em>。</p>
+
+<p>合理地规划 <em>DataProvider</em> 有助于提升效能。</p>
+
+<p>接下来，在段中声明它所需要的所有 <em>DataProvider</em> 列表：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>data-providers:
+     - user_profile
+     - user_recent_posts
+</code></pre>
+</div>
+
+<p>这样，Server 端可以收集所有的段以及它们依赖的 <em>DataProvider</em>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>segment:
+    user_profile
+segment:
+    user_profile
+    user_recent_posts
+</code></pre>
+</div>
+
+<p>按照先后顺序，依次查询每个 <em>DataProvider</em> 的数据，一旦满足最上面段所需要的数据，则进行一次页面输出。以下面的依赖为例：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sg1:
+    dp1
+    dp2
+sg2:
+    dp1
+    dp3
+sg3:
+    dp2
+    dp4
+</code></pre>
+</div>
+
+<p>那么 <em>DataProvider</em> 按顺序排列后为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>dp1-&gt;dp2-&gt;dp3-&gt;dp4
+</code></pre>
+</div>
+
+<p>段组成的队列为:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    |sg1| 
+    |sg2|
+    |sg3|
+    -----
+</code></pre>
+</div>
+
+<p>首先填充 dp1 的数据，发现 sg1 的需求并不能满足，接着填充 dp2 的数据，这时 sg1 得到满足，出队，进行页面渲染输出，但 sg2 还不能。</p>
+
+<p>紧接着填充 dp3 的数据，sg2 进行渲染输出。同样的道理，在填充 dp4 之后，sg3 也可以开始渲染了，直到队列中为空。</p>
+
+<h3 id="前端">前端</h3>
+
+<p><em>Ordered BigPipe</em> 的前提是服务端渲染。</p>
+
+<p>“段”实际上是一种前端的模型，它代表页面可垂直划分的片段，不支持嵌套，因为嵌套会带来潜在的标签不闭合风险。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>-----------------------------------
+    <span class="nt">&lt;head&gt;</span>                               \
+        <span class="nt">&lt;meta&gt;</span>                            \  
+        <span class="nt">&lt;title&gt;&lt;/title&gt;</span>                    Segment
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>   /
+    <span class="nt">&lt;/head&gt;</span>                              /
+    <span class="nt">&lt;body&gt;</span>-------------------------------
+    <span class="nt">&lt;article&gt;</span>-------------------------------
+                                            \
+                                             Segment    
+                                            /
+    <span class="nt">&lt;/article&gt;</span>------------------------------
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">""</span><span class="nt">&gt;&lt;/script&gt;</span>----------------
+                                            \
+    <span class="nt">&lt;/body&gt;</span>                                  Segment
+                                            /
+<span class="nt">&lt;/html&gt;</span>-------------------------------------
+</code></pre>
+</div>
+
+<h2 id="总结">总结</h2>
+
+<p><em>Ordered BigPipe</em> 仅适用于垂直无嵌套排列的页面。</p>
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">人过不留名 雁过不留声</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              人过不留名 雁过不留声
+            
+            </li>
+            
+            <li><a href="mailto:yanni4night@gmail.com">yanni4night@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/yanni4night"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">yanni4night</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/yanni4night"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">yanni4night</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>当年的种种诱惑无一不是过眼云烟
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
