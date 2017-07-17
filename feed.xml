@@ -1,5 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-07-13T15:01:05+08:00</updated><id>/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
-</subtitle><entry><title type="html">2016 前端开发巡礼</title><link href="/2016/12/18/2016-front-end.html" rel="alternate" type="text/html" title="2016 前端开发巡礼" /><published>2016-12-18T00:00:00+08:00</published><updated>2016-12-18T00:00:00+08:00</updated><id>/2016/12/18/2016-front-end</id><content type="html" xml:base="/2016/12/18/2016-front-end.html">&lt;p&gt;本文首发于 &lt;a href=&quot;http://www.infoq.com/cn/articles/2016-review-frontend&quot;&gt;http://www.infoq.com/cn/articles/2016-review-frontend&lt;/a&gt;，此处为原稿。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-07-17T18:21:25+08:00</updated><id>/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
+</subtitle><entry><title type="html">理想与现实，黑与白，总结半年来React-Native的深度应用经验</title><link href="/react-native/2017/07/13/react-native-reality.html" rel="alternate" type="text/html" title="理想与现实，黑与白，总结半年来React-Native的深度应用经验" /><published>2017-07-13T15:17:01+08:00</published><updated>2017-07-13T15:17:01+08:00</updated><id>/react-native/2017/07/13/react-native-reality</id><content type="html" xml:base="/react-native/2017/07/13/react-native-reality.html">&lt;p&gt;自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。&lt;/p&gt;
+
+&lt;p&gt;往往在产品上应用一项新技术的KickOff上，都必然要涉及该项技术的明显领先优势，React-Native 给人的一贯明显优势无非是：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;开发效率提升&lt;/strong&gt;；&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;与Native一致的用户体验&lt;/strong&gt;；&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;无需发版，随时上线&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;那么如果工程做得好的话，也要必然提到它的劣势——&lt;em&gt;不够稳定&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;我以前向来是个React-Native黑，我不认为它的稳定性足以支撑一项C端产品，更何况是亿级用户产品。&lt;/p&gt;
+
+&lt;p&gt;因此，当初做React-Native算是有些被迫的，毕竟万事俱备只欠开发，毕竟要用事实说话，毕竟挣钱吃饭重要。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;初期的开发工作可谓极其艰苦，不但没有开发经验，而且基础调试设施不完善，效率很低，更何况连实体测试机都不够。但最终总算是上线了。&lt;/p&gt;
+
+&lt;p&gt;另我十分惊讶的是，不稳定性带来的客户端Crash比预想中的要低得多得多。在平台的横向比较上，Android要比iOS的奔溃率高，但还不算很离奇，勉强可以忍受。&lt;/p&gt;
+
+&lt;p&gt;我从来不会想到这么一个残缺不堪的东西竟然真的没有掉链子，由此我反思了一下，想起了我党在40年前的那句话：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;实践是检验真理的唯一标准&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rn/reality.jpg&quot; alt=&quot;实践是检验真理的唯一标准&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;是的，不能因为外界的评论甚至是自己的无知，就对新事物抱有成见。除非自己亲自实践，否则无权瞎BB。&lt;/p&gt;
+
+&lt;p&gt;经过这么一来，我对手头上的这个项目信心大增，业务的迭代速度即将迎来一次飞跃。&lt;/p&gt;
+
+&lt;p&gt;然，下面才是冷静之后的现实，更说明了海量事实的总体分布就像那宇宙微波背景辐射一样的均匀各项同性。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rn/bg.jpg&quot; alt=&quot;宇宙微波背景辐射&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;线上追踪问题困难&quot;&gt;线上追踪问题困难&lt;/h3&gt;
+
+&lt;p&gt;React 异步渲染的性质，导致了在渲染视图中出现crash，崩溃堆栈是不会追溯到你的业务代码中的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rn/stack.png&quot; alt=&quot;crash stack&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这种情形下，代码被压缩根本就不是问题，问题是你完全不知道哪里出了故障，只能靠猜。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;年初我就强行猜了一次，幸运地解决了一个bug。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;然后如果说线上问题毕竟不在现场，不好追踪的话，那么如果同样的问题发生在了调试阶段，你能看到的只是样式错乱的页面，也不会报给你任何错误信息，就很难让人接受了。&lt;/p&gt;
+
+&lt;p&gt;因此，【&lt;strong&gt;猜&lt;/strong&gt;】是开发React-Native的一项重要技能。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rn/guess.gif&quot; alt=&quot;石头剪子布&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;android-无头问题居多&quot;&gt;Android 无头问题居多&lt;/h3&gt;
+
+&lt;p&gt;这依然算是固有的稳定性问题。此类问题有两个特点：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;偶发不可复现；&lt;/li&gt;
+  &lt;li&gt;逻辑上不可能&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;不可复现的原因很繁杂，可能与设备型号、操作系统版本、软件版本、当前运存容量、用户操作路径都有关系。还有就是一些原则上根本不可能发生的错误。&lt;/p&gt;
+
+&lt;p&gt;这些问题由于迟迟无法解决，长时间耽误了我们全量的进程。最后属于不了了之，算是向bug妥协了。&lt;/p&gt;
+
+&lt;h3 id=&quot;性能差&quot;&gt;性能差&lt;/h3&gt;
+
+&lt;p&gt;相信我，KickOff 中“与Native具有相同或相近的性能”的说辞是不成立的，特别是在Android上。&lt;/p&gt;
+
+&lt;p&gt;为了提升性能，我们不得不把能耗高的部分交给Native去实现，但这样显然又减弱了效率的优势。&lt;/p&gt;
+
+&lt;h3 id=&quot;兼容客户端版本&quot;&gt;兼容客户端版本&lt;/h3&gt;
+
+&lt;p&gt;如果说Web可以不考虑浏览器环境，做到始终如一的版本发布，没人会有异议，但React-Native不行。&lt;/p&gt;
+
+&lt;p&gt;React-Native是运行在客户端上的，它的行为和格调都必须与当前客户端的环境相匹配。&lt;/p&gt;
+
+&lt;p&gt;这意味着，一套React-Native代码必须考虑到多个客户端环境。特别是在视觉大改版的情况下，React-Native融入两套视觉代码，是什么感觉你造吗？&lt;/p&gt;
+
+&lt;p&gt;根据版本号的if-else逻辑目前已充斥相当一部分逻辑代码中，代码越来越不够优雅。&lt;/p&gt;
+
+&lt;h3 id=&quot;文本渲染不准确&quot;&gt;文本渲染不准确&lt;/h3&gt;
+
+&lt;p&gt;我们已经有充分的证据证明React-Native在渲染文本特别是多行文本时存在明显的bug。这导致我们不能按照设计的预期严格的排版。&lt;/p&gt;
+
+&lt;p&gt;此问题很深奥，而且以目前的能力来看，基本无解。&lt;/p&gt;
+
+&lt;h3 id=&quot;坑多多&quot;&gt;坑多多&lt;/h3&gt;
+
+&lt;p&gt;这些坑不一定是不可解决的，其实大部分我们都可以通过规避来解决，但问题是如果不进行全网搜索，你很难提前预知风险，也就严重影响了效率，往往一个奇葩的问题能耽误你一天的时间。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/super-fe/superfe-rn-troubleshooting/issues&quot;&gt;https://github.com/super-fe/superfe-rn-troubleshooting/issues&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;总结来看，应用React-Native技术带来的收益并非是特别明显的，在我看来，它最大的贡献是把一拨做业务的人悄无声息地分成了两拨，显然迭代效率就上来了。&lt;/p&gt;
+
+&lt;p&gt;客观上，你不能无视上面提到的各种问题，但这些问题说严重就严重，说不严重也不严重，总体看来是可勉强接受的，相对于传统的客户端开发方式，依然是&lt;em&gt;各向同性的&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;从最初的腹黑到今天的淡然面对，深深感到世界系统的复杂性以及熵增的强大扭矩，革命性没那么容易，起码React-Native不是。&lt;/p&gt;</content><author><name></name></author><summary type="html">自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。</summary></entry><entry><title type="html">2016 前端开发巡礼</title><link href="/2016/12/18/2016-front-end.html" rel="alternate" type="text/html" title="2016 前端开发巡礼" /><published>2016-12-18T00:00:00+08:00</published><updated>2016-12-18T00:00:00+08:00</updated><id>/2016/12/18/2016-front-end</id><content type="html" xml:base="/2016/12/18/2016-front-end.html">&lt;p&gt;本文首发于 &lt;a href=&quot;http://www.infoq.com/cn/articles/2016-review-frontend&quot;&gt;http://www.infoq.com/cn/articles/2016-review-frontend&lt;/a&gt;，此处为原稿。&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;2016年马上过去了，像过去六年中的每一年一样，Web前端领域又产生了“面目全非”而又“耳目一新”的变化，不但旧事物持续不断地被淘汰，新事物也难保坐久江山，大有岌岌可危之势。开源界如群雄逐鹿，不断生产新的概念、新的框架、新的工具，去年中一些流行的技术今年大多得到了进一步的演进和升级，活跃度非常高，却仍然不能保证前端的未来属于它们。在今年整体资本市场冷却的大环境下，&lt;em&gt;to B&lt;/em&gt;业务的创业公司显现出了较强的生命力，这种类型的业务也给Web前端的工作带来了明显的差异性，工程师整体技能方向也展露出一丝不一样的分支。本文将从下至上、由低到高的维度盘点过去一年中Web前端领域发生的重要事件以及影响未来2017的关键性因素。视野所限，不尽完整。&lt;/p&gt;
@@ -891,18 +991,4 @@ sg3:
 
 &lt;p&gt;造成该现象的原因是，序列化 JSON 时，字段取的是 &lt;a href=&quot;https://www.w3.org/TR/performance-timeline/#performanceentry&quot;&gt;PerformanceEntry&lt;/a&gt; 而非其子类 &lt;a href=&quot;https://www.w3.org/TR/resource-timing/#performanceresourcetiming&quot;&gt;PerformanceResourceTiming&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;目前，&lt;a href=&quot;https://twitter.com/&quot;&gt;twitter&lt;/a&gt; 员工提出的该 &lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=592171&quot;&gt;bug&lt;/a&gt; 与我先前&lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=587713&quot;&gt;提出的&lt;/a&gt;雷同，代码上已经被修复，等待 Chrome 50 的发版。&lt;/p&gt;</content><author><name></name></author><summary type="html">利用 nightmare 做下线性能对比分析中，少不了要获取 PerformanceResourceTiming 数据：</summary></entry><entry><title type="html">滚动区内消失的右边距</title><link href="/margin/missing/css/2016/03/28/missing-right-margin.html" rel="alternate" type="text/html" title="滚动区内消失的右边距" /><published>2016-03-28T17:13:57+08:00</published><updated>2016-03-28T17:13:57+08:00</updated><id>/margin/missing/css/2016/03/28/missing-right-margin</id><content type="html" xml:base="/margin/missing/css/2016/03/28/missing-right-margin.html">&lt;p&gt;观察&lt;a href=&quot;/example/miss-right-margin.html&quot;&gt;这个&lt;/a&gt;页面，在可滚动区域内部，为 &lt;em&gt;.content&lt;/em&gt; 元素定义的右边距消失了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/missing-right-margin/missing.jpg&quot; alt=&quot;Missing Right Margin&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;StackOverflow 上有关于这个现象的详细&lt;a href=&quot;http://stackoverflow.com/questions/11695354/css-right-margin-does-not-work-inside-a-div-with-overflow-scroll&quot;&gt;解释&lt;/a&gt;，简单来讲这就是 CSS 这么&lt;a href=&quot;https://www.w3.org/TR/CSS21/visudet.html#blockwidth&quot;&gt;要求&lt;/a&gt;的。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;但是回过来想一想 CSS 为什么这么要求？这还要从边距和滚动条的意义说起。&lt;strong&gt;边距&lt;/strong&gt;，顾名思义，就是定义本元素与四周元素的距离的，在元素排列的方向上（一般是ltr），如果后面没有元素，那么边距也就没有意义了。&lt;strong&gt;滚动条&lt;/strong&gt;，其目的是提供一种能显示后代元素完整内容的方式，既然是内容，那么其右侧边距的渲染便没有了意义。以上两个概念综合到一起，当子元素内容大于父元素激活滚动条时，右侧的边距便被当做0处理。在 rtl 的排列中，相应的，是左边距。&lt;/p&gt;
-
-&lt;p&gt;其实，如果给容器 &lt;em&gt;.container&lt;/em&gt; 定义内边距，会发现其右侧内边距也会“消失”，这与 &lt;em&gt;.content&lt;/em&gt; 的右外边距“消失”是一个道理。&lt;/p&gt;
-
-&lt;p&gt;这个现象会直接影响容器 &lt;em&gt;.container&lt;/em&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;scrollWidth&lt;/code&gt; 属性以及滚动条最大滚动量。&lt;/p&gt;
-
-&lt;p&gt;另外先入为主应当显示右边距的想法应该是与 iframe 混淆了。iframe中的页面元素可以有外边距，这属于另一个文档（document）了，与本文情形不同。&lt;/p&gt;</content><author><name></name></author><summary type="html">观察这个页面，在可滚动区域内部，为 .content 元素定义的右边距消失了。</summary></entry></feed>
+&lt;p&gt;目前，&lt;a href=&quot;https://twitter.com/&quot;&gt;twitter&lt;/a&gt; 员工提出的该 &lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=592171&quot;&gt;bug&lt;/a&gt; 与我先前&lt;a href=&quot;https://bugs.chromium.org/p/chromium/issues/detail?id=587713&quot;&gt;提出的&lt;/a&gt;雷同，代码上已经被修复，等待 Chrome 50 的发版。&lt;/p&gt;</content><author><name></name></author><summary type="html">利用 nightmare 做下线性能对比分析中，少不了要获取 PerformanceResourceTiming 数据：</summary></entry></feed>
