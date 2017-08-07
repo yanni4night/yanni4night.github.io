@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "隐藏元素的font-face"
-date:   2015-01-19
+title: "隐藏元素的font-face"
+date:  2015-01-19
 categories: fontface
 ---
 
