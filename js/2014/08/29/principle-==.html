@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Javascript &#39;==&#39; 运算符原理</title>
+  <meta name="description" content="JavaScript 中的==运算符用以比较两侧的值是否“近似”相等，区别于===的严格相等。">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://yanni4night.github.io/js/2014/08/29/principle-==.html">
+  <link rel="alternate" type="application/rss+xml" title="人过不留名 雁过不留声" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">人过不留名 雁过不留声</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Javascript &#39;==&#39; 运算符原理</h1>
+    <p class="post-meta">
+      <time datetime="2014-08-29T00:00:00+08:00" itemprop="datePublished">
+        
+        Aug 29, 2014
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>JavaScript 中的<code class="highlighter-rouge">==</code>运算符用以比较两侧的值是否“近似”相等，区别于<code class="highlighter-rouge">===</code>的严格相等。</p>
+
+<p><code class="highlighter-rouge">==</code>可以达到以下效果：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>null==undefined //true
+[]==false //true
+[]=='' //true
+[1]=='1' //true
+</code></pre>
+</div>
+
+<p>要说明 JavaScript 引擎在计算 <code class="highlighter-rouge">==</code> 运算符时做了什么，先要了解几个内部概念和方法。</p>
+
+<h5 id="type">Type</h5>
+
+<p>ECMAScript 规范规定了六种变量类型：null undefined string number boolean object。<code class="highlighter-rouge">Type</code> 不同于运算符 <code class="highlighter-rouge">typeof</code> ，它可以分辨出 null 和 object，但不能分辨 function 和 object，当然事实上并没有 function 这样一种类型。</p>
+
+<p>可以这样模拟 <code class="highlighter-rouge">Type</code> 的行为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function Type(e) {
+    if (undefined === e) {
+        return 'undefined';
+    } else if (null === e) {
+        return 'null';
+    } else if ('number' === typeof e) {
+        return 'number';
+    } else if ('string' === typeof e) {
+        return 'string';
+    } else if ('boolean' === typeof e) {
+        return 'boolean';
+    } else return 'object';
+}
+</code></pre>
+</div>
+
+<h5 id="0的符号">0的符号</h5>
+
+<p>另外需要说明的是0本身包括两个值，正零：+0，和负零：-0。一般不会对这两个值进行区分，甚至使用 <code class="highlighter-rouge">===</code> 运算符也分辨不出：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>+0===-0 //true
+</code></pre>
+</div>
+
+<p>在ECMAScript中有内部内部方法可以区别出这两个值，当然我们也可以做到这一点：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function isPositiveZero(e) {
+    return 0 === e &amp;&amp; 1 / e &gt; 0;
+}
+
+function isNegativeZero(e) {
+    return 0 === e &amp;&amp; 1 / e &lt; 0;
+}
+</code></pre>
+</div>
+
+<p>关于这两点将会在后面的侦断中用到。</p>
+
+<h5 id="tonumber">ToNumber</h5>
+<p>转换为数字，规则如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">输入类型</th>
+      <th style="text-align: center">结果</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Undefined</td>
+      <td style="text-align: center">NaN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Null</td>
+      <td style="text-align: center">+0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">真返回1，假返回+0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Number</td>
+      <td style="text-align: center">直接返回</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">String</td>
+      <td style="text-align: center">字面意义</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Object</td>
+      <td style="text-align: center">调用ToNumber(toPrimitive)，hint：Number</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="toprimitive">toPrimitive</h5>
+
+<p>该内部方法将一个对象转换为原始类型，在上面提到的六种类型中，前五种都属于原始类型。对于非原始类型，将根据一个成为 <code class="highlighter-rouge">hint</code> 的值访问该对象的 <code class="highlighter-rouge">Default Value</code> 属性来获取原始值。<code class="highlighter-rouge">hint</code> 取值只能为 “string” 和 “number”（默认）。如果为 “string”，将依次调用对象的 <code class="highlighter-rouge">toString</code> 和 <code class="highlighter-rouge">valueOf</code> 来获取原始值，如果为 “number”，将依次调用 <code class="highlighter-rouge">valueOf</code> 和 <code class="highlighter-rouge">toString</code> 方法，可见顺序依赖于 <code class="highlighter-rouge">hint</code> 值。</p>
+
+<h4><code class="highlighter-rouge">==</code></h4>
+
+<p><code class="highlighter-rouge">==</code> 操作x，y两个值时要经过一系列的类型和值的侦断，在 ECMAScript 内部称之为 <code class="highlighter-rouge">The Abstract Equality Comparison Algorithm</code>：</p>
+
+<ol>
+  <li>如果 Type(x) 不同于 Type(y)  执行第 14 步。</li>
+  <li>如果 Type(x) 为 Undefined  返回真。</li>
+  <li>如果 Type(x) 为 Null  返回真。</li>
+  <li>如果 Type(x) 不是 Number  执行第 11 步。</li>
+  <li>如果 x 为 NaN  返回假。</li>
+  <li>如果 y 为 NaN  返回假。</li>
+  <li>如果 x 与 y 有相同的值  返回真。</li>
+  <li>如果 x 为 +0 并且 y 为 −0  返回真。</li>
+  <li>如果 x 为 −0 并且 y 为 +0  返回真。</li>
+  <li>返回假。</li>
+  <li>如果 Type(x) 为 String  那么如果 x 和 y 具有相同的字符序列（等长并且对应位置字符相同）返回真，否则，返回假。</li>
+  <li>如果 Type(x) 为 Boolean  如果 x 和 y 都是真或者都是假则返回真，否则 返回假。</li>
+  <li>如果x和y引用相同的对象返回真，否则  返回假。</li>
+  <li>如果 x 为 null 并且 y 为 undefined  返回真。</li>
+  <li>如果 x 为 undefined 并且 y 为 null  返回真。</li>
+  <li>如果 Type(x) 为 Number 并且 Type(y) 为 String 返回 x == ToNumber(y) 的结果。</li>
+  <li>如果 Type(x) 为 String 并且 Type(y) 为 Number 返回 ToNumber(x) == y 的结果。</li>
+  <li>如果 Type(x) 为 Boolean  返回 ToNumber(x) == y 的结果。</li>
+  <li>如果 Type(y) 为 Boolean  返回 x == ToNumber(y) 的结果。</li>
+  <li>如果 Type(x) 为 String 或者 Number 并且 Type(y) 为 Object 返回 x == ToPrimitive(y) 的结果。</li>
+  <li>如果 Type(x) 为 Object 并且 Type(y) 为 String 或者 Number 返回 ToPrimitive(x) == y 的结果。</li>
+  <li>返回假。</li>
+</ol>
+
+<p>有了这个流程，就可以知道上面提到的几个式子成立的原理：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[]==false
+</code></pre>
+</div>
+
+<p>任意数组转换为布尔值时都为真，但与布尔值进行<code class="highlighter-rouge">==</code> 运算操作时，首先会将布尔转换为数字，即 false=&gt;0，接着再与数组进行 <code class="highlighter-rouge">==</code> 运算。这时，需要进行 <code class="highlighter-rouge">toPrimitive([] Number)</code> 运算了，返回0，所以式子返回真。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1]=='1'
+</code></pre>
+</div>
+
+<p>数组与字符串比较，直接转换为 <code class="highlighter-rouge">toPrimitive([1] String) == '1'</code>，显然为真。</p>
+
+<h5 id="总结">总结</h5>
+
+<p>在使用 <code class="highlighter-rouge">==</code> 进行操作之前，一定要明确两边值类型所带来的结果差异，必要时，直接强转为布尔值进行计算。</p>
+
+<h5 id="测试">测试</h5>
+
+<p><a href="/example/==.html">该页面</a>展示了比较两个不同类型值得过程中所发生的事情。</p>
+
+<h4 id="参考">参考</h4>
+
+<ul>
+  <li><a href="http://www.adequatelygood.com/Object-to-Primitive-Conversions-in-JavaScript.html">http://www.adequatelygood.com/Object-to-Primitive-Conversions-in-JavaScript.html</a></li>
+</ul>
+
+  </div>
+
+  
+    
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">人过不留名 雁过不留声</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              人过不留名 雁过不留声
+            
+            </li>
+            
+            <li><a href="mailto:yanni4night@gmail.com">yanni4night@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/yanni4night"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">yanni4night</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/yanni4night"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">yanni4night</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>当年的种种诱惑无一不是过眼云烟
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
