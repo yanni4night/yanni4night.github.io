@@ -2,7 +2,7 @@
 layout: post
 title: "Javascript '==' 运算符原理"
 date: 2014-08-29
-categories: == equal 等于 运算符
+categories: js
 ---
 
 JavaScript 中的`==`运算符用以比较两侧的值是否“近似”相等，区别于`===`的严格相等。
@@ -48,7 +48,7 @@ ECMAScript 规范规定了六种变量类型：null undefined string number bool
     function isPositiveZero(e) {
         return 0 === e && 1 / e > 0;
     }
-
+    
     function isNegativeZero(e) {
         return 0 === e && 1 / e < 0;
     }
@@ -58,14 +58,14 @@ ECMAScript 规范规定了六种变量类型：null undefined string number bool
 ##### ToNumber
 转换为数字，规则如下：
 
-|输入类型|结果|
-|:--:|:--:|
-|Undefined|NaN|
-|Null|+0|
-|Boolean|真返回1，假返回+0|
-|Number|直接返回|
-|String|字面意义|
-|Object|调用ToNumber(toPrimitive)，hint：Number|
+|   输入类型    |                 结果                  |
+| :-------: | :---------------------------------: |
+| Undefined |                 NaN                 |
+|   Null    |                 +0                  |
+|  Boolean  |             真返回1，假返回+0              |
+|  Number   |                直接返回                 |
+|  String   |                字面意义                 |
+|  Object   | 调用ToNumber(toPrimitive)，hint：Number |
 
 ##### toPrimitive
 

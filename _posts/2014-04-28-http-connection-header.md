@@ -2,7 +2,7 @@
 layout: post
 title:  "HTTP协议的Connection头"
 date:   2014-04-28
-categories: http connection header keep-alive proxy 代理 管道
+categories: http
 ---
 
 `Connection` 是一种 HTTP 通用头，应用于 HTTP 请求与响应首部之中，几乎广泛地存在于每一个可见的连接之中。最常见的取值为 `close` 与 `keep-alive` ，前者表示请求响应完成之后立即关闭连接，后者表示连接不立即关闭，可以期望继续响应下一个请求。

@@ -2,7 +2,7 @@
 layout: post
 title:  "再谈移动 Web 上的吸底布局"
 date:   2016-06-30 12:20:39 +0800
-categories: fixed 吸底
+categories: css
 ---
 
 吸底布局也就是固定在页面底部，无论页面本身滚动到哪了。其最佳实现方式是使用 *position:fixed*，然而对于移动端来讲坑要多得多。

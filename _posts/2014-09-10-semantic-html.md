@@ -2,7 +2,7 @@
 layout: post
 title: "WEB语义化"
 date: 2014-09-10
-categories: semantic web 语义化
+categories: html
 ---
 
 下面是从<http://justineo.github.io/slideshows/semantic-html>摘录的关于大部分 `HTML` 标签语义化含义的内容，可简要理解各种标签的含义。
@@ -42,9 +42,9 @@ _authors are encouraged to use values that describe the nature of the content_
 ###### 链接类型
 
  - 外部资源链接
-指向用来组成当前文档的外部资源，通常由 UA 自动处理
+  指向用来组成当前文档的外部资源，通常由 UA 自动处理
  - 超链接
-用来「导航」到其他资源 (可以在 UA 中打开  下载  ...)
+  用来「导航」到其他资源 (可以在 UA 中打开  下载  ...)
 
 
 ###### 元素：link  a  area
@@ -54,7 +54,7 @@ _authors are encouraged to use values that describe the nature of the content_
  - 元数据，用来描述文档本身与其他资源的关系
  - 必须包含 rel 及 href 属性
 
-    
+
     <link rel="author license" href="/about">
 
 link + rel + author  link + rel + license 都有预定义的语义
@@ -65,7 +65,7 @@ link + rel + author  link + rel + license 都有预定义的语义
  - rel="stylesheet" 链接到样式表 (外部资源)
  - rel="alternate" 链接到当前文档的其他形式 (超链接)
 
-    
+
     <link rel="alternate" type="application/rss+xml" title="Matt Mullenweg » Feed" href="http://ma.tt/feed/" />
 
  - rel="prev"  rel="next" 链接到文档的前一篇 / 后一篇 / 前一页 / 后一页 (超链接) 在生成站点目录、归档视图时很有帮助。
@@ -77,7 +77,7 @@ link + rel + author  link + rel + license 都有预定义的语义
  - 存在 href 属性时为超链接
  - 缺少 href 属性时为链接占位符
 
-    
+
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
@@ -96,9 +96,9 @@ link + rel + author  link + rel + license 都有预定义的语义
 
 当前文档的作者并不推荐超链接指向的文档 (超链接标注)
 由 Google 引入，他们认为适用场景有 (via)：
- 1. 不可信赖的内容
- 2. 付费链接
- 3. 按优先级别进行抓取 (比如通知 Googlebot 不要抓取「注册」或「登陆」页面)
+  1. 不可信赖的内容
+  2. 付费链接
+  3. 按优先级别进行抓取 (比如通知 Googlebot 不要抓取「注册」或「登陆」页面)
 
 ###### rel 属性
 
@@ -121,7 +121,7 @@ link + rel + author  link + rel + license 都有预定义的语义
 
  - _a section with navigation links_
 
-    
+
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
@@ -152,7 +152,7 @@ link + rel + author  link + rel + license 都有预定义的语义
 
 ##### h1–h6 元素
 
-    
+
     <body>
         <h1>Let's call it a draw(ing surface)</h1>
         <h2>Diving in</h2>
@@ -230,9 +230,9 @@ hgroup 中级别最高的标题才出现在提纲中
 ##### p 元素
 
  - 「段落」的显式表述
-_段落是主题接近的若干句子组成的文本块 (via)_
- -非优先考虑的选择
-_例如 address 的内容也是一个段落，但有更准确的语义_
+  _段落是主题接近的若干句子组成的文本块 (via)_
+   -非优先考虑的选择
+  _例如 address 的内容也是一个段落，但有更准确的语义_
 
 ##### hr 元素
 
@@ -251,7 +251,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - cite 属性表示该来源的 URL
  - 署名必须放在 blockquote 外
 
-    
+
     <p>His next piece was the aptly named <cite>Sonnet 130</cite>:</p>
     <blockquote cite="http://quotes.example.org/s/sonnet130.html">
       <p>My mistress' eyes are nothing like the sun <br>
@@ -265,7 +265,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 改变列表项顺序是否影响表达
  - ol 下 li 元素的 value 属性代表该列表项的序号值
 
-    
+
     <p>Relegation zone:</p>
     <ol>
         <li value="18">Bolton Wanderers</li>
@@ -278,15 +278,15 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 名值对的集合
  - 术语定义表 / 元数据 / FAQ / ...
 
-    
+
     <dl>
       <dt><dfn>happiness</dfn></dt>
       <dd class="part-of-speech"><i><abbr>n.</abbr></i></dd>
       <dd>The state of being happy.</dd>
       <dd>Good fortune; success. <q>Oh <b>happiness</b>! It worked!</q></dd>
       <dt><dfn>rejoice</dfn></dt>
-  <dd><i class="part-of-speech"><abbr>v.intr.</abbr></i> To be delighted oneself    .</dd>
-  <dd><i class="part-of-speech"><abbr>v.tr.</abbr></i> To cause one to be     delighted.</dd>
+      <dd><i class="part-of-speech"><abbr>v.intr.</abbr></i> To be delighted oneself    .</dd>
+      <dd><i class="part-of-speech"><abbr>v.tr.</abbr></i> To cause one to be     delighted.</dd>
     </dl>
 
 ##### figure 元素
@@ -314,7 +314,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - em 的位置不同，文本本身含义不同
  - 在可视化 UA 上一般渲染为斜体
 
-    
+
     <p><em>Bats</em> can fly.</p>
     <p>Bats <em>can</em> fly.</p>
     <p>Bats can <em>fly</em>.</p>
@@ -328,7 +328,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - strong 的位置不同，文本本身含义**不变**
  - 在可视化 UA 上一般渲染为粗体
 
-    
+
     <p><strong>Warning.</strong> A huge wave of zombies is approaching.</p>
 
 ##### i 元素
@@ -338,7 +338,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 分类学名词 / 外来语片段 / 舞台指示 / 船名 / ...
  - 建议与 class / lang 属性搭配使用
 
-    
+
     <p>Sunflower (<i class="taxonomy">Helianthus annuus</i>) is an annual plant native to the Americas.</p>
     <p>There is a certain <i lang="fr">je ne sais quoi</i> in the air.</p>
     <p><i class="ship-name">Titanic</i> sank in the North Atlantic Ocean on 15 April 1912.</p>
@@ -350,7 +350,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 摘要中的关键词 / 评介中的产品名称 / 文章的开篇内容 ...
  - 建议与 class 属性搭配使用
 
-    
+
     <article>
       <h2>Kittens 'adopted' by pet rabbit</h2>
       <p><b class="lede">Six abandoned kittens have found an unexpected new mother figure —     a pet rabbit.</b></p>
@@ -364,9 +364,9 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - fine print
  - 免责声明 / 许可证声明 / 注意事项 / ...
 
-    
+
     <small><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Share-alike license</a></small>
-    
+
     <small>请以实物为准，图片仅供参考</small>
 
 ##### s 元素
@@ -375,7 +375,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 表示不再准确或不再相关的内容
  - 与 del 元素含义不同
 
-    
+
     <p>Buy our Iced Tea and Lemonade!</p>
     <p><s>Recommended retail price: $3.99 per bottle</s></p>
     <p><strong>Now selling for just $2.99 a bottle!</strong></p>
@@ -386,7 +386,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 表示用非文本进行的标注的内容
  - 中文专名 / 拼写检查的错误内容 / ...
 
-    
+
     <u class="proper-name">屈原</u>放逐，乃賦<cite class="book-name">離騒</cite>。<u class="proper-name">左丘</u>失明，厥有<cite class="book-name">國語</cite>。（司馬遷《報任安書》）
 
 ##### cite 元素
@@ -394,7 +394,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 引述的作品标题
  - 书 / 论文 / 散文 / 电影 / 歌曲 / 电视节目 / 画作 / ...
 
-    
+
     <p>My favorite movie is <cite>Transformers</cite> by Michael Bay.</p>
 
 ##### q 元素
@@ -403,7 +403,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - cite 属性表示该来源的 URL
  - 不用 q 而用引号亦正确
 
-    
+
     <p>The W3C page <cite>About W3C</cite> says the W3C's
     mission is <q cite="http://www.w3.org/Consortium/">To lead the
     World Wide Web to its full potential by developing protocols and
@@ -414,7 +414,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - abbreviation or acronym (区别？)
  - 其 title 属性的含义为所写的全称
 
-    
+
     <p>The <abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr> started working on HTML5 in 2004.</p>
 
 建议在用户不熟悉的缩写词汇第一次出现时用 abbr + title 进行语义标注，帮助其理解
@@ -424,7 +424,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 用来展现一个术语的定义实例
  - 最接近的父级段落、定义列表组或区块内容必须包含 dfn 元素指定术语的定义
 
-    
+
     <p>The <dfn><abbr title="Garage Door Opener">GDO</abbr></dfn>
     is a device that allows off-world teams to open the iris.</p>
 
@@ -436,7 +436,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - datetime 属性值必须是预定义的几种时间格式之一
  - 如果不含 datetime 属性，则会解析其文本内容值
 
-    
+
     <div class="vevent">
       <a class="url" href="http://www.web2con.com/">http://www.web2con.com/</a>
       <span class="summary">Web 2.0 Conference</span>:
@@ -456,7 +456,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 在引用的文字中使用，表示在当前文档中需要引起注意但原文中并没有强调的含义 (eg. 对一篇文章的分析中对原文的标注)
  - 表示与用户当前的行为相关的内容 (eg. 高亮显示搜索关键词)
 
-    
+
     <blockquote>
     <p>6月13日下午，<mark>一场大雨</mark>过后，正阳门箭楼被带着水雾的脚手架包裹得严严实    实。北京旧城中轴线上的这座标志性建筑，正经历着新中国成立后规模最大的一次修缮。</p>
         [...]
@@ -469,7 +469,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 注音标示，「ruby」来自日本印刷业
  - 主要于 CJK 文字
 
-    
+
     <ruby>和<rp>(</rp><rt>hé</rt><rp>)</rp>谐<rp>(</rp><rt>xié</rt><rp>)</rp>社<rp>(</rp><rt>shè</rt><rp>)</rp>会<rp>(</rp><rt>huì</rt><rp>)</rp></ruby>
 
 ##### span 元素
@@ -478,7 +478,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 可以和 class  lang 等属性结合，为文本片段增加语义
  - 有更合适的元素时不应选择 span
 
-    
+
     <span class="keyword">var</span> greet = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
     console.log(<span class="string">"Hello world."</span>);
     }
@@ -502,7 +502,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
   + 有 src 且无 alt，图为内容一部分但无等价的文本内容可用
  - 用 alt 文本替换图片，文档含义尽可能不变
 
-    
+
     <p>
       You are standing in an open field west of a house.
     <img src="house.jpeg" alt="A white houseThe house is white  with a boarded front door.    ">
@@ -516,15 +516,15 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - object - 通用外部资源 根据具体内容可以被处理为图片、内嵌的浏览上下文、供插件调用的资源
  - param - 为 object 元素传递的参数
 
-    
+
     <object type="image/png" data="embed.png"></object>
     <object type="text/html" data="embed.html"></object>
 
 相当于 `img` 与 `iframe` 的效果
 
-    
+
     <embed src="catgame.swf" type="application/x-shockwave-flash" quality="high">
-    
+
     <object data="catgame.swf" type="application/x-shockwave-flash"> 
       <param name="quality" value="high">
       <p>Plugin needed.</p>
@@ -545,7 +545,7 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 表示所在多媒体元素的可替代资源 (可能不同格式 / 清晰度，读取失败或无法解码时可以依次尝试)
  - type 属性中除了 MIME 类型外，可使用 codecs= 来指定编码
 
-    
+
     <video controls autoplay>
       <source src='video.mp4' type='video/mp4; codecs="avc1.42E01E  mp4a.40.2"'>
       <source src='video.ogv' type='video/ogg; codecs="theora  vorbis"'>
@@ -556,10 +556,10 @@ _例如 address 的内容也是一个段落，但有更准确的语义_
  - 用来为多媒体元素指定「文本轨」
  - kind 属性描述文本轨的类型，可用值包括 subtitles  captions  descriptions  chapters  metadata
 
-    
+
     <video src="brave.webm">
       <track kind="subtitles" src="brave.en.vtt" srclang="en" label="English">
-  <track kind="captions" src="brave.en.hoh.vtt" srclang="en" label="English for the     Hard of Hearing">
+      <track kind="captions" src="brave.en.hoh.vtt" srclang="en" label="English for the     Hard of Hearing">
       <track kind="subtitles" src="brave.fr.vtt" srclang="fr" lang="fr" label="Français">
       <track kind="subtitles" src="brave.de.vtt" srclang="de" lang="de" label="Deutsch">
     </video>

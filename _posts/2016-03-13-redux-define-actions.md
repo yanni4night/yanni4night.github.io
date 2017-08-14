@@ -2,7 +2,7 @@
 layout: post
 title: "如何定义 redux 的 action"
 date: 2016-03-13 23:02:38 +0800
-categories: redux action
+categories: js
 ---
 
 虽然 redux 的模型非常简单，但如何对其理解不深，在实际的业务研发中很容易迷失，比如会纠结该如何定义枚举的 `Action Type`。

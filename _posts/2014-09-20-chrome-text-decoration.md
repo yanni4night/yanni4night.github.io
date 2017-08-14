@@ -2,18 +2,18 @@
 layout: post
 title:  "Chrome 31~36 的 text-decoration bug"
 date:   2014-09-20
-categories: chrome text-decoration
+categories: css
 ---
 
 
 CSS3 对 `text-decoration` 进行了扩展，新的语法为：
 
-    
+
     text-decoration: text-decoration-style text-decoration-color text-decoration-line;
 
 目前只有 blink 内核对其进行了支持，但很不完善，或者说是一个bug。描述为：无法设置新的格式，但是却可以获取。例如：
 
-    
+
     <p id="p" style="text-decoration:underline"></p>
     <script>
         var $p = document.querySelector('#p');

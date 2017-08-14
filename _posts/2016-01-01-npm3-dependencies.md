@@ -2,7 +2,7 @@
 layout: post
 title: "npm3 的依赖管理方案"
 date: 2016-01-01 18:27:03 +0800
-categories: npm dependencies
+categories: npm
 ---
 
 npm3 于2015年6月发布，它与 npm2 很大的一点不同是__依赖管理方案__的升级。

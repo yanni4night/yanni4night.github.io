@@ -2,7 +2,7 @@
 layout: post
 title: "有序 BigPipe"
 date: 2016-04-06 16:13:12 +0800
-categories: chunk bigpipe
+categories: performance
 ---
 
 ![纪念此猫](/images/bigpipe/shenshen.jpg)
@@ -61,8 +61,8 @@ flush();
 
 上面提到，Server 需要分段获取数据，那么如何定义每段的数据需求呢？两种方式：
 
- 1. 前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；
- 1. 由前端自由划分段落，主动向 Server 索取数据
+  1. 前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；
+  2. 由前端自由划分段落，主动向 Server 索取数据
 
 显然，第二种方式，虽然实现更复杂，然而更灵活，解耦更好。
 
@@ -120,7 +120,7 @@ sg3:
 那么 _DataProvider_ 按顺序排列后为：
 
     dp1->dp2->dp3->dp4
- 
+
 段组成的队列为:
 
 ```

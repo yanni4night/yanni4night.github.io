@@ -2,7 +2,7 @@
 layout: post
 title: "Redux 的黑魔法"
 date: 2016-03-10 15:45:10 +0800
-categories: redux
+categories: js
 ---
 
 相信很多人接触 [Redux](https://github.com/reactjs/redux) 时都会被它奇怪的 API 搞得云里雾里。这里不再冗述 Flux 架构的思想，实现 Flux 的工具有很多，它们只是在实现这种编程模式，并不会有太复杂的逻辑。事实也是这样，Redux 的 API 非常少，但并不一定容易理解。

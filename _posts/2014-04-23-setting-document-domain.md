@@ -2,7 +2,7 @@
 layout: post
 title: "浅谈document.domain"
 date: 2014-04-23
-categories: document domain 跨域
+categories: js
 ---
 
 在需要主子域跨域技术的应用场景中，父 frame 和子 frame 设置相同的 `document.domain` 是一种特别常用的方式，我们可以看见[腾讯](http://www.qq.com)公司的页面中很多都会有一句：
@@ -38,13 +38,13 @@ categories: document domain 跨域
 测试 host 为 “google”、“www.google.com”、“10.11.202.231”。由子域名向父域名测试，因此前面的测试不会对后面的测试造成干扰。
 
 
-|UA/host|google|www.google.com|10.11.202.231|
-|---|:---|:---:|---:|
-|Firefox(Mac/Windows/Android)|![s.ff](/images/domain/s.ff.jpg)|![m.ff](/images/domain/m.ff.jpg)|![ip.ff](/images/domain/ip.ff.jpg)|
-|Safari(iOS/Mac/Windows)|![s.safari](/images/domain/s.ie8.jpg)|![m.safari](/images/domain/m.ie6.jpg)|![ip.safari](/images/domain/ip.safari.jpg)|
-|IE6~7|![s.ie67](/images/domain/s.ie8.jpg)|![m.ie67](/images/domain/m.ie6.jpg)|![ip.ie67](/images/domain/ip.ie6.jpg)|
-|Chrome(Mac Windows)/IE8~10/Opera(presto内核 Mac/Windows)|![s.chrome-ie810-opera](/images/domain/s.ie8.jpg)|![m.chrome-ie810-opera](/images/domain/m.ie6.jpg)|![ip.chrome-ie810-opera](/images/domain/ip.ie8.jpg)|
-|IE(WP8)|无法打开|![m.chrome-ie810-opera](/images/domain/m.ie6.jpg)|![ip.chrome-ie810-opera](/images/domain/ip.ie8.jpg)|
+| UA/host                                  | google                                   |              www.google.com              |                            10.11.202.231 |
+| ---------------------------------------- | :--------------------------------------- | :--------------------------------------: | ---------------------------------------: |
+| Firefox(Mac/Windows/Android)             | ![s.ff](/images/domain/s.ff.jpg)         |     ![m.ff](/images/domain/m.ff.jpg)     |       ![ip.ff](/images/domain/ip.ff.jpg) |
+| Safari(iOS/Mac/Windows)                  | ![s.safari](/images/domain/s.ie8.jpg)    |  ![m.safari](/images/domain/m.ie6.jpg)   | ![ip.safari](/images/domain/ip.safari.jpg) |
+| IE6~7                                    | ![s.ie67](/images/domain/s.ie8.jpg)      |   ![m.ie67](/images/domain/m.ie6.jpg)    |    ![ip.ie67](/images/domain/ip.ie6.jpg) |
+| Chrome(Mac Windows)/IE8~10/Opera(presto内核 Mac/Windows) | ![s.chrome-ie810-opera](/images/domain/s.ie8.jpg) | ![m.chrome-ie810-opera](/images/domain/m.ie6.jpg) | ![ip.chrome-ie810-opera](/images/domain/ip.ie8.jpg) |
+| IE(WP8)                                  | 无法打开                                     | ![m.chrome-ie810-opera](/images/domain/m.ie6.jpg) | ![ip.chrome-ie810-opera](/images/domain/ip.ie8.jpg) |
 
 由上表可得出以下结论：
  - Firefox 可以接受带 port 的父域名，但是任意 port 都会被忽略，其它浏览器则会报错；
@@ -52,7 +52,7 @@ categories: document domain 跨域
  - 仅 Safari 允许将 `domain` 设置为最后一节域名。
 
  Safari 以及 国内几乎所有带 [webkit](http://www.webkit.org) 内核的浏览器 使用了一种相对简单的方式，即在字符串层面上新的 `domain` 是当前 `domain` 的“父域名”即可，可以从 [webkit](http://www.webkit.org) 中 `Document.cpp` 文件的源代码中看出：
-    
+​    
 
     void Document::setDomain(const String& newDomain  ExceptionCode& ec)
     {
@@ -102,7 +102,7 @@ categories: document domain 跨域
     
         securityOrigin()->setDomainFromDOM(newDomain);
     }
-    
+
 
 因此即使是IP地址或是最后一节 `domain` 也会被允许设置。`Internet Explorer` 不开源，但可以猜测其对多节域名进行了最后一节域名限制，在 `IE8+` 上增加了IP地址限制。`Firefox` 在3.0版本增加了此限制。对于单节域名如 `http://hello/`，所有浏览器都一致性地允许设置，当然，这相当于设置 `domain` 为自身。
 
@@ -157,7 +157,7 @@ Firefox浏览器忽略 `port` 的行为初衷不得而知，但可以测试该�
 
 
 在对IE浏览器进行测试时，也发现了一些奇怪的事情。实验“aa.bb.cc.dd”域名，发现在 `IE8+` 下将不能设置 `document.domain` 为“cc.dd”。经过反复测试发现 `IE8+`在多节域名下允许设置 的双节域名中，两节单词中要至少有一个大于2个字母，换言之，下列域名都是不允许的：
- 
+
  - sa.cn
  - o.jp
  - x.m
@@ -174,6 +174,6 @@ Firefox浏览器忽略 `port` 的行为初衷不得而知，但可以测试该�
 即便拥有上面的诸多问题，不过都属于特例，除了 `IE8+` 的短域名问题，其它基本都不会在日常的开发中遇到。
 
 ###### 参考
- 1. <http://javascript.info/tutorial/same-origin-security-policy>
- 2. <http://msdn.microsoft.com/en-us/library/ie/ms533740(v=vs.85).aspx>
- 3. <https://developer.mozilla.org/en-US/docs/Web/API/document.domain>
+  1. <http://javascript.info/tutorial/same-origin-security-policy>
+  2. <http://msdn.microsoft.com/en-us/library/ie/ms533740(v=vs.85).aspx>
+  3. <https://developer.mozilla.org/en-US/docs/Web/API/document.domain>

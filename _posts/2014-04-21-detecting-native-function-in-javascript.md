@@ -2,7 +2,7 @@
 layout: post
 title:  "JavaScript中识别native方法"
 date:   2014-04-21
-categories: native built-in host-method
+categories: js
 ---
 
 Js中一些本地(native/built-in)对象和方法是可以重写的，比如在针对低版本浏览器的编程中，我们使用：
@@ -20,7 +20,7 @@ Js中一些本地(native/built-in)对象和方法是可以重写的，比如在�
 默认情形下，将一个函数对象转成String类型即可输出其源代码，同样将方法名作为参数传入`RegExp.prototype.test`也会先转成String，_John Resig_ 写的[js简单继承](http://ejohn.org/blog/simple-javascript-inheritance/)实现中即使用这种方式来识别`_super`单词的。因此对于自定义方法，会输出源码，那么对于 native 方法，目前主流浏览器很一致性地输出类似`function func_name() { [native code] }`的字符串，甚至[nodejs](http://nodejs.org/)也同样，具体回车换行各种环境实现有略微差异，Javascript 实现的 `DOM` 选择器[sizzle](http://sizzlejs.com/)总结了一个通用的正则表达式：
 
     /^[^{]+\{\s*\[native \w/
-    
+
 。通过对方法源码进行正则匹配来识别是本地方法与否。
 
 这种通过源码进行识别的方式有一个问题，可以查看Ecma 262对于`Funtion.prototype.toString`的定义：
@@ -34,7 +34,7 @@ Js中一些本地(native/built-in)对象和方法是可以重写的，比如在�
     var s = Array.prototype.every = function(){
         return !!'this is a fake forEach!';
         };
-
+    
     s.toString = function(){
         return 'function every(){[native code]}';
     };

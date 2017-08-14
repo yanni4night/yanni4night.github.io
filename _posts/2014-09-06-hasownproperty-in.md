@@ -2,7 +2,7 @@
 layout: post
 title:  "hasOwnProperty与in"
 date:   2014-09-06
-categories: hasownproperty in
+categories: js
 ---
 
 `hasOwnProperty` 与 `in` 都可以用来判断一个对象的成员是否存在，但有很大的区别，前者不会搜索对象的原型链中的成员，但后者会；前者是 Object 原型中的函数，后者是 Javascript 操作符等。关于第一中区别，可以通过阅读 [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm) 规范来了解其细节。
@@ -38,7 +38,7 @@ ES5 中的 `hasOwnProperty` 需要访问一个内部方法：`GetOwnProperty`，
 
 `in` 操作符只能用于对象而非简单类型，它调用内部方法 `HasProperty`，该方法递归搜索原型链，直到找到对应的成员。在 ES5 中，该方法还涉及另一个内部方法：`GetOwnProperty`。因此对于字符串，下面的表达式返回真：
 
-    
+
     2 in new String('abc')
 
 
@@ -50,11 +50,11 @@ ES5 中的 `hasOwnProperty` 需要访问一个内部方法：`GetOwnProperty`，
     undefined === O.P
 
 但对于值为 `undefined` 的成员无效，这时就需要使用 `in` 操作符：
-    
+​    
     var Class = function(){this.P = undefined;};
     Class.prototype = {Q:undefined;};
     var O = new Class();
-
+    
     !!O.P;//false
     !!O.Q;//false
     'P' in O;//true
