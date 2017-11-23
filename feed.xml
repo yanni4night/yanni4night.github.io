@@ -1,5 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2017-08-14T11:47:31+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
-</subtitle><entry><title type="html">《咨询的奥秘》 第一章 咨询为什么这么难</title><link href="https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard.html" rel="alternate" type="text/html" title="《咨询的奥秘》 第一章 咨询为什么这么难" /><published>2017-08-07T19:07:35+08:00</published><updated>2017-08-07T19:07:35+08:00</updated><id>https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard</id><content type="html" xml:base="https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard.html">&lt;p&gt;断断续续用了半年时间才读完了《咨询的奥秘》（今天一口气读了好几章），深感作为大牛咨询师，作者深谙计算机职场的人性，其中众多“法则”的总结无不精辟入骨，虽然鄙人不懂咨询，但从咨询的眼光和角度去看职场，不免有种“不识庐山真面目，只缘身在此山中”的彻悟。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2017-11-23T23:20:47+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
+</subtitle><entry><title type="html">Unicode 如何编码成 UTF-8</title><link href="https://yanni4night.github.io/encoding/2017/11/23/utf8.html" rel="alternate" type="text/html" title="Unicode 如何编码成 UTF-8" /><published>2017-11-23T22:17:38+08:00</published><updated>2017-11-23T22:17:38+08:00</updated><id>https://yanni4night.github.io/encoding/2017/11/23/utf8</id><content type="html" xml:base="https://yanni4night.github.io/encoding/2017/11/23/utf8.html">&lt;p&gt;Unicode 才是真正的字符编码格式，UTF-8、UTF-16 只是 Unicode 的存储/传输格式。&lt;/p&gt;
+
+&lt;p&gt;标准的 UTF-8 对 Unicode 分为4种变长的编码格式。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;区间&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;字节数&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;编码格式&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0~0x7F&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;font color=&quot;blue&quot;&gt;0&lt;/font&gt;xxxxxxx&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0x80~0x7FF&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;font color=&quot;blue&quot;&gt;110&lt;/font&gt;xxxxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0x800~0xFFFF&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;font color=&quot;blue&quot;&gt;1110&lt;/font&gt;xxxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0x10000~0x10FFFF&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;font color=&quot;blue&quot;&gt;11110&lt;/font&gt;xxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx &lt;font color=&quot;blue&quot;&gt;10&lt;/font&gt;xxxxxx&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;也就是说，对于英文字母这种ASCII字符，UTF-8与ASCII是兼容的，都采用1字节存储。&lt;/p&gt;
+
+&lt;p&gt;对于希伯来语字母 &lt;code class=&quot;highlighter-rouge&quot;&gt;א&lt;/code&gt;，UTF-8采用两个字节存储，方法是把它的 Unicode 码 0x05d0 的二进制形式拆成两部分，后6位前补10，再前数5位前补110，拼到一起（余下全为0），即为 0xd790。&lt;/p&gt;
+
+&lt;pre&gt;
+0x05D0 = b00000&lt;font color=&quot;red&quot;&gt;10111&lt;/font&gt;   &lt;font color=&quot;red&quot;&gt;010000&lt;/font&gt;
+            110&lt;font color=&quot;red&quot;&gt;10111&lt;/font&gt; 10&lt;font color=&quot;red&quot;&gt;010000&lt;/font&gt; = 0xD790
+&lt;/pre&gt;
+
+&lt;p&gt;同样道理，汉字“我”采用3字节，Unicode 码拆成3部分：&lt;/p&gt;
+
+&lt;pre&gt;
+0x6211 = b&lt;font color=&quot;red&quot;&gt;0110   001000   010001&lt;/font&gt;
+      1110&lt;font color=&quot;red&quot;&gt;0110&lt;/font&gt; 10&lt;font color=&quot;red&quot;&gt;001000&lt;/font&gt; 10&lt;font color=&quot;red&quot;&gt;010001&lt;/font&gt; = 0xE68891
+&lt;/pre&gt;
+
+&lt;p&gt;总结来看，字节起始为0则为单字节字符，起始为110、1110、11110分别代表有2个、3个、4个字节组合代表一个字符。其它字节起始必然全为10，代表不是字符起始位置。&lt;/p&gt;</content><author><name></name></author><summary type="html">Unicode 才是真正的字符编码格式，UTF-8、UTF-16 只是 Unicode 的存储/传输格式。</summary></entry><entry><title type="html">《咨询的奥秘》 第一章 咨询为什么这么难</title><link href="https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard.html" rel="alternate" type="text/html" title="《咨询的奥秘》 第一章 咨询为什么这么难" /><published>2017-08-07T19:07:35+08:00</published><updated>2017-08-07T19:07:35+08:00</updated><id>https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard</id><content type="html" xml:base="https://yanni4night.github.io/reading/2017/08/07/why-consulting-hard.html">&lt;p&gt;断断续续用了半年时间才读完了《咨询的奥秘》（今天一口气读了好几章），深感作为大牛咨询师，作者深谙计算机职场的人性，其中众多“法则”的总结无不精辟入骨，虽然鄙人不懂咨询，但从咨询的眼光和角度去看职场，不免有种“不识庐山真面目，只缘身在此山中”的彻悟。&lt;/p&gt;
 
 &lt;p&gt;草草读过一遍甚感粗糙，因此决定第二遍细细研读。下面我努力每一章都抽出时间写下读后感。&lt;/p&gt;
 
@@ -852,165 +904,4 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
 
 &lt;p&gt;值得一提的是，另一个常见 CSS 特性的行为也会因此被改变：外边距合并。通常情况下，发生外边距合并的是两个相邻块级元素的垂直外边距，在垂直文字布局情形下，发生合并的是水平外边距。&lt;/p&gt;
 
-&lt;p&gt;CSS 排版布局中在具有不对称行为时，一定也存在着某种默认的行为设置。比如使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;margin:auto&lt;/code&gt; 能使水平居中而非垂直居中。&lt;/p&gt;</content><author><name></name></author><summary type="html">一个有趣的事实是，不论 margin 还是 padding，都可以设置百分比值：</summary></entry><entry><title type="html">有序 BigPipe</title><link href="https://yanni4night.github.io/performance/2016/04/06/ordered-bigpipe.html" rel="alternate" type="text/html" title="有序 BigPipe" /><published>2016-04-06T16:13:12+08:00</published><updated>2016-04-06T16:13:12+08:00</updated><id>https://yanni4night.github.io/performance/2016/04/06/ordered-bigpipe</id><content type="html" xml:base="https://yanni4night.github.io/performance/2016/04/06/ordered-bigpipe.html">&lt;p&gt;&lt;img src=&quot;/images/bigpipe/shenshen.jpg&quot; alt=&quot;纪念此猫&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;概念&quot;&gt;概念&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BigPipe&lt;/code&gt; 的原理是使用 &lt;em&gt;HTTP/1.1&lt;/em&gt; 的 &lt;strong&gt;chunk&lt;/strong&gt; 能力分片多线程加载页面的不同部分，以降低白屏/首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;在移动端，JavaScript 脚本渲染页面存在可观的性能问题，频繁的 &lt;em&gt;reflow&lt;/em&gt;/&lt;em&gt;repaint_将会很大程度影响页面首次展示的视觉体验。既然 JavaScript 脚本在前端不适合做渲染者的角色，那么我们考虑将渲染放在服务端，这也就是传统的 _C/S&lt;/em&gt; 模式。但是因此前面提到的顺序问题，服务器必须保证整个页面文档是按照顺序输出的，加上 &lt;em&gt;chunk&lt;/em&gt; 能力，我们得到的是一种退化的 &lt;em&gt;BigPipe&lt;/em&gt;：可以降低首屏时间，但会限制整个页面的最终输出时间，我们叫它 &lt;em&gt;Ordered BigPipe&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;应用 &lt;em&gt;Ordered BigPipe&lt;/em&gt; 的前提是你的页面可以分解为相互独立的，自上而下的页面片，每个页面片在 &lt;em&gt;chunk&lt;/em&gt; 通道中依次输出：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; S ---------------
-     /  \ \ \ \
-    /    \ \ \ \
- C ---------------
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;使用 &lt;em&gt;PHP&lt;/em&gt; 语言可能是这样的：&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Demo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;style.css&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;header&amp;gt;&amp;lt;/header&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;article&amp;gt;&amp;lt;/article&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;footer&amp;gt;&amp;lt;/footer&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;script.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;以上页面分为四段进行输出。由于 Server 不必查询到页面所需要的全部数据，因此可以大大提高系统的响应速度，进而有效降低白屏与首屏时间。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现&quot;&gt;实现&lt;/h2&gt;
-
-&lt;h3 id=&quot;server&quot;&gt;Server&lt;/h3&gt;
-
-&lt;p&gt;上面提到，Server 需要分段获取数据，那么如何定义每段的数据需求呢？两种方式：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；&lt;/li&gt;
-  &lt;li&gt;由前端自由划分段落，主动向 Server 索取数据&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;显然，第二种方式，虽然实现更复杂，然而更灵活，解耦更好。&lt;/p&gt;
-
-&lt;p&gt;首先定义模型 &lt;code class=&quot;highlighter-rouge&quot;&gt;DataProvider&lt;/code&gt;，它的定义是：一组可查询的相关联数据的最小单位。例如查询用户信息和查询用户最近发言两个 &lt;em&gt;DataProvider&lt;/em&gt;：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user_id:
-name:
-address:
-mobile:
-gender:
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user_id:
-user_recent_posts:
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;既不能单独查询 &lt;em&gt;user_profile.address&lt;/em&gt;，也不能同时查询 &lt;em&gt;user_profile&lt;/em&gt; 和 &lt;em&gt;user_recent_posts&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;合理地规划 &lt;em&gt;DataProvider&lt;/em&gt; 有助于提升效能。&lt;/p&gt;
-
-&lt;p&gt;接下来，在段中声明它所需要的所有 &lt;em&gt;DataProvider&lt;/em&gt; 列表：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;data-providers:
-     - user_profile
-     - user_recent_posts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这样，Server 端可以收集所有的段以及它们依赖的 &lt;em&gt;DataProvider&lt;/em&gt;：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;segment:
-    user_profile
-segment:
-    user_profile
-    user_recent_posts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;按照先后顺序，依次查询每个 &lt;em&gt;DataProvider&lt;/em&gt; 的数据，一旦满足最上面段所需要的数据，则进行一次页面输出。以下面的依赖为例：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sg1:
-    dp1
-    dp2
-sg2:
-    dp1
-    dp3
-sg3:
-    dp2
-    dp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;那么 &lt;em&gt;DataProvider&lt;/em&gt; 按顺序排列后为：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dp1-&amp;gt;dp2-&amp;gt;dp3-&amp;gt;dp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;段组成的队列为:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    |sg1| 
-    |sg2|
-    |sg3|
-    -----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;首先填充 dp1 的数据，发现 sg1 的需求并不能满足，接着填充 dp2 的数据，这时 sg1 得到满足，出队，进行页面渲染输出，但 sg2 还不能。&lt;/p&gt;
-
-&lt;p&gt;紧接着填充 dp3 的数据，sg2 进行渲染输出。同样的道理，在填充 dp4 之后，sg3 也可以开始渲染了，直到队列中为空。&lt;/p&gt;
-
-&lt;h3 id=&quot;前端&quot;&gt;前端&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;Ordered BigPipe&lt;/em&gt; 的前提是服务端渲染。&lt;/p&gt;
-
-&lt;p&gt;“段”实际上是一种前端的模型，它代表页面可垂直划分的片段，不支持嵌套，因为嵌套会带来潜在的标签不闭合风险。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;-----------------------------------
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;                               \
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&amp;gt;&lt;/span&gt;                            \  
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;&lt;/span&gt;                    Segment
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;   /
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;                              /
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;-------------------------------
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;article&amp;gt;&lt;/span&gt;-------------------------------
-                                            \
-                                             Segment    
-                                            /
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/article&amp;gt;&lt;/span&gt;------------------------------
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;----------------
-                                            \
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;                                  Segment
-                                            /
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;-------------------------------------
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Ordered BigPipe&lt;/em&gt; 仅适用于垂直无嵌套排列的页面。&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;p&gt;CSS 排版布局中在具有不对称行为时，一定也存在着某种默认的行为设置。比如使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;margin:auto&lt;/code&gt; 能使水平居中而非垂直居中。&lt;/p&gt;</content><author><name></name></author><summary type="html">一个有趣的事实是，不论 margin 还是 padding，都可以设置百分比值：</summary></entry></feed>
