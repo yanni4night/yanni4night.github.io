@@ -1,5 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2017-11-23T23:37:57+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>当年的种种诱惑无一不是过眼云烟
-</subtitle><entry><title type="html">Unicode 如何编码成 UTF-8</title><link href="https://yanni4night.github.io/encoding/2017/11/23/utf8.html" rel="alternate" type="text/html" title="Unicode 如何编码成 UTF-8" /><published>2017-11-23T22:17:38+08:00</published><updated>2017-11-23T22:17:38+08:00</updated><id>https://yanni4night.github.io/encoding/2017/11/23/utf8</id><content type="html" xml:base="https://yanni4night.github.io/encoding/2017/11/23/utf8.html">&lt;p&gt;Unicode 是&lt;strong&gt;字符集（charset）&lt;/strong&gt;，UTF-8、UTF-16 只是 Unicode 的编码规则（encoding）。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-01-14T11:44:37+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+</subtitle><entry><title type="html">2018 新年伊始·技术·工作</title><link href="https://yanni4night.github.io/other/2018/01/13/outlook.html" rel="alternate" type="text/html" title="2018 新年伊始·技术·工作" /><published>2018-01-13T21:23:40+08:00</published><updated>2018-01-13T21:23:40+08:00</updated><id>https://yanni4night.github.io/other/2018/01/13/outlook</id><content type="html" xml:base="https://yanni4night.github.io/other/2018/01/13/outlook.html">&lt;p&gt;已经不关注社区有大半年了，或者起码有一年了，毕竟被持续增长的业务缠了也有一年了，虽然很“充实”，但毫无疑问地说，也是一无所获。&lt;/p&gt;
+
+&lt;p&gt;因为这一年来始终在 &lt;code class=&quot;highlighter-rouge&quot;&gt;React Naitve&lt;/code&gt; 体系上工作，传统 Web 的知识也忘得大半了。还记得去年专门写过一篇&lt;a href=&quot;http://www.infoq.com/cn/articles/2016-review-frontend&quot;&gt;文章&lt;/a&gt;来总结2016年前端社区的现状，一年过去了，如果我不是特别孤陋寡闻的话，那么，我认为，现状并没有改变多少。&lt;/p&gt;
+
+&lt;h2 id=&quot;框架&quot;&gt;框架&lt;/h2&gt;
+
+&lt;h3 id=&quot;react&quot;&gt;&lt;a href=&quot;https://reactjs.org/&quot;&gt;React&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;React 经历了一次许可证的“惊心动魄”，虽然新版本的许可证已经是安全的，但有一定研发实力的公司都已经在造自己的轮子。当然，从开发者的角度，肯定是使用成熟的方案更舒服，显然近在咫尺的理想也不见得能容易实现。&lt;/p&gt;
+
+&lt;p&gt;React 16 启用了新的引擎，这些细节是值得玩味的。&lt;/p&gt;
+
+&lt;p&gt;除此之外，React 依然拥有大量的开发者用户，就像去年一样。&lt;/p&gt;
+
+&lt;h3 id=&quot;angular&quot;&gt;&lt;a href=&quot;https://angular.io/&quot;&gt;Angular&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;未曾想到的是，Angular 2 还立足未稳，Angular 4 就出现了。刚刚看到一篇文章，作者抱怨自己的项目使用了 Angular 2 的 beta 开发之后，暂且不表 TypeScript 语法的绑定，光是要快速 follow 短时间内几十个版本的升级就已经相当心累了。&lt;/p&gt;
+
+&lt;p&gt;当然你可以说这位开发者在一开始就不应该使用 beta 版本，但是要等到正式版本发布的话，究竟是什么时候呢？我还记得 Angular 2 的核心包去掉了 &lt;em&gt;beta&lt;/em&gt; 后缀的时候，其官方维护的一众功能包，比如动画等等，依旧是在 &lt;em&gt;alpha/beta&lt;/em&gt; 状态。好吧，即使等到所有包都达到了起码的 stable 状态，Angular 4 的出现又是几个意思呢？&lt;/p&gt;
+
+&lt;p&gt;可以预见，Angular 1 时代的用户，相当一部分会放弃继续使用 Angular 的升级版本。曾经也一味推崇 Angular 2 的我，也渐渐失去了耐心。说到底，还是 Angular 的开发团队自己玩死的。&lt;/p&gt;
+
+&lt;h3 id=&quot;vue&quot;&gt;&lt;a href=&quot;https://vuejs.org/v2/guide/&quot;&gt;Vue&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;其实去年的这个时候，我是比较看衰 Vue 的，语法不喜欢、个人维护难以为继，和 React、Angular 甚至 &lt;a href=&quot;https://www.emberjs.com&quot;&gt;Ember&lt;/a&gt; 完全没法比。&lt;/p&gt;
+
+&lt;p&gt;不过 Vue.js 的流行程度经过这一年来，毫无减弱的趋势，我想至少有一下几方面原因：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;稳定，用户不必在业务迭代的同时，额外烦恼于持续升级基础框架；&lt;/li&gt;
+  &lt;li&gt;简单，上手容易，具有普通开发经验的人，也可以在十分钟内写出一个较为复杂的应用；&lt;/li&gt;
+  &lt;li&gt;生态工具较为丰富，特别是重要工具由作者维护，质量有保证且唯一，不用担心选择恐惧症&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;说白了，对于真正的业务开发环境，稳定和简单是特别重要的两个特性，不求能有多激进的特性，但求省心。&lt;/p&gt;
+
+&lt;p&gt;另外，Vue 的 ssr 方面也有足够的能力和性能支持，这在今天的 web 应用中，还是比较有吸引力的。React 生态也仅有一个简单的 &lt;a href=&quot;https://github.com/zeit/next.js/&quot;&gt;next.js&lt;/a&gt; 还算勉强能用，而 Angular 和 Ember 基本都属于残次品。&lt;/p&gt;
+
+&lt;h3 id=&quot;ember&quot;&gt;Ember&lt;/h3&gt;
+
+&lt;p&gt;Ember 属于比较小众的框架，我已经关注它有两年了，毕竟推广不多，很多人不知道，社区发展也有限。过去这一年依旧表现平平。&lt;/p&gt;
+
+&lt;h3 id=&quot;react-native&quot;&gt;React-Native&lt;/h3&gt;
+
+&lt;p&gt;如果说去年上半年我起码还在 &lt;code class=&quot;highlighter-rouge&quot;&gt;React Native&lt;/code&gt; 上积累了点经验的话，那么下半年基本就达到了瓶颈了。许可证是一方面，公司环境是另一方面，但这都不重要。重要的是，我依旧不看好这个东西。&lt;/p&gt;
+
+&lt;p&gt;“行百里者半九十”，我们已经写了成千上万行代码，过亿的用户，以及良好的开发上线流程，但依旧避免不了要时刻面对框架底层缺陷带给我们的额外工作量与业务损失。作为前端开发者，过去面对浏览器兼容性起码还有前辈多年的经验积累，但 &lt;code class=&quot;highlighter-rouge&quot;&gt;React Native&lt;/code&gt; 带给我们的就是大大提升了自身的技术钻研能力。&lt;/p&gt;
+
+&lt;h2 id=&quot;工程化&quot;&gt;工程化&lt;/h2&gt;
+
+&lt;h3 id=&quot;webpack&quot;&gt;&lt;a href=&quot;https://webpack.js.org/&quot;&gt;Webpack&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Webpack 也从 2 升级到了3，但变化俨然远远不如从 1 到 2。使用配置难度依旧居高不下，想我这种上了年纪的人，没得商量，每次使用都要再看一遍 doc。&lt;/p&gt;
+
+&lt;h3 id=&quot;rollup&quot;&gt;&lt;a href=&quot;https://rollupjs.org/guide/en&quot;&gt;Rollup&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Rollup 的定位十分明确，与 Webpack 不构成竞争关系。写  library 用 Rollup，写 app 用 Webpack。&lt;/p&gt;
+
+&lt;h3 id=&quot;npm&quot;&gt;npm&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jspm.io/&quot;&gt;jspm&lt;/a&gt;、&lt;a href=&quot;https://bower.io/&quot;&gt;bower&lt;/a&gt; 几乎已成骨灰，&lt;a href=&quot;https://yarnpkg.com/&quot;&gt;yarn&lt;/a&gt; 依旧不支持 scope。&lt;/p&gt;
+
+&lt;h2 id=&quot;新方向&quot;&gt;新方向&lt;/h2&gt;
+
+&lt;h3 id=&quot;webassembly&quot;&gt;&lt;a href=&quot;http://webassembly.org/&quot;&gt;webassembly&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;在下一代人上小学之前能看到定稿的 webassembly 我就已经满足了。&lt;/p&gt;
+
+&lt;h3 id=&quot;webcomponents&quot;&gt;&lt;a href=&quot;https://www.webcomponents.org/&quot;&gt;webcomponents&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;在下一代人上小学之前能看到普及的 webcomponents 我就已经满足了。&lt;/p&gt;
+
+&lt;h3 id=&quot;数据&quot;&gt;数据&lt;/h3&gt;
+
+&lt;p&gt;断断续续学习 &lt;a href=&quot;https://d3js.org&quot;&gt;D3&lt;/a&gt;，但明显精力不如从前。&lt;/p&gt;
+
+&lt;h3 id=&quot;微信小程序&quot;&gt;微信小程序&lt;/h3&gt;
+
+&lt;p&gt;如我所料，半温不火。令人鄙视的是，支付宝和百度都还在模仿，简直了。&lt;/p&gt;
+
+&lt;h2 id=&quot;我的工作&quot;&gt;我的工作&lt;/h2&gt;
+
+&lt;p&gt;去年我还在研究一种解决方案，能够兼顾的开发效率、运行时性能这两个看似简单却互为矛盾的指标。最后确实有了一个雏形。今年，我已经不再感兴趣，没有别的，就一个原因，想的太多，跟本没有那么复杂的使用场景。&lt;/p&gt;
+
+&lt;p&gt;总体来看过去一年，对于个人来讲是毫无建树的，今年上半年，我可能需要拓展一下视野，找一找我不会做的事情做一做。&lt;/p&gt;</content><author><name></name></author><summary type="html">已经不关注社区有大半年了，或者起码有一年了，毕竟被持续增长的业务缠了也有一年了，虽然很“充实”，但毫无疑问地说，也是一无所获。</summary></entry><entry><title type="html">Unicode 如何编码成 UTF-8</title><link href="https://yanni4night.github.io/encoding/2017/11/23/utf8.html" rel="alternate" type="text/html" title="Unicode 如何编码成 UTF-8" /><published>2017-11-23T22:17:38+08:00</published><updated>2017-11-23T22:17:38+08:00</updated><id>https://yanni4night.github.io/encoding/2017/11/23/utf8</id><content type="html" xml:base="https://yanni4night.github.io/encoding/2017/11/23/utf8.html">&lt;p&gt;Unicode 是&lt;strong&gt;字符集（charset）&lt;/strong&gt;，UTF-8、UTF-16 只是 Unicode 的编码规则（encoding）。&lt;/p&gt;
 
 &lt;p&gt;标准的 UTF-8 对 Unicode 分为4种变长的编码格式。&lt;/p&gt;
 
@@ -872,36 +956,4 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
   &lt;li&gt;内存消耗较高（可以适当做磁盘缓存）&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;不过我认为这种轻量级的设计才能承担越来越繁重的前端项目构建任务。通过不断扩展转换器，其潜力非常大。&lt;/p&gt;</content><author><name></name></author><summary type="html">提到 Web 前端工程化，构建，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的构建工具，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。</summary></entry><entry><title type="html">从 margin-bottom 到 writing-mode</title><link href="https://yanni4night.github.io/css/2016/04/19/writing-mode.html" rel="alternate" type="text/html" title="从 margin-bottom 到 writing-mode" /><published>2016-04-19T22:48:45+08:00</published><updated>2016-04-19T22:48:45+08:00</updated><id>https://yanni4night.github.io/css/2016/04/19/writing-mode</id><content type="html" xml:base="https://yanni4night.github.io/css/2016/04/19/writing-mode.html">&lt;p&gt;一个有趣的事实是，不论 &lt;em&gt;margin&lt;/em&gt; 还是 &lt;em&gt;padding&lt;/em&gt;，都可以设置百分比值：&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;.content&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;直观上来讲，&lt;em&gt;margin-left&lt;/em&gt;、&lt;em&gt;margin-right&lt;/em&gt;、&lt;em&gt;padding-left&lt;/em&gt;、&lt;em&gt;padding-right&lt;/em&gt; 是相对于&lt;a href=&quot;https://drafts.csswg.org/css-box/#containing-block&quot;&gt;包含框&lt;/a&gt;的宽度，而 &lt;em&gt;margin-top&lt;/em&gt;、&lt;em&gt;margin-bottom&lt;/em&gt;、&lt;em&gt;padding-top&lt;/em&gt;、&lt;em&gt;padding-bottom&lt;/em&gt; 相对于包含框的高度。然而根据 CSS 规范，这8个值&lt;strong&gt;&lt;em&gt;一般&lt;/em&gt;&lt;/strong&gt;都是相对于包含框的宽度，究其原因还是排版的习惯需要所致。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;世界上大部分的现代语言书写习惯，或者从左到右，或者从右到左，都是横排，因此一般宽度受限，向下无限延伸，高度不定，因此相对于高度计算边距值意义不大。&lt;/p&gt;
-
-&lt;p&gt;古代汉语文字有着垂直从右到左书写的习惯，比如千家万户门前的对联，比如书法：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/writing-mode/calligraphy.jpg&quot; alt=&quot;书法&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;为了实现这种排版，我们通过设置 &lt;em&gt;writing-mode&lt;/em&gt; 和 &lt;em&gt;direction&lt;/em&gt; 实现：&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;.content&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;writing-mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vertical-lr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rtl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这种设置除了影响文字的排列外，也相应影响了 &lt;em&gt;padding&lt;/em&gt; 和 &lt;em&gt;margin&lt;/em&gt; 在百分比取值下的参照物：即相对于包含框的高度而非宽度。&lt;/p&gt;
-
-&lt;p&gt;值得一提的是，另一个常见 CSS 特性的行为也会因此被改变：外边距合并。通常情况下，发生外边距合并的是两个相邻块级元素的垂直外边距，在垂直文字布局情形下，发生合并的是水平外边距。&lt;/p&gt;
-
-&lt;p&gt;CSS 排版布局中在具有不对称行为时，一定也存在着某种默认的行为设置。比如使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;margin:auto&lt;/code&gt; 能使水平居中而非垂直居中。&lt;/p&gt;</content><author><name></name></author><summary type="html">一个有趣的事实是，不论 margin 还是 padding，都可以设置百分比值：</summary></entry></feed>
+&lt;p&gt;不过我认为这种轻量级的设计才能承担越来越繁重的前端项目构建任务。通过不断扩展转换器，其潜力非常大。&lt;/p&gt;</content><author><name></name></author><summary type="html">提到 Web 前端工程化，构建，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的构建工具，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。</summary></entry></feed>
