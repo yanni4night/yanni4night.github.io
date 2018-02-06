@@ -1,5 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-01-14T11:44:37+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
-</subtitle><entry><title type="html">2018 新年伊始·技术·工作</title><link href="https://yanni4night.github.io/other/2018/01/13/outlook.html" rel="alternate" type="text/html" title="2018 新年伊始·技术·工作" /><published>2018-01-13T21:23:40+08:00</published><updated>2018-01-13T21:23:40+08:00</updated><id>https://yanni4night.github.io/other/2018/01/13/outlook</id><content type="html" xml:base="https://yanni4night.github.io/other/2018/01/13/outlook.html">&lt;p&gt;已经不关注社区有大半年了，或者起码有一年了，毕竟被持续增长的业务缠了也有一年了，虽然很“充实”，但毫无疑问地说，也是一无所获。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-06T19:59:46+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+</subtitle><entry><title type="html">isPlainObject 的不同实现</title><link href="https://yanni4night.github.io/js/2018/02/06/is-plainobject.html" rel="alternate" type="text/html" title="isPlainObject 的不同实现" /><published>2018-02-06T15:21:44+08:00</published><updated>2018-02-06T15:21:44+08:00</updated><id>https://yanni4night.github.io/js/2018/02/06/is-plainobject</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/06/is-plainobject.html">&lt;p&gt;开头一个问题是：什么是 &lt;code class=&quot;highlighter-rouge&quot;&gt;Plain Object&lt;/code&gt;？&lt;/p&gt;
+
+&lt;p&gt;并没有看到有官方去专门定义它，更可能它只不过是业界的一种通俗叫法，因此也没有严格的定义。但我们在汉语环境里通常叫它“纯对象”。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;业界解释：&lt;a href=&quot;https://www.quora.com/What-is-a-plainObject-in-JavaScript&quot;&gt;https://www.quora.com/What-is-a-plainObject-in-JavaScript&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;下面我们来看一下常见 Library 对 &lt;em&gt;isPlainObject&lt;/em&gt; 函数的实现。&lt;/p&gt;
+
+&lt;h2 id=&quot;jquery&quot;&gt;jQuery&lt;/h2&gt;
+
+&lt;p&gt;jQuery 3.3 版本中的 &lt;em&gt;isPlainObject&lt;/em&gt; 定义在&lt;a href=&quot;https://github.com/jquery/jquery/blob/3.3.0/src/core.js#L208&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;为便于阅读，核心代码经过整理后如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isPlainObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// (1) null 肯定不是 Plain Object&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// (2) 使用 Object.property.toString 排除部分宿主对象，比如 window、navigator、global&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;({}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[object Object]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPrototypeOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 只有从用 {} 字面量和 new Object 构造的对象，它的原型链才是 null&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// (1) 如果 constructor 是对象的一个自有属性，则 Ctor 为 true，函数最后返回 false&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// (2) Function.prototype.toString 无法自定义，以此来判断是同一个内置函数&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;({}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hasOwnProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;constructor&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;function&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;lodash&quot;&gt;lodash&lt;/h2&gt;
+
+&lt;p&gt;lodash 4.0.6 版本中的 &lt;em&gt;isPlainObject&lt;/em&gt; 定义在&lt;a href=&quot;https://github.com/lodash/lodash/blob/4.0.6-npm-packages/lodash.isplainobject/index.js#L125&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;基本与 jQuery 版本相同，多了一个 &lt;em&gt;Ctor instanceof Ctor&lt;/em&gt; 的条件，满足此条件的仅有 &lt;em&gt;Function&lt;/em&gt; 和 &lt;em&gt;Object&lt;/em&gt; 两个函数。&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isPlainObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'object'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;({}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[object Object]'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPrototypeOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hasOwnProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'constructor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'function'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ctor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;redux&quot;&gt;redux&lt;/h2&gt;
+
+&lt;p&gt;redux 从 4.0.0 开始在测试中使用了 &lt;em&gt;isPlainObject&lt;/em&gt;，代码在&lt;a href=&quot;https://github.com/reactjs/redux/blob/v4.0.0-beta.1/src/utils/isPlainObject.js#L5&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;它的实现比较简单。&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isPlainObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'object'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPrototypeOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPrototypeOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// proto = null&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPrototypeOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;proto&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;我们并没有一个能判断 &lt;em&gt;Plain Object&lt;/em&gt; 的清晰逻辑，大概能理出来的思路是：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先判断 obj 本身是否满足我们熟悉的合法对象概念；&lt;/li&gt;
+  &lt;li&gt;判断 obj 的构造函数是不是 Object&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;至于判断 prototype 是不是 null，无非是一种 shortcut 罢了。&lt;/p&gt;</content><author><name></name></author><summary type="html">开头一个问题是：什么是 Plain Object？</summary></entry><entry><title type="html">2018 新年伊始·技术·工作</title><link href="https://yanni4night.github.io/other/2018/01/13/outlook.html" rel="alternate" type="text/html" title="2018 新年伊始·技术·工作" /><published>2018-01-13T21:23:40+08:00</published><updated>2018-01-13T21:23:40+08:00</updated><id>https://yanni4night.github.io/other/2018/01/13/outlook</id><content type="html" xml:base="https://yanni4night.github.io/other/2018/01/13/outlook.html">&lt;p&gt;已经不关注社区有大半年了，或者起码有一年了，毕竟被持续增长的业务缠了也有一年了，虽然很“充实”，但毫无疑问地说，也是一无所获。&lt;/p&gt;
 
 &lt;p&gt;因为这一年来始终在 &lt;code class=&quot;highlighter-rouge&quot;&gt;React Naitve&lt;/code&gt; 体系上工作，传统 Web 的知识也忘得大半了。还记得去年专门写过一篇&lt;a href=&quot;http://www.infoq.com/cn/articles/2016-review-frontend&quot;&gt;文章&lt;/a&gt;来总结2016年前端社区的现状，一年过去了，如果我不是特别孤陋寡闻的话，那么，我认为，现状并没有改变多少。&lt;/p&gt;
 
@@ -899,61 +987,4 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
   &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/mathjax-full&quot;&gt;mathjax-full&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/mermaid-full&quot;&gt;mermaid-full &lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://plugins.gitbook.com/plugin/flowchart-full&quot;&gt;flowchart-full&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Gitbook 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。</summary></entry><entry><title type="html">同构场景下的复杂前端构建</title><link href="https://yanni4night.github.io/engineering/2016/06/25/panto.html" rel="alternate" type="text/html" title="同构场景下的复杂前端构建" /><published>2016-06-25T22:34:52+08:00</published><updated>2016-06-25T22:34:52+08:00</updated><id>https://yanni4night.github.io/engineering/2016/06/25/panto</id><content type="html" xml:base="https://yanni4night.github.io/engineering/2016/06/25/panto.html">&lt;p&gt;提到 Web 前端工程化，&lt;strong&gt;构建&lt;/strong&gt;，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的&lt;a href=&quot;https://github.com/sogou-ufo/ursa&quot;&gt;构建工具&lt;/a&gt;，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;当时接手的一个腾讯的产品，其构建工具使用了包括 Shell、PHP、&lt;a href=&quot;http://ant.apache.org/&quot;&gt;Ant&lt;/a&gt; 内的多种技术，非常繁杂，而且其重要构成部分 Ant 的任务扩展需要 Java 编写，成本并不低，也刚刚好也并没有额外的扩展需求，因此也就一直使用下去了。&lt;/p&gt;
-
-&lt;p&gt;不过伴随着 NodeJS 的发展，2013 年，&lt;a href=&quot;http://gruntjs.com&quot;&gt;grunt&lt;/a&gt; 已经开始出现，2014 年，&lt;a href=&quot;http://gulpjs.com&quot;&gt;gulp&lt;/a&gt; 也出现了。它们的适当使用都能更好地完成构建工作。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://webpack.github.io/&quot;&gt;Webpack&lt;/a&gt; 虽然也在同时期发展，但直到近两年才被广泛应用。同时，在百度，&lt;a href=&quot;http://fis.baidu.com&quot;&gt;FIS&lt;/a&gt; 也支撑着许多公司级的产品。&lt;/p&gt;
-
-&lt;p&gt;业务架构决定了选用何种构建工具，甚至是否需要像 &lt;a href=&quot;http://emberjs.com/&quot;&gt;Ember&lt;/a&gt; 一样自建工具。缺失场景冒然地比较它们是不合理不明智的，因为显然它们并非替代关系，只不过相互之间有些重合。&lt;/p&gt;
-
-&lt;p&gt;现在来看一个同构设计的复杂前端工程，它有以下特殊需求：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;一份使用 ES2015 语法编写的 JavaScript 既需要编译成 CommonJS 格式运行在 Server 端，又需要编译成 AMD 格式，压缩合并运行在浏览器端；&lt;/li&gt;
-  &lt;li&gt;为简便起见，使用 NPM 发布的前端 JavaScript Library 也允许编译到前端运行，包括所有依赖；&lt;/li&gt;
-  &lt;li&gt;HTML 模板既可能作为 Server 端的运行时模板，也可能被浏览器加载作为前端模板；&lt;/li&gt;
-  &lt;li&gt;未被处理的文件需要原封不动拷贝至配置的对应目录中&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;先来看 FIS，这是一款有一定集成度的工具，即无需任何配置和插件都可以完成一定的构建任务。&lt;/p&gt;
-
-&lt;p&gt;来看其构建思路：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/fex-team/fis3/master/doc/docs/api/img/fis-compile-flow.png&quot; alt=&quot;fis&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;FIS 定义了几个主要编译阶段，每个阶段可以插入更多的扩展。在编译期，FIS 会遍历所有项目下的文件，对不同的文件采取不同的转换策略，最终都会再次写在磁盘的目的目录中。这样的好处是不会遗漏任何文件，比如新增文件类型，即使不做任何处理，都会出现在目的目录中。缺点是，一个源文件就只能有一个输出文件。在同构项目中，常常一个文件有两个甚至更多的输出，做到这一点，FIS 比较困难，但能做到，只要多次读取一份源文件，但这在配置上不够直观。&lt;/p&gt;
-
-&lt;p&gt;再来看 Webpack，它天生支持编译 NPM module，对于 browserify 式的打包非常方便。但 Webpack 至少需要一个 &lt;em&gt;entry&lt;/em&gt;，即入口，因为它需要知道从哪开始分析依赖。无论从哪里看，Webpack 对于那种单页应用都更友好一些，在复杂的工程中，页面不可能仅有一个，一个页面中的 JavaScript 运行入口也可能不止一个，同时，将一个源文件编译成多个也几乎无法支持。这使得 Webpack 的应用场景比较狭隘。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://webpack.github.io/assets/what-is-webpack.png&quot; alt=&quot;webpack&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Grunt 与 Gulp 集成化最低，也最灵活，通过配合插件，可以完成任意任务。相比之下，Gulp 基于流的处理，会比 Grunt 基于文件的处理来说更易控制，处理也更快。两者都是基于文件选择器的，因此对于没有选择到的文件，必然会遗漏。同时，对于不同选择器选择到的相同文件，也会读取不止一次。&lt;/p&gt;
-
-&lt;p&gt;基于以上考虑，对于更复杂的要求更高的同构项目，单单是使用现有的构建工具，要么不能完成任务，要么实现起来非常 tricky。重新审视构建这件事，其实要做的事情非常纯粹——读取文件，将文件内容按照规则进行转换，再写到目的磁盘上。构建的重点是顺序，因为必然会有文件对文件的依赖，而这种依赖关系，要么像 FIS 一样预先定义，要么像 Webpack 一样自动分析，亦或像 Grunt/Gulp 一样自己定义。当然自己定义的灵活性最高，但基于有限文件选择器作为执行入口的方式，必然会无法处理未被选择的文件。&lt;/p&gt;
-
-&lt;p&gt;现在我们设想一种合适的工具，对以上提到的各种问题进行改进：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;自定义处理流程和顺序；&lt;/li&gt;
-  &lt;li&gt;允许处理遗留文件；&lt;/li&gt;
-  &lt;li&gt;尽量减少源文件读取次数；&lt;/li&gt;
-  &lt;li&gt;快速增量文件处理&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;一个典型的应用场景：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/panto/stream.png&quot; alt=&quot;stream&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;基于以上需求，我做出的一个原型工具 &lt;a href=&quot;http://pantojs.xyz/&quot;&gt;PantoJS&lt;/a&gt;。它的实现原理非常简单：基于文件选择器定义处理流，但不立即运行，在每个流上挂载多个有序的转换器（Transformer），负责转换文件的内容。在最后统一进行构建时，每个流在每个转换器上都会缓存处理后的文件内容，只要文件没有改动，该转换器后面连接的多个分支转换器都会直接从该转换器上实时获取结果，而无需再次读取文件和转换。这也就支持了增量文件后项目的快速构建。另外，多个流在读取同一个文件时是有缓存的，即只会读取磁盘一次。最后，未被选择的文件则为遗留文件，按照预定义的遗留文件规则进行处理。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PantoJS&lt;/code&gt; 支持文件繁殖，即一个文件在转换器上能够生成多个文件。理论上，它能够支持任意需求的构建工作，但由于缓存和流的设计，仍有以下缺陷：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;流之间不能相互访问，而转换器允许访问原始文件，因此无能保证源文件被读取一次以内；&lt;/li&gt;
-  &lt;li&gt;内存消耗较高（可以适当做磁盘缓存）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;不过我认为这种轻量级的设计才能承担越来越繁重的前端项目构建任务。通过不断扩展转换器，其潜力非常大。&lt;/p&gt;</content><author><name></name></author><summary type="html">提到 Web 前端工程化，构建，或者称为“编译”，是其中最重要的构成部分。由于出道比较晚，我在毕业后的第一家公司就职时就不得不掌握一定的构建知识和技能。当时我们使用的构建工具，使用 python 语言编写，主要能对 JavaScript 进行 AMD 规范的合并和压缩，对 CSS 进行合并压缩，以及增添各种时间戳。由于工具没有扩展功能，因此构建流程的固定的，如有必要，需要对工具进行升级，柔韧性并不好，好在当时的业务复杂度也并不高。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Gitbook 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。</summary></entry></feed>
