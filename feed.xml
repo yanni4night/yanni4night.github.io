@@ -1,5 +1,119 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-07T15:48:04+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
-</subtitle><entry><title type="html">JavaScript 中继承的实现</title><link href="https://yanni4night.github.io/js/2018/02/06/js-inherits.html" rel="alternate" type="text/html" title="JavaScript 中继承的实现" /><published>2018-02-06T21:37:24+08:00</published><updated>2018-02-06T21:37:24+08:00</updated><id>https://yanni4night.github.io/js/2018/02/06/js-inherits</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/06/js-inherits.html">&lt;p&gt;我们都知道 JavaScript 是通过原型链继承的，在不支持 class、extends 语法的环境里，继承又该如何实现呢？&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-11T19:01:11+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+</subtitle><entry><title type="html">Inferno.js 中的 DOM Diff 算法</title><link href="https://yanni4night.github.io/js/2018/02/11/inferno-dom-diff.html" rel="alternate" type="text/html" title="Inferno.js 中的 DOM Diff 算法" /><published>2018-02-11T18:20:59+08:00</published><updated>2018-02-11T18:20:59+08:00</updated><id>https://yanni4night.github.io/js/2018/02/11/inferno-dom-diff</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/11/inferno-dom-diff.html">&lt;p&gt;已经关注 &lt;a href=&quot;https://infernojs.org/&quot;&gt;Inferno.js&lt;/a&gt; 有两年的时间，终于在刚刚不久的过去建立起了官网和文档。&lt;/p&gt;
+
+&lt;p&gt;值得特别关注的是，&lt;em&gt;Inferno.js&lt;/em&gt; 提供了类 React API 的同时，在 DOM Diff 算法上借鉴了 &lt;a href=&quot;https://github.com/ivijs/ivi&quot;&gt;ivijs&lt;/a&gt;，取得了更高的效率，从而有较强的性能表现。&lt;/p&gt;
+
+&lt;p&gt;优秀的 DOM Diff 算法的核心都是在将一个 DOM 集合转换成另一个 DOM 集合的同时，尽可能地复用已有 DOM 并具有较少的 DOM 移动操作，这是由于 DOM 操作（甚至访问）的成本较高。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Inferno.js&lt;/em&gt; 在两个 VDom 之间进行比较，从而避免了频繁访问 DOM 的性能开销。下面我们看一下它实现的 DOM Diff 算法。&lt;/p&gt;
+
+&lt;p&gt;我们假设有原始的 DOM 集合A为 “&lt;em&gt;dfibge&lt;/em&gt;”，更新后的集合B为 “&lt;em&gt;igfheb&lt;/em&gt;”。&lt;/p&gt;
+
+&lt;p&gt;首先得到集合B中元素在A中的原始位置，如果在A中不存在则为-1，得到：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;A&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;B&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;现在我们获取该数组的最大递增子序列的序列位置，为：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// [2, 4, 5]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这个数组的意义在于：“新数组中第0、1、4位置的元素在原始数组中是无需移动的”，这是我们能获取最小移动步数的关键。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一共6个成员，3个无需移动，那么一定有3个需要操作&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;现在我们从后往前遍历集合B，观察每个成员的位置是否存在于 &lt;em&gt;seq&lt;/em&gt; 中，存在则不必操作，不存在则需移动。&lt;/p&gt;
+
+&lt;p&gt;首先我们需要先删除B中存在，但A中不存在的元素 &lt;em&gt;d&lt;/em&gt;，此时：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, b, g, e]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;观察B中最后一个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, b, g, e]
+B=[i, g, f, h, e, b]
+                  ^ pos=5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;位置是5，不存在于 &lt;em&gt;seq&lt;/em&gt; 中，需要把集合A中的 &lt;em&gt;b&lt;/em&gt; 移到最后，此时：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, g, e, b] --- (1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;观察B中倒数第二个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, b, g, e]
+B=[i, g, f, h, e, b]
+               ^ pos=4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;位置是4，存在于 &lt;em&gt;seq&lt;/em&gt; 中，无需操作。&lt;/p&gt;
+
+&lt;p&gt;观察B中倒数第三个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, b, g, e]
+B=[i, g, f, h, e, b]
+            ^ pos=3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在A中不存在，我们需要创建 &lt;em&gt;h&lt;/em&gt;，并放到 &lt;em&gt;e&lt;/em&gt; 的前面，此时：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, g, h, e, b] --- (2)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;观察B中倒数第四个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, g, h, e, b]
+B=[i, g, f, h, e, b]
+         ^ pos=2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;位置是2，不存在于 &lt;em&gt;seq&lt;/em&gt; 中，需要把集合A中的 &lt;em&gt;f&lt;/em&gt; 移到 &lt;em&gt;h&lt;/em&gt; 的前面，此时：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[i, g, f, h, e, b] --- (3)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;观察B中倒数第五个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[i, g, f, h, e, b]
+B=[i, g, f, h, e, b]
+      ^ pos=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;位置是1，存在于 &lt;em&gt;seq&lt;/em&gt; 中，无需任何操作。&lt;/p&gt;
+
+&lt;p&gt;观察B中倒数第六个元素，也是最后一个元素：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A=[f, i, b, g, e]
+B=[i, g, f, h, e, b]
+   ^ pos=0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;位置是0，存在于&lt;em&gt;seq&lt;/em&gt;中，也无需任何操作。&lt;/p&gt;
+
+&lt;p&gt;此时，所有操作都已结束，仅需3步，集合A已经转换成了集合B。其中，对 &lt;em&gt;d&lt;/em&gt; 的移除和对 &lt;em&gt;h&lt;/em&gt; 的创建是不可避免的，除此之外，仅进行了两次DOM移动，也印证了上面提到的 6-3=3 的操作步骤。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;我们在移动 DOM 的时候都是执行的“插在XXX之前”，是因为 DOM 中的 &lt;em&gt;insertBefore&lt;/em&gt; 方法，如果存在 insertAfter，那么从前往后操作也是等效的。&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">已经关注 Inferno.js 有两年的时间，终于在刚刚不久的过去建立起了官网和文档。</summary></entry><entry><title type="html">JavaScript 中继承的实现</title><link href="https://yanni4night.github.io/js/2018/02/06/js-inherits.html" rel="alternate" type="text/html" title="JavaScript 中继承的实现" /><published>2018-02-06T21:37:24+08:00</published><updated>2018-02-06T21:37:24+08:00</updated><id>https://yanni4night.github.io/js/2018/02/06/js-inherits</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/06/js-inherits.html">&lt;p&gt;我们都知道 JavaScript 是通过原型链继承的，在不支持 class、extends 语法的环境里，继承又该如何实现呢？&lt;/p&gt;
 
 &lt;p&gt;首先我们来整理实现继承后的效果表征，假设存在两个类（函数）A 和 B，我们要实现 B 继承于 A，那么需要满足：&lt;/p&gt;
 
@@ -1203,57 +1317,4 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
   &lt;li&gt;改造代码，尽可能所有流量都走HTTPS&lt;/li&gt;
   &lt;li&gt;QA验证，全量覆盖，确保所有重要业务运行正常&lt;/li&gt;
   &lt;li&gt;小流量，可采用log函数递增方式缓慢开启流量，观察统计指标&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">1. 背景</summary></entry><entry><title type="html">再谈移动 Web 上的吸底布局</title><link href="https://yanni4night.github.io/css/2016/06/30/fixed-bottom-bar.html" rel="alternate" type="text/html" title="再谈移动 Web 上的吸底布局" /><published>2016-06-30T12:20:39+08:00</published><updated>2016-06-30T12:20:39+08:00</updated><id>https://yanni4night.github.io/css/2016/06/30/fixed-bottom-bar</id><content type="html" xml:base="https://yanni4night.github.io/css/2016/06/30/fixed-bottom-bar.html">&lt;p&gt;吸底布局也就是固定在页面底部，无论页面本身滚动到哪了。其最佳实现方式是使用 &lt;em&gt;position:fixed&lt;/em&gt;，然而对于移动端来讲坑要多得多。&lt;/p&gt;
-
-&lt;p&gt;如果仅仅是吸顶的话，也就是对 fixed 的支持，也存在悲惨的过去，比如 Android 2.x 只有在特定的 viewport 设置下才会生效，iOS 在 8 以前要么不支持要么带有明显的漂移 bug。现在好多了，较新的版本都能很好地支持。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;但对吸底来讲还不一样，就是因为 &lt;strong&gt;软键盘是从底部弹起的&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;软键盘弹起后，吸底的元素应该具有怎样的行为呢，这没有规范说明，于是 iOS 与 Android，Android 的不同版本之间，都各行其是。分歧在于，软键盘并非当前软件的一部分，如果它弹起了，页面的 &lt;em&gt;window&lt;/em&gt; 大小到底变没变呢？&lt;/p&gt;
-
-&lt;p&gt;比较一致的是，两个平台上 &lt;em&gt;resize&lt;/em&gt; 事件都没有被触发。但在部分 Android 机型上，如果页面的内容不能填充屏幕的高度，则页面确实会缩短，即 &lt;em&gt;document.body.scrollHeight&lt;/em&gt; 会变小。其它 Android 和 iOS 则不会改变。&lt;/p&gt;
-
-&lt;p&gt;iOS 在软键盘弹起后非常一致地都将吸底的元素留在原处，并没上浮到键盘上面，而一些 Android 则会上浮。&lt;/p&gt;
-
-&lt;p&gt;两种策略很难说谁对谁错，iOS 可能有充足的理由不上浮：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;window 大小并没有变；&lt;/li&gt;
-  &lt;li&gt;上浮可能导致内容区被遮挡&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;但很多人的第一印象是应该要上浮，就像部分 Android 做的那样。在 window 尺寸未变时，这反倒成了一种奇怪的行为，毕竟 fixed 不代表 &lt;em&gt;always-visible&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果不依赖 fixed，使用 JavaScript 动态计算的话，需要知道软键盘的高度，在 iOS 上一些客户端的内嵌 Webview 中，这是可能的，因为键盘弹起后 &lt;em&gt;window.innerHeight&lt;/em&gt; 这个值变化了，等于真正可视区域的高度。于是我们可以这样做：&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nc&quot;&gt;.bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;40px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fixed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nl&quot;&gt;transition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.3s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollTop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.bottom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;'position'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'absolute'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;'bottom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;fixed 已经被 absolute 代替，动态计算 &lt;em&gt;.bottom&lt;/em&gt; 元素相对于 body 的距离。注意当内容不足时，body 的高度要小于屏幕的高度。&lt;/p&gt;
-
-&lt;p&gt;效果看下面的影片：&lt;/p&gt;
-
-&lt;video src=&quot;/images/fixed/fixed.mp4&quot; controls=&quot;controls&quot; preload=&quot;preload&quot; width=&quot;360&quot; height=&quot;640&quot;&gt;&lt;/video&gt;
-
-&lt;p&gt;不过这不但仅适用于 iOS，也仅在部分客户端上有效，Safari 是无效的。关于这种对吸顶元素的需求，应该还是避免。&lt;/p&gt;</content><author><name></name></author><summary type="html">吸底布局也就是固定在页面底部，无论页面本身滚动到哪了。其最佳实现方式是使用 position:fixed，然而对于移动端来讲坑要多得多。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">1. 背景</summary></entry></feed>
