@@ -71,8 +71,13 @@ categories: css
 
 两者均可计算最大值：
 
- >maxScrollTop = scrollHeight - clientHeight
- >maxScrollLeft = scrollWidth - clientWidth
+垂直：
+
+ > maxScrollTop = scrollHeight - clientHeight
+ 
+水平：
+
+ > maxScrollLeft = scrollWidth - clientWidth
 
 计算滚动条宽度的方法，对于浏览器最外层滚动条：
 
@@ -91,6 +96,9 @@ categories: css
 即：
 
 >offsetWidth = leftBorderWidth + clientWidth + rightBorderWidth
+
+和
+
 >offsetHeight = leftBorderWidth + clientHeight + rightBorderWidth
 
 
@@ -188,4 +196,7 @@ article {
 在 CSSOM 草案出台之前，许多浏览器就已经支持其中相当一部分，CSSOM 的目的是规范这些取值，可以看到其中有些量的意义是相同的，比如 scrollX/pageXOffset、scrollY/pageYOffset。另外：
 
 >window.scrollX = document.body.scrollLeft = window.pageXOffset 
+
+与
+
 >window.scrollY = document.body.scrollTop = window.pageYOffset 
