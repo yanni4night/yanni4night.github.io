@@ -144,9 +144,16 @@
 
 <p>两者均可计算最大值：</p>
 
+<p>垂直：</p>
+
 <blockquote>
-  <p>maxScrollTop = scrollHeight - clientHeight
-maxScrollLeft = scrollWidth - clientWidth</p>
+  <p>maxScrollTop = scrollHeight - clientHeight</p>
+</blockquote>
+
+<p>水平：</p>
+
+<blockquote>
+  <p>maxScrollLeft = scrollWidth - clientWidth</p>
 </blockquote>
 
 <p>计算滚动条宽度的方法，对于浏览器最外层滚动条：</p>
@@ -170,8 +177,13 @@ maxScrollLeft = scrollWidth - clientWidth</p>
 <p>即：</p>
 
 <blockquote>
-  <p>offsetWidth = leftBorderWidth + clientWidth + rightBorderWidth
-offsetHeight = leftBorderWidth + clientHeight + rightBorderWidth</p>
+  <p>offsetWidth = leftBorderWidth + clientWidth + rightBorderWidth</p>
+</blockquote>
+
+<p>和</p>
+
+<blockquote>
+  <p>offsetHeight = leftBorderWidth + clientHeight + rightBorderWidth</p>
 </blockquote>
 
 <h5 id="offsettopoffsetleft">offsetTop/offsetLeft</h5>
@@ -381,8 +393,13 @@ offsetHeight = leftBorderWidth + clientHeight + rightBorderWidth</p>
 <p>在 CSSOM 草案出台之前，许多浏览器就已经支持其中相当一部分，CSSOM 的目的是规范这些取值，可以看到其中有些量的意义是相同的，比如 scrollX/pageXOffset、scrollY/pageYOffset。另外：</p>
 
 <blockquote>
-  <p>window.scrollX = document.body.scrollLeft = window.pageXOffset 
-window.scrollY = document.body.scrollTop = window.pageYOffset</p>
+  <p>window.scrollX = document.body.scrollLeft = window.pageXOffset</p>
+</blockquote>
+
+<p>与</p>
+
+<blockquote>
+  <p>window.scrollY = document.body.scrollTop = window.pageYOffset</p>
 </blockquote>
 
   </div>

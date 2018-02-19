@@ -1,5 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-12T16:18:58+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
-</subtitle><entry><title type="html">Vue.js 中的 DOM Diff 算法</title><link href="https://yanni4night.github.io/js/2018/02/12/vue-dom-diff.html" rel="alternate" type="text/html" title="Vue.js 中的 DOM Diff 算法" /><published>2018-02-12T14:41:01+08:00</published><updated>2018-02-12T14:41:01+08:00</updated><id>https://yanni4night.github.io/js/2018/02/12/vue-dom-diff</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/12/vue-dom-diff.html">&lt;p&gt;上一篇我们熟悉了一下 &lt;em&gt;Inferno.js&lt;/em&gt; 的 DOM Diff 算法。今天我们来看 &lt;a href=&quot;https://vuejs.org/&quot;&gt;Vue.js&lt;/a&gt; 框架的 DOM Diff 算法。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-19T19:13:04+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+</subtitle><entry><title type="html">获取元素在文档流中的位置</title><link href="https://yanni4night.github.io/js/2018/02/19/pagex.html" rel="alternate" type="text/html" title="获取元素在文档流中的位置" /><published>2018-02-19T18:00:15+08:00</published><updated>2018-02-19T18:00:15+08:00</updated><id>https://yanni4night.github.io/js/2018/02/19/pagex</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/19/pagex.html">&lt;p&gt;元素在文档流中的位置应与页面滚动量无关，指的是该元素左上角（包括border，但不包括margin）距离整个页面左上角的水平和垂直位置。&lt;/p&gt;
+
+&lt;p&gt;获取此位置有两种方法，观察 &lt;a href=&quot;https://github.com/jquery/jquery/blob/2.2-stable/src/offset.js#L101&quot;&gt;jQuery 2.2 源码&lt;/a&gt;：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getBoundingClientRect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;win&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ownerDocument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;defaultView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pageYOffset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pageXOffset&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getBoundingClientRect&lt;/code&gt; 是一个十分高效的方法，用来获取元素相对于可见的视口的位置，而这个位置是与滚动量有关的，只有这个位置加上滚动量，即是与文档左上角的距离。&lt;/p&gt;
+
+&lt;p&gt;如果 &lt;code class=&quot;highlighter-rouge&quot;&gt;getBoundingClientRect&lt;/code&gt; 不存在，我们依然可以通过遍历计算出结果。首先需要了解 DOM 元素的几个属性：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;offsetParent 向上祖先中第一个定位元素；&lt;/li&gt;
+  &lt;li&gt;offsetLeft 距离 offsetParent 左边界的水平位置，与滚动量无关&lt;/li&gt;
+  &lt;li&gt;offsetTop 距离 offsetParent 上边界的垂直位置，与滚动量无关&lt;/li&gt;
+  &lt;li&gt;clientLeft 一般为左边框宽度&lt;/li&gt;
+  &lt;li&gt;clientTop 一般为上边框宽度&lt;/li&gt;
+  &lt;li&gt;scrollLeft 水平滚动距离&lt;/li&gt;
+  &lt;li&gt;scrollTop 垂直滚动距离&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;因为我们要得到的距离是当时的绝对距离，与该元素的各个祖先元素的滚动量是有关的，因此我们不能简单地通过加和 &lt;em&gt;offsetLeft&lt;/em&gt; 与 &lt;em&gt;offsetTop&lt;/em&gt; 来得到最后的值，必须减去每一级祖先的滚动量。&lt;/p&gt;
+
+&lt;p&gt;具体逻辑大概就是，向该元素的上面遍历，减去每个元素的滚动量，一旦遇到是 &lt;em&gt;offsetParent&lt;/em&gt;，则加上 &lt;em&gt;offsetLeft&lt;/em&gt; 与 &lt;em&gt;offsetTop&lt;/em&gt;。具体可参考 &lt;a href=&quot;https://github.com/jquery/jquery/blob/1.4.4/src/offset.js#L79&quot;&gt;jQuery 1.4.4 源码&lt;/a&gt;。简单来讲就是：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetTop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetLeft&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parentNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollLeft&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollTop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetTop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientTop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetLeft&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientLeft&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offsetParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;当然 clientTop 与 clientLeft 并非永远代表的是上边框和左边框的宽度。&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">元素在文档流中的位置应与页面滚动量无关，指的是该元素左上角（包括border，但不包括margin）距离整个页面左上角的水平和垂直位置。</summary></entry><entry><title type="html">Vue.js 中的 DOM Diff 算法</title><link href="https://yanni4night.github.io/js/2018/02/12/vue-dom-diff.html" rel="alternate" type="text/html" title="Vue.js 中的 DOM Diff 算法" /><published>2018-02-12T14:41:01+08:00</published><updated>2018-02-12T14:41:01+08:00</updated><id>https://yanni4night.github.io/js/2018/02/12/vue-dom-diff</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/02/12/vue-dom-diff.html">&lt;p&gt;上一篇我们熟悉了一下 &lt;em&gt;Inferno.js&lt;/em&gt; 的 DOM Diff 算法。今天我们来看 &lt;a href=&quot;https://vuejs.org/&quot;&gt;Vue.js&lt;/a&gt; 框架的 DOM Diff 算法。&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Vue.js&lt;/em&gt; 的作者没有编写自己的算法，而是使用了 &lt;a href=&quot;https://github.com/snabbdom/snabbdom&quot;&gt;Snabbdom&lt;/a&gt;，并做了适当的修改。&lt;/p&gt;
 
@@ -1171,24 +1225,4 @@ B=[i, g, f, h, e, b]
 
 &lt;p&gt;在迎接2017的同时，我们仍然要做好心理准备，新的概念、新的框架和工具以及新的语法依旧会源源不断的生产出来，不完美的现状也依旧会持续。&lt;/p&gt;
 
-&lt;p&gt;由于水平有限，笔者在上述内容中难免有失偏颇，请多包涵。&lt;/p&gt;</content><author><name></name></author><summary type="html">本文首发于 http://www.infoq.com/cn/articles/2016-review-frontend，此处为原稿。</summary></entry><entry><title type="html">谈高质量的技术分享社区</title><link href="https://yanni4night.github.io/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq.html" rel="alternate" type="text/html" title="谈高质量的技术分享社区" /><published>2016-11-17T10:23:40+08:00</published><updated>2016-11-17T10:23:40+08:00</updated><id>https://yanni4night.github.io/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq</id><content type="html" xml:base="https://yanni4night.github.io/%E7%A4%BE%E5%8C%BA/%E6%8A%80%E6%9C%AF/2016/11/17/infoq.html">&lt;p&gt;由于团队架构调整，今年初夏到秋末可谓在公司无所事事，业余做了两件事：&lt;/p&gt;
-
-&lt;h6 id=&quot;1-申请了两个公司专利&quot;&gt;1. 申请了两个公司专利&lt;/h6&gt;
-
-&lt;p&gt;目前第一个的奖金马上到手，扣税后也就只能买两件普通价格的女人衣服。话说这年月想以专利来致富是不可能了，首先公司已经不在那个冲量的阶段了，现在对质量有些要求，你的交底书首先要经过部分专利负责人的审核，确定确实可能有一定价值，公司才会提交给专利代理撰写申请材料。据我一个在专利局相关部门的同学讲，国家对专利的审核也愈加严格了。&lt;/p&gt;
-
-&lt;h6 id=&quot;2-向社区投了一篇文章&quot;&gt;2. 向社区投了一篇文章&lt;/h6&gt;
-
-&lt;p&gt;为infoQ写了篇&lt;a href=&quot;http://www.infoq.com/cn/articles/constructe-tool-optimize-for-complex-web-front-end-projects&quot;&gt;首发稿件&lt;/a&gt;，基本没有读者反馈，归根到底，我认为还是里面的内容太过抽象，不当面解释，看文字是很难看懂的，即便有图例，也是很复杂的图。&lt;/p&gt;
-
-&lt;p&gt;之所以投到infoQ，其实也属无奈，在国内，你基本找不到所谓的“高质量技术分享社区”，无论&lt;a href=&quot;http://www.csdn.net/&quot;&gt;csdn&lt;/a&gt;、&lt;a href=&quot;https://segmentfault.com/&quot;&gt;segmentfault&lt;/a&gt;，还是&lt;a href=&quot;http://gold.xitu.io/&quot;&gt;掘金&lt;/a&gt;，都充斥着大量水帖、扫盲帖和问题帖，所谓的专栏也名不副实，整个网站俨然已经成了论坛。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;国人普遍不太信任国人的文章和观点，只要你发表出来了，有三种结果，第一无人问津，原因一般是没人看得懂你在缩写什么；第二大家普遍点赞，原因一般也是看不太懂，但不觉明厉；第三是开始在评论区撕逼，读者与作者撕，读者与读者撕，基本观点是你这么做太low了，可以这样这样做等等。第三种情况是你能看到的大多数，虽然第一种最多，但你也看不见。由于担心自己的观点得不到认可，即便是最资深的从业者，也很少有人有信心在这类社区上发表自己的技术成果，明明想免费得分享，却招来一通骂，何苦呢？&lt;/p&gt;
-
-&lt;p&gt;但想达到高质量内容的门槛，还是需要大量资深从业者的贡献。强制作者以共享版权2.0协议发布文章是不现实的，没有人愿意辛勤劳动而没有报酬。如果以购买版权或者首发权的方式付费，予以报酬，那么确实可以鼓励作者，但随之带来另一个重大问题————文章的价值无从衡量，着会导致：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;社区媒体不愿付出高昂的价格去购买无法衡量价值的文章，技术文章不同于新闻，仁者见仁、智者见智，况且抛开场景谈技术都是耍流氓，因此&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">由于团队架构调整，今年初夏到秋末可谓在公司无所事事，业余做了两件事：</summary></entry></feed>
+&lt;p&gt;由于水平有限，笔者在上述内容中难免有失偏颇，请多包涵。&lt;/p&gt;</content><author><name></name></author><summary type="html">本文首发于 http://www.infoq.com/cn/articles/2016-review-frontend，此处为原稿。</summary></entry></feed>
