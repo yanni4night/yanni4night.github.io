@@ -200,3 +200,7 @@ article {
 与
 
 >window.scrollY = document.body.scrollTop = window.pageYOffset 
+
+2018-02-23 补充：
+
+![Legend](/images/cssom/shot_spec.png)
