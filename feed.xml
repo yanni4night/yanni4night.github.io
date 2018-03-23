@@ -1,5 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-02-27T20:40:09+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
-</subtitle><entry><title type="html">《咨询的奥秘》 第二章 培养矛盾的思维框架</title><link href="https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind.html" rel="alternate" type="text/html" title="《咨询的奥秘》 第二章 培养矛盾的思维框架" /><published>2018-02-27T16:43:11+08:00</published><updated>2018-02-27T16:43:11+08:00</updated><id>https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind</id><content type="html" xml:base="https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind.html">&lt;p&gt;对于社会主义的中国人来讲，经过初中、高中、大学的思想政治课的洗礼，理解矛盾并非难事，我们辩证唯物主义的内容要更丰富得多。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-03-23T15:54:11+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+</subtitle><entry><title type="html">Javascript ‘+’ 运算符原理</title><link href="https://yanni4night.github.io/js/2018/03/23/principle-+.html" rel="alternate" type="text/html" title="Javascript '+' 运算符原理" /><published>2018-03-23T15:02:57+08:00</published><updated>2018-03-23T15:02:57+08:00</updated><id>https://yanni4night.github.io/js/2018/03/23/principle-+</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/03/23/principle-+.html">&lt;p&gt;继了解完“==”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。&lt;/p&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;第一步，对 a 和 b 执行 &lt;em&gt;toPrimitive()&lt;/em&gt;，不指定 &lt;a href=&quot;https://tc39.github.io/ecma262/#sec-ordinarytoprimitive&quot;&gt;hint&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;以 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 为例，先看 a 有没有定义 &lt;em&gt;Symbol.toPrimitive&lt;/em&gt;，比如：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Symbol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toPrimitive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customToPrimitive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customToPrimitive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'number'&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'string'&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 'default'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果定义了 &lt;em&gt;Symbol.toPrimitive&lt;/em&gt; 属性，则执行：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;customToPrimitive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;否则执行原生 &lt;em&gt;toPrimitive(“number”)&lt;/em&gt;，也就是要依次调用 a 的 &lt;em&gt;valueOf&lt;/em&gt; 和 &lt;em&gt;toString&lt;/em&gt; 方法。&lt;/p&gt;
+
+&lt;p&gt;如果执行 &lt;em&gt;a.valueOf()&lt;/em&gt; 返回不是 Object，则为 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 的终值，否则执行 &lt;em&gt;a.toString()&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;接下来，看 a 有没有定义 toString，如果有，则执行 &lt;em&gt;a.toString()&lt;/em&gt;，为 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 的终值。&lt;/p&gt;
+
+&lt;p&gt;如果没有，则执行原型链顶端的 &lt;em&gt;Object.prototype.toString&lt;/em&gt;,这首先要看 a 有没有定义 &lt;em&gt;Symbol.toStringTag&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;如果定义了，比如：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customStringTag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;defineProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Symbol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toStringTag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customStringTag&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;那么返回 &lt;em&gt;“[object “ + customStringTag.apply(a) + “]”&lt;/em&gt;，否则返回 &lt;em&gt;“[object Object]”&lt;/em&gt;，为 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 的终值。&lt;/p&gt;
+
+&lt;p&gt;如果发现 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 或者 &lt;em&gt;toPrimitive(b)&lt;/em&gt; 任一为字符串，则执行字符串拼接，否则执行数字加法。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;可见 &lt;em&gt;a + b&lt;/em&gt; 核心就是 &lt;em&gt;toPrimitive&lt;/em&gt; 操作，只不过从 ES2015 以来，&lt;em&gt;toPrimitive&lt;/em&gt; 受到 Symbol 的影响，变得越来越复杂。&lt;/p&gt;
+
+&lt;p&gt;相比之下，减号“-”就很简单了，就是执行 &lt;em&gt;toNumber(a) - toNumber(b)&lt;/em&gt;。&lt;/p&gt;</content><author><name></name></author><summary type="html">继了解完“==”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。</summary></entry><entry><title type="html">《咨询的奥秘》 第二章 培养矛盾的思维框架</title><link href="https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind.html" rel="alternate" type="text/html" title="《咨询的奥秘》 第二章 培养矛盾的思维框架" /><published>2018-02-27T16:43:11+08:00</published><updated>2018-02-27T16:43:11+08:00</updated><id>https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind</id><content type="html" xml:base="https://yanni4night.github.io/reading/2018/02/27/cultivating-a-paradoxical-frame-of-mind.html">&lt;p&gt;对于社会主义的中国人来讲，经过初中、高中、大学的思想政治课的洗礼，理解矛盾并非难事，我们辩证唯物主义的内容要更丰富得多。&lt;/p&gt;
 
 &lt;h1 id=&quot;第二章-培养矛盾的思维框架&quot;&gt;第二章 培养矛盾的思维框架&lt;/h1&gt;
 
@@ -926,104 +988,4 @@ B=[i, g, f, h, e, b]
   &lt;li&gt;要是不能接受失败，做顾问就永远不会成功&lt;/li&gt;
   &lt;li&gt;一旦消灭了头号问题，二号问题就升级了&lt;/li&gt;
   &lt;li&gt;帮助自己要比帮助别人更难&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">断断续续用了半年时间才读完了《咨询的奥秘》（今天一口气读了好几章），深感作为大牛咨询师，作者深谙计算机职场的人性，其中众多“法则”的总结无不精辟入骨，虽然鄙人不懂咨询，但从咨询的眼光和角度去看职场，不免有种“不识庐山真面目，只缘身在此山中”的彻悟。</summary></entry><entry><title type="html">理想与现实，黑与白，总结半年来React-Native的深度应用经验</title><link href="https://yanni4night.github.io/react-native/2017/07/13/react-native-reality.html" rel="alternate" type="text/html" title="理想与现实，黑与白，总结半年来React-Native的深度应用经验" /><published>2017-07-13T15:17:01+08:00</published><updated>2017-07-13T15:17:01+08:00</updated><id>https://yanni4night.github.io/react-native/2017/07/13/react-native-reality</id><content type="html" xml:base="https://yanni4night.github.io/react-native/2017/07/13/react-native-reality.html">&lt;p&gt;自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。&lt;/p&gt;
-
-&lt;p&gt;往往在产品上应用一项新技术的KickOff上，都必然要涉及该项技术的明显领先优势，React-Native 给人的一贯明显优势无非是：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;开发效率提升&lt;/strong&gt;；&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;与Native一致的用户体验&lt;/strong&gt;；&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;无需发版，随时上线&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;那么如果工程做得好的话，也要必然提到它的劣势——&lt;em&gt;不够稳定&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;我以前向来是个React-Native黑，我不认为它的稳定性足以支撑一项C端产品，更何况是亿级用户产品。&lt;/p&gt;
-
-&lt;p&gt;因此，当初做React-Native算是有些被迫的，毕竟万事俱备只欠开发，毕竟要用事实说话，毕竟挣钱吃饭重要。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;初期的开发工作可谓极其艰苦，不但没有开发经验，而且基础调试设施不完善，效率很低，更何况连实体测试机都不够。但最终总算是上线了。&lt;/p&gt;
-
-&lt;p&gt;另我十分惊讶的是，不稳定性带来的客户端Crash比预想中的要低得多得多。在平台的横向比较上，Android要比iOS的奔溃率高，但还不算很离奇，勉强可以忍受。&lt;/p&gt;
-
-&lt;p&gt;我从来不会想到这么一个残缺不堪的东西竟然真的没有掉链子，由此我反思了一下，想起了我党在40年前的那句话：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;实践是检验真理的唯一标准&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/rn/reality.jpg&quot; alt=&quot;实践是检验真理的唯一标准&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;是的，不能因为外界的评论甚至是自己的无知，就对新事物抱有成见。除非自己亲自实践，否则无权瞎BB。&lt;/p&gt;
-
-&lt;p&gt;经过这么一来，我对手头上的这个项目信心大增，业务的迭代速度即将迎来一次飞跃。&lt;/p&gt;
-
-&lt;p&gt;然，下面才是冷静之后的现实，更说明了海量事实的总体分布就像那宇宙微波背景辐射一样的均匀各项同性。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/rn/bg.jpg&quot; alt=&quot;宇宙微波背景辐射&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;线上追踪问题困难&quot;&gt;线上追踪问题困难&lt;/h3&gt;
-
-&lt;p&gt;React 异步渲染的性质，导致了在渲染视图中出现crash，崩溃堆栈是不会追溯到你的业务代码中的。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/rn/stack.png&quot; alt=&quot;crash stack&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在这种情形下，代码被压缩根本就不是问题，问题是你完全不知道哪里出了故障，只能靠猜。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;年初我就强行猜了一次，幸运地解决了一个bug。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;然后如果说线上问题毕竟不在现场，不好追踪的话，那么如果同样的问题发生在了调试阶段，你能看到的只是样式错乱的页面，也不会报给你任何错误信息，就很难让人接受了。&lt;/p&gt;
-
-&lt;p&gt;因此，【&lt;strong&gt;猜&lt;/strong&gt;】是开发React-Native的一项重要技能。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/rn/guess.gif&quot; alt=&quot;石头剪子布&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;android-无头问题居多&quot;&gt;Android 无头问题居多&lt;/h3&gt;
-
-&lt;p&gt;这依然算是固有的稳定性问题。此类问题有两个特点：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;偶发不可复现；&lt;/li&gt;
-  &lt;li&gt;逻辑上不可能&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;不可复现的原因很繁杂，可能与设备型号、操作系统版本、软件版本、当前运存容量、用户操作路径都有关系。还有就是一些原则上根本不可能发生的错误。&lt;/p&gt;
-
-&lt;p&gt;这些问题由于迟迟无法解决，长时间耽误了我们全量的进程。最后属于不了了之，算是向bug妥协了。&lt;/p&gt;
-
-&lt;h3 id=&quot;性能差&quot;&gt;性能差&lt;/h3&gt;
-
-&lt;p&gt;相信我，KickOff 中“与Native具有相同或相近的性能”的说辞是不成立的，特别是在Android上。&lt;/p&gt;
-
-&lt;p&gt;为了提升性能，我们不得不把能耗高的部分交给Native去实现，但这样显然又减弱了效率的优势。&lt;/p&gt;
-
-&lt;h3 id=&quot;兼容客户端版本&quot;&gt;兼容客户端版本&lt;/h3&gt;
-
-&lt;p&gt;如果说Web可以不考虑浏览器环境，做到始终如一的版本发布，没人会有异议，但React-Native不行。&lt;/p&gt;
-
-&lt;p&gt;React-Native是运行在客户端上的，它的行为和格调都必须与当前客户端的环境相匹配。&lt;/p&gt;
-
-&lt;p&gt;这意味着，一套React-Native代码必须考虑到多个客户端环境。特别是在视觉大改版的情况下，React-Native融入两套视觉代码，是什么感觉你造吗？&lt;/p&gt;
-
-&lt;p&gt;根据版本号的if-else逻辑目前已充斥相当一部分逻辑代码中，代码越来越不够优雅。&lt;/p&gt;
-
-&lt;h3 id=&quot;文本渲染不准确&quot;&gt;文本渲染不准确&lt;/h3&gt;
-
-&lt;p&gt;我们已经有充分的证据证明React-Native在渲染文本特别是多行文本时存在明显的bug。这导致我们不能按照设计的预期严格的排版。&lt;/p&gt;
-
-&lt;p&gt;此问题很深奥，而且以目前的能力来看，基本无解。&lt;/p&gt;
-
-&lt;h3 id=&quot;坑多多&quot;&gt;坑多多&lt;/h3&gt;
-
-&lt;p&gt;这些坑不一定是不可解决的，其实大部分我们都可以通过规避来解决，但问题是如果不进行全网搜索，你很难提前预知风险，也就严重影响了效率，往往一个奇葩的问题能耽误你一天的时间。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/super-fe/superfe-rn-troubleshooting/issues&quot;&gt;https://github.com/super-fe/superfe-rn-troubleshooting/issues&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;总结来看，应用React-Native技术带来的收益并非是特别明显的，在我看来，它最大的贡献是把一拨做业务的人悄无声息地分成了两拨，显然迭代效率就上来了。&lt;/p&gt;
-
-&lt;p&gt;客观上，你不能无视上面提到的各种问题，但这些问题说严重就严重，说不严重也不严重，总体看来是可勉强接受的，相对于传统的客户端开发方式，依然是&lt;em&gt;各向同性的&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;从最初的腹黑到今天的淡然面对，深深感到世界系统的复杂性以及熵增的强大扭矩，革命性没那么容易，起码React-Native不是。&lt;/p&gt;</content><author><name></name></author><summary type="html">自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">断断续续用了半年时间才读完了《咨询的奥秘》（今天一口气读了好几章），深感作为大牛咨询师，作者深谙计算机职场的人性，其中众多“法则”的总结无不精辟入骨，虽然鄙人不懂咨询，但从咨询的眼光和角度去看职场，不免有种“不识庐山真面目，只缘身在此山中”的彻悟。</summary></entry></feed>
