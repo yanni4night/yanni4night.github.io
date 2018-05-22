@@ -61,7 +61,7 @@ Object.defineProperty(a, Symbol.toStringTag, {
 
 那么返回 *"[object " + customStringTag.apply(a) + "]"*，否则返回 *"[object Object]"*，为 *toPrimitive(a)* 的终值。
 
-如果发现 *toPrimitive(a)* 或者 *toPrimitive(b)* 任一为字符串，则执行字符串拼接，否则执行数字加法。
+如果发现 *toPrimitive(a)* 或者 *toPrimitive(b)* 任一为字符串，则执行字符串拼接，否则执行数字加法，即 *toNumber(a) + toNumber(b)*，这也能解释 **true + true = 2** 的问题。
 
 ---
 
