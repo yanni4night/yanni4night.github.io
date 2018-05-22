@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-03-30T12:55:04+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.0">Jekyll</generator><link href="https://yanni4night.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yanni4night.github.io/" rel="alternate" type="text/html" /><updated>2018-05-22T10:35:39+08:00</updated><id>https://yanni4night.github.io/</id><title type="html">人过不留名 雁过不留声</title><subtitle>越老越浓
 </subtitle><entry><title type="html">Javascript ‘+’ 运算符原理</title><link href="https://yanni4night.github.io/js/2018/03/23/principle-+.html" rel="alternate" type="text/html" title="Javascript '+' 运算符原理" /><published>2018-03-23T15:02:57+08:00</published><updated>2018-03-23T15:02:57+08:00</updated><id>https://yanni4night.github.io/js/2018/03/23/principle-+</id><content type="html" xml:base="https://yanni4night.github.io/js/2018/03/23/principle-+.html">&lt;p&gt;继了解完“==”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。&lt;/p&gt;
 
 &lt;p&gt;例如：&lt;/p&gt;
@@ -55,7 +55,7 @@
 
 &lt;p&gt;那么返回 &lt;em&gt;“[object “ + customStringTag.apply(a) + “]”&lt;/em&gt;，否则返回 &lt;em&gt;“[object Object]”&lt;/em&gt;，为 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 的终值。&lt;/p&gt;
 
-&lt;p&gt;如果发现 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 或者 &lt;em&gt;toPrimitive(b)&lt;/em&gt; 任一为字符串，则执行字符串拼接，否则执行数字加法。&lt;/p&gt;
+&lt;p&gt;如果发现 &lt;em&gt;toPrimitive(a)&lt;/em&gt; 或者 &lt;em&gt;toPrimitive(b)&lt;/em&gt; 任一为字符串，则执行字符串拼接，否则执行数字加法，即 &lt;em&gt;toNumber(a) + toNumber(b)&lt;/em&gt;，这也能解释 &lt;strong&gt;true + true = 2&lt;/strong&gt; 的问题。&lt;/p&gt;
 
 &lt;hr /&gt;
 

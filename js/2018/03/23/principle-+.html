@@ -136,7 +136,7 @@
 
 <p>那么返回 <em>“[object “ + customStringTag.apply(a) + “]”</em>，否则返回 <em>“[object Object]”</em>，为 <em>toPrimitive(a)</em> 的终值。</p>
 
-<p>如果发现 <em>toPrimitive(a)</em> 或者 <em>toPrimitive(b)</em> 任一为字符串，则执行字符串拼接，否则执行数字加法。</p>
+<p>如果发现 <em>toPrimitive(a)</em> 或者 <em>toPrimitive(b)</em> 任一为字符串，则执行字符串拼接，否则执行数字加法，即 <em>toNumber(a) + toNumber(b)</em>，这也能解释 <strong>true + true = 2</strong> 的问题。</p>
 
 <hr />
 
