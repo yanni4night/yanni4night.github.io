@@ -42,7 +42,7 @@ prettier 提供了与 eslint 配合使用的[官方方法](https://prettier.io/d
 
 已经存在这种现成的解决方案，就是 [prettier-eslint](https://github.com/prettier/prettier-eslint)。虽然看起来比较畸形，但可能是唯一一种比较能用且清晰的方案了。
 
-但也有缺点，就是，直接执行 lint 无法自动 format 代码，整合的过程就是这样，本来是相互分离的两个系统，让它们一起工作，总要失去点什么。
+但也有缺点，一旦将来某些 prettier 的不可配置的行为也不能被 eslint 所 fix，工作流就 gg 了。整合的过程就是这样，本来是相互分离的两个系统，让它们一起工作，总要失去点什么。
 
 > Code ➡️ prettier ➡️ eslint --fix ➡️ Formatted Code ✨
 
