@@ -6,7 +6,8 @@ git clone --depth=1 -b gh-pages git@github.com:yanni4night/yanni4night.github.io
 
 rm -rf ../gh-pages/*
 
-bundle exec jekyll build -d ../gh-pages/
+npm run build
+cp -r _site/* ../gh-pages
 
 cd ../gh-pages
 
