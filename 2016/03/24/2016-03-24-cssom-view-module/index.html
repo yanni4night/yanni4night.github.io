@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>CSSOM View Module 中的尺寸与位置属性 | 人过不留名 雁过不留声</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="CSSOM 指 _CSS Object Model_，即 _CSS对象模型_。CSSOM 是 JavaScript 操纵 CSS 的一系列 API 集合，它属是 DOM 和 HTML API 的附属。 其中视图模型（View Model）中定义了一系列接口，包括多个关于窗体、文档和元素的位置尺寸信息，特别容易混淆。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSSOM View Module 中的尺寸与位置属性">
+<meta property="og:url" content="https://yanni4night.github.io/2016/03/24/2016-03-24-cssom-view-module/index.html">
+<meta property="og:site_name" content="人过不留名 雁过不留声">
+<meta property="og:description" content="CSSOM 指 _CSS Object Model_，即 _CSS对象模型_。CSSOM 是 JavaScript 操纵 CSS 的一系列 API 集合，它属是 DOM 和 HTML API 的附属。 其中视图模型（View Model）中定义了一系列接口，包括多个关于窗体、文档和元素的位置尺寸信息，特别容易混淆。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yanni4night.github.io/images/cssom/legend.jpg">
+<meta property="og:image" content="https://yanni4night.github.io/images/cssom/shot_spec.png">
+<meta property="article:published_time" content="2016-03-23T16:40:22.000Z">
+<meta property="article:modified_time" content="2022-04-11T10:23:50.205Z">
+<meta property="article:author" content="Yanni4night">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yanni4night.github.io/images/cssom/legend.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="人过不留名 雁过不留声" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">人过不留名 雁过不留声</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yanni4night.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2016-03-24-cssom-view-module" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/03/24/2016-03-24-cssom-view-module/" class="article-date">
+  <time class="dt-published" datetime="2016-03-23T16:40:22.000Z" itemprop="datePublished">2016-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/css/">css</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CSSOM View Module 中的尺寸与位置属性
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><code>CSSOM</code> 指 _CSS Object Model_，即 _CSS对象模型_。CSSOM 是 JavaScript 操纵 CSS 的一系列 API 集合，它属是 DOM 和 HTML API 的附属。</p>
+<p>其中视图模型（View Model）中定义了一系列接口，包括多个关于窗体、文档和元素的位置尺寸信息，特别容易混淆。</p>
+<span id="more"></span>
+
+<h2 id="Window-接口"><a href="#Window-接口" class="headerlink" title="Window 接口"></a>Window 接口</h2><h5 id="innerWidth-x2F-innerHeight"><a href="#innerWidth-x2F-innerHeight" class="headerlink" title="innerWidth&#x2F;innerHeight"></a>innerWidth&#x2F;innerHeight</h5><p>浏览器窗口可见区的高宽，包括滚动条。</p>
+<h5 id="outerWidth-x2F-outerHeight"><a href="#outerWidth-x2F-outerHeight" class="headerlink" title="outerWidth&#x2F;outerHeight"></a>outerWidth&#x2F;outerHeight</h5><p>浏览器窗口的外边沿宽高。</p>
+<h5 id="scrollX-x2F-scrollY"><a href="#scrollX-x2F-scrollY" class="headerlink" title="scrollX&#x2F;scrollY"></a>scrollX&#x2F;scrollY</h5><p>文档水平&#x2F;垂直滚动量。</p>
+<h5 id="pageXOffset-x2F-pageYOffset"><a href="#pageXOffset-x2F-pageYOffset" class="headerlink" title="pageXOffset&#x2F;pageYOffset"></a>pageXOffset&#x2F;pageYOffset</h5><p>同上。</p>
+<h5 id="screenX-x2F-screenY"><a href="#screenX-x2F-screenY" class="headerlink" title="screenX&#x2F;screenY"></a>screenX&#x2F;screenY</h5><p>浏览器左上角距离屏幕左上角的距离。</p>
+<h2 id="Screen-接口"><a href="#Screen-接口" class="headerlink" title="Screen 接口"></a>Screen 接口</h2><h5 id="availWidth-x2F-availHeight"><a href="#availWidth-x2F-availHeight" class="headerlink" title="availWidth&#x2F;availHeight"></a>availWidth&#x2F;availHeight</h5><p>屏幕可用区域的尺寸。</p>
+<h5 id="width-x2F-height"><a href="#width-x2F-height" class="headerlink" title="width&#x2F;height"></a>width&#x2F;height</h5><p>屏幕整体尺寸。</p>
+<h2 id="Element-接口"><a href="#Element-接口" class="headerlink" title="Element 接口"></a>Element 接口</h2><h5 id="clientWidth-x2F-clientHeight"><a href="#clientWidth-x2F-clientHeight" class="headerlink" title="clientWidth&#x2F;clientHeight"></a>clientWidth&#x2F;clientHeight</h5><p>元素本身尺寸，包括 padding，但不包括 border、margin 和 scroll。</p>
+<p>因此一个设置了 <em>width:100px</em> 的元素出现宽度为 15px 的覆盖式滚动条后，它的 clientWidth 为 85px。</p>
+<p>一些浏览器的滚动条是半透明的，并允许覆盖页面元素，这种情形下，clientWidth 为 100px。</p>
+<h5 id="scrollWidth-x2F-scrollHeight"><a href="#scrollWidth-x2F-scrollHeight" class="headerlink" title="scrollWidth&#x2F;scrollHeight"></a>scrollWidth&#x2F;scrollHeight</h5><p>元素的内容区域尺寸，如果有滚动条，则包括隐藏的部分。</p>
+<p>这一对值与该元素的后代元素相关。如果后代元素尺寸超过了该元素的大小，不管后代元素是否被隐藏(overflow 或  visibility)，都会计算在内。</p>
+<h5 id="clientTop-x2F-clientLeft"><a href="#clientTop-x2F-clientLeft" class="headerlink" title="clientTop&#x2F;clientLeft"></a>clientTop&#x2F;clientLeft</h5><p>元素内容与整个元素的位置偏移，理论上包括边框宽度与滚动条，由于一般滚动条都位于右下侧，因此这一对值基本上就是左侧和顶部边框的值。</p>
+<h5 id="scrollTop-x2F-scrollLeft"><a href="#scrollTop-x2F-scrollLeft" class="headerlink" title="scrollTop&#x2F;scrollLeft"></a>scrollTop&#x2F;scrollLeft</h5><p>滚动条滚动的位移。</p>
+<p>两者均可计算最大值：</p>
+<p>垂直：</p>
+<blockquote>
+<p>maxScrollTop &#x3D; scrollHeight - clientHeight</p>
+</blockquote>
+<p>水平：</p>
+<blockquote>
+<p>maxScrollLeft &#x3D; scrollWidth - clientWidth</p>
+</blockquote>
+<p>计算滚动条宽度的方法，对于浏览器最外层滚动条：</p>
+<blockquote>
+<p>window.innerWidth - docment.documentElement.clientWidth</p>
+</blockquote>
+<p>对于普通元素：</p>
+<blockquote>
+<p>offsetWidth - clientWidth - leftBorderWidth - rightBorderWidth</p>
+</blockquote>
+<h2 id="HTMLElement-接口"><a href="#HTMLElement-接口" class="headerlink" title="HTMLElement 接口"></a>HTMLElement 接口</h2><h5 id="offsetWidth-x2F-offsetHeight"><a href="#offsetWidth-x2F-offsetHeight" class="headerlink" title="offsetWidth&#x2F;offsetHeight"></a>offsetWidth&#x2F;offsetHeight</h5><p>元素本身尺寸，包括 padding、border，但不包括 margin 和 scroll。</p>
+<p>即：</p>
+<blockquote>
+<p>offsetWidth &#x3D; leftBorderWidth + clientWidth + rightBorderWidth</p>
+</blockquote>
+<p>和</p>
+<blockquote>
+<p>offsetHeight &#x3D; leftBorderWidth + clientHeight + rightBorderWidth</p>
+</blockquote>
+<h5 id="offsetTop-x2F-offsetLeft"><a href="#offsetTop-x2F-offsetLeft" class="headerlink" title="offsetTop&#x2F;offsetLeft"></a>offsetTop&#x2F;offsetLeft</h5><p>元素外边沿(border)与最近一个定位祖先元素内容区（包括 padding 但不包括 border）的距离。</p>
+<hr>
+<h2 id="图例"><a href="#图例" class="headerlink" title="图例"></a>图例</h2><p><img src="/images/cssom/legend.jpg" alt="Legend"></p>
+<p>如上图，假设黑色框代表浏览器，DOM结构为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>样式设定为：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: scroll;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">10px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">80px</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">88px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">500px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">500px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#ccc</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">60px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">75px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">20px</span> solid <span class="number">#785645</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">article</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">1000px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#ff0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看一下 <code>.container</code> 与 <code>.content</code> 这两个元素的各种尺寸与位置值。</p>
+<h5 id="content"><a href="#content" class="headerlink" title=".content"></a>.content</h5><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scrollWidth</td>
+<td><em>1060px</em></td>
+<td>后代元素 article 宽度 1000px 超过了 .content 宽 500px，因此实际上 .content 的内容宽度为 1000px(article) + 60px(leftPadding)；如果 article 没有溢出，则为 500px(.content) + 60px(leftPadding) + 60px(rightPadding)</td>
+</tr>
+<tr>
+<td>scrollHeight</td>
+<td><em>620px</em></td>
+<td>后代元素未溢出，因此 .content 内容高度为 500px(height) + 60px(paddingTop) + 60px(paddingBottom)</td>
+</tr>
+<tr>
+<td>clientWidth</td>
+<td><em>620px</em></td>
+<td>500px(width) + 60px(leftPadding) + 60px(rightPadding)</td>
+</tr>
+<tr>
+<td>clientHeight</td>
+<td><em>620px</em></td>
+<td>500px(width) + 60px(leftPadding) + 60px(rightPadding)</td>
+</tr>
+<tr>
+<td>offsetWidth</td>
+<td><em>660px</em></td>
+<td>clientWidth + 20px(leftBorderWidth) + 20px(rightBorderWidth)</td>
+</tr>
+<tr>
+<td>offsetHeight</td>
+<td><em>660px</em></td>
+<td>clientHeight + 20px(leftBorderWidth) + 20px(rightBorderWidth)</td>
+</tr>
+<tr>
+<td>clientTop</td>
+<td><em>20px</em></td>
+<td>上边框宽度</td>
+</tr>
+<tr>
+<td>clientLeft</td>
+<td><em>20px</em></td>
+<td>左边框宽度</td>
+</tr>
+<tr>
+<td>offsetTop</td>
+<td><em>163px</em></td>
+<td>88px(.container paddingTop) + 75px(.content marginTop)</td>
+</tr>
+<tr>
+<td>offsetLeft</td>
+<td><em>163px</em></td>
+<td>88px(.container paddingleft) + 75px(.content marginleft)</td>
+</tr>
+<tr>
+<td>scrollTop</td>
+<td>0</td>
+<td>没有滚动条</td>
+</tr>
+<tr>
+<td>scrollLeft</td>
+<td>0</td>
+<td>没有滚动条</td>
+</tr>
+</tbody></table>
+<h5 id="container"><a href="#container" class="headerlink" title=".container"></a>.container</h5><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scrollWidth</td>
+<td><em>1243px</em></td>
+<td>1060px(.content scrollWidth) + 20px(.content leftBorderWidth) + 75px(.content leftMargin) + 88px(.container leftPadding)，注意即使 .content 的后代 article 内容没有溢出，.container 的 scrollWidth 也是 660px(.content scrollWidth) + 75px(.content leftMargin) + 88px(.container leftPadding)，右侧的内外边距并不增加，见<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/11695354/css-right-margin-does-not-work-inside-a-div-with-overflow-scroll">这里</a></td>
+</tr>
+<tr>
+<td>scrollHeight</td>
+<td><em>986px</em></td>
+<td>620px(.content scrollWidth) + 20px(.content topBorderWidth) + 20px(.content bottomBorderWidth) + 75px(.content topMargin) + 88px(.container leftPadding)</td>
+</tr>
+<tr>
+<td>clientWidth</td>
+<td><em>476px-滚动条宽度</em></td>
+<td>内容区宽度 + padding，去除滚动条</td>
+</tr>
+<tr>
+<td>clientHeight</td>
+<td><em>476px-滚动条宽度</em></td>
+<td>内容区高度 + padding，去除滚动条</td>
+</tr>
+<tr>
+<td>offsetWidth</td>
+<td><em>496px</em></td>
+<td>300px + 88px × 2 + 20px × 2</td>
+</tr>
+<tr>
+<td>offsetHeight</td>
+<td><em>496px</em></td>
+<td>300px + 88px × 2 + 20px × 2</td>
+</tr>
+<tr>
+<td>clientTop</td>
+<td><em>10px</em></td>
+<td>上边框宽度</td>
+</tr>
+<tr>
+<td>clientLeft</td>
+<td><em>10px</em></td>
+<td>左边框宽度</td>
+</tr>
+<tr>
+<td>offsetTop</td>
+<td><em>80px</em></td>
+<td>最近一个定位元素是body，取 topMargin</td>
+</tr>
+<tr>
+<td>offsetLeft</td>
+<td><em>80px</em></td>
+<td>最近一个定位元素是body，取 leftMargin</td>
+</tr>
+<tr>
+<td>scrollTop</td>
+<td>不定</td>
+<td>取决于滚动位置，最大值为 scrollHeight - clientHeight</td>
+</tr>
+<tr>
+<td>scrollLeft</td>
+<td>不定</td>
+<td>取决于滚动位置，最大值为 scrollWidth - clientWidth</td>
+</tr>
+</tbody></table>
+<p>详见<a href="/example/cssom.html">这里</a>。</p>
+<p>在 CSSOM 草案出台之前，许多浏览器就已经支持其中相当一部分，CSSOM 的目的是规范这些取值，可以看到其中有些量的意义是相同的，比如 scrollX&#x2F;pageXOffset、scrollY&#x2F;pageYOffset。另外：</p>
+<blockquote>
+<p>window.scrollX &#x3D; document.body.scrollLeft &#x3D; window.pageXOffset </p>
+</blockquote>
+<p>与</p>
+<blockquote>
+<p>window.scrollY &#x3D; document.body.scrollTop &#x3D; window.pageYOffset </p>
+</blockquote>
+<p>2018-02-23 补充：</p>
+<p><img src="/images/cssom/shot_spec.png" alt="Legend"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yanni4night.github.io/2016/03/24/2016-03-24-cssom-view-module/" data-id="cl1ul7d6e001vjc2vc67yh8e2" data-title="CSSOM View Module 中的尺寸与位置属性" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/28/2016-03-28-missing-right-margin/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          滚动区内消失的右边距
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/13/2016-03-13-redux-define-actions/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">如何定义 redux 的 action</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/b70-Valkyrie/">b70 Valkyrie</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bubble-event-jquery/">bubble event jquery</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome-json-performance-resource-timing/">chrome json performance resource timing</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css3-column-layout/">css3 column layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/encoding/">encoding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/engineering/">engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/">error exception throw try catch 异常</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flex-box-%E5%8F%AF%E4%BC%B8%E7%BC%A9-%E5%B8%83%E5%B1%80/">flex box 可伸缩 布局</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitbook-plugin/">gitbook plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/incremental-DOM-reactjs-emberjs-glimmer/">incremental DOM reactjs emberjs glimmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/layout/">layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/liqi-%E5%88%A9%E5%99%A8/">liqi 利器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm/">npm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm-node-semser-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%89%88%E6%9C%AC/">npm node semser 语义化版本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sublime-plugin/">sublime plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tieba-https/">tieba https</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/webcomponents/">webcomponents</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%B8%88-%E6%88%90%E9%95%BF/">工程师 成长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%8C%BA-%E6%8A%80%E6%9C%AF/">社区 技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/" rel="tag">other</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/other/" style="font-size: 10px;">other</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/09/21/2018-09-21-prettier-eslint/">prettier配合eslint执行自动化代码格式化</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/23/2018-03-23-principle-+/">Javascript &#39;+&#39; 运算符原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/">《咨询的奥秘》 第二章 培养矛盾的思维框架</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/19/2018-02-19-pagex/">获取元素在文档流中的位置</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/12/2018-02-12-vue-dom-diff/">Vue.js 中的 DOM Diff 算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yanni4night<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

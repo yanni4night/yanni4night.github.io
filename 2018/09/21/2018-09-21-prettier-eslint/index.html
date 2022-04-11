@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>prettier配合eslint执行自动化代码格式化 | 人过不留名 雁过不留声</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="eslint 早已取代 jslint 成为了 JavaScript 标准的风格检查工具，提供了大量规则（rule）。这些规则部分是可以支持 fixable 的，也就是说可以自动修复代码。但是现在来看，eslint 提供的修复功能还是太弱。因此 Facebook 开发了 prettier，一个专门司职代码格式化的工具，它不仅仅支持 JavaScript 语法，甚至还支持 Markdown。因此，把它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="prettier配合eslint执行自动化代码格式化">
+<meta property="og:url" content="https://yanni4night.github.io/2018/09/21/2018-09-21-prettier-eslint/index.html">
+<meta property="og:site_name" content="人过不留名 雁过不留声">
+<meta property="og:description" content="eslint 早已取代 jslint 成为了 JavaScript 标准的风格检查工具，提供了大量规则（rule）。这些规则部分是可以支持 fixable 的，也就是说可以自动修复代码。但是现在来看，eslint 提供的修复功能还是太弱。因此 Facebook 开发了 prettier，一个专门司职代码格式化的工具，它不仅仅支持 JavaScript 语法，甚至还支持 Markdown。因此，把它">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-21T09:24:25.000Z">
+<meta property="article:modified_time" content="2022-04-11T10:23:50.214Z">
+<meta property="article:author" content="Yanni4night">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="人过不留名 雁过不留声" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">人过不留名 雁过不留声</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yanni4night.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2018-09-21-prettier-eslint" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/21/2018-09-21-prettier-eslint/" class="article-date">
+  <time class="dt-published" datetime="2018-09-21T09:24:25.000Z" itemprop="datePublished">2018-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      prettier配合eslint执行自动化代码格式化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://eslint.org/">eslint</a> 早已取代 <a target="_blank" rel="noopener" href="https://www.jslint.com/">jslint</a> 成为了 JavaScript 标准的风格检查工具，提供了大量规则（rule）。这些规则部分是可以支持 <em>fixable</em> 的，也就是说可以自动修复代码。但是现在来看，eslint 提供的修复功能还是太弱。因此 Facebook 开发了 <a target="_blank" rel="noopener" href="https://prettier.io/">prettier</a>，一个专门司职代码格式化的工具，它不仅仅支持 JavaScript 语法，甚至还支持 Markdown。因此，把它们配合起来是一种自然而然的想法，首先我们有一个 eslint-config 定义，我们希望经过 format 之后的代码能100%通过 lint 校验。我们也希望在 git hook 中能自动 format 代码。</p>
+<p>在实际应用中，让 prettier 完美配合 eslint 并不容易。根本原因在于 prettier 格式化代码的一些行为是不可配置的，而这些配置极有可能与 eslint 配置是冲突的。</p>
+<p>例如下面的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span> || b === <span class="number">2</span> || c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>在 eslint 中，我们经常配置在折行时把符号写在前边：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span></span><br><span class="line">|| b === <span class="number">2</span></span><br><span class="line">|| c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>但 prettier 则强行写在后面：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span> ||</span><br><span class="line">b === <span class="number">2</span> ||</span><br><span class="line">c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>prettier 提供了与 eslint 配合使用的<a target="_blank" rel="noopener" href="https://prettier.io/docs/en/eslint.html">官方方法</a>。但这种方式的本质是使用 eslint-config-prettier 来抹平 prettier 与 eslint 之间不可调和的冲突。一旦我们定义的私有 eslint-config 与 eslint-config-prettier 有影响格式化结果的冲突，那么 lint 必然失败。不过这种方式的一大好处是仅仅对接 eslint 就能完成 lint 与 fix 的操作，集成性很强。</p>
+<p>理解这种现象很容易，eslint 的 rules 是没有顺序的，因此在 fix 阶段，极有可能 prettier 的 rule 执行在最后阶段，结果显然与我们定义的最终 eslint 配置是冲突的。</p>
+<hr>
+<p>相比于引用一系列 eslint-config，并维护它们的顺序，我们索性只维护我们自己的一份 eslint-config，反而更清晰。有这一份配置来执行 fix，产出一定可以通过lint。</p>
+<p>但我们肯定不想直接抛弃 prettier，那么就把它的执行放在最前面，让它的产出再通过 eslint 即可。</p>
+<p>已经存在这种现成的解决方案，就是 <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier-eslint">prettier-eslint</a>。虽然看起来比较畸形，但可能是唯一一种比较能用且清晰的方案了。</p>
+<p>但也有缺点，一旦将来某些 prettier 的不可配置的行为也不能被 eslint 所 fix，工作流就 gg 了。整合的过程就是这样，本来是相互分离的两个系统，让它们一起工作，总要失去点什么。</p>
+<blockquote>
+<p>Code ➡️ prettier ➡️ eslint –fix ➡️ Formatted Code ✨</p>
+</blockquote>
+<p>Q：如果能保证 prettier 提供的 rule 能先行执行呢？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yanni4night.github.io/2018/09/21/2018-09-21-prettier-eslint/" data-id="cl1ul7d72003ajc2vdr7n3xo0" data-title="prettier配合eslint执行自动化代码格式化" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/23/2018-03-23-principle-+/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Javascript &#39;+&#39; 运算符原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/b70-Valkyrie/">b70 Valkyrie</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bubble-event-jquery/">bubble event jquery</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome-json-performance-resource-timing/">chrome json performance resource timing</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css3-column-layout/">css3 column layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/encoding/">encoding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/engineering/">engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/">error exception throw try catch 异常</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flex-box-%E5%8F%AF%E4%BC%B8%E7%BC%A9-%E5%B8%83%E5%B1%80/">flex box 可伸缩 布局</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitbook-plugin/">gitbook plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/incremental-DOM-reactjs-emberjs-glimmer/">incremental DOM reactjs emberjs glimmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/layout/">layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/liqi-%E5%88%A9%E5%99%A8/">liqi 利器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm/">npm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm-node-semser-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%89%88%E6%9C%AC/">npm node semser 语义化版本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sublime-plugin/">sublime plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tieba-https/">tieba https</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/webcomponents/">webcomponents</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%B8%88-%E6%88%90%E9%95%BF/">工程师 成长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%8C%BA-%E6%8A%80%E6%9C%AF/">社区 技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/" rel="tag">other</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/other/" style="font-size: 10px;">other</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/09/21/2018-09-21-prettier-eslint/">prettier配合eslint执行自动化代码格式化</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/23/2018-03-23-principle-+/">Javascript &#39;+&#39; 运算符原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/">《咨询的奥秘》 第二章 培养矛盾的思维框架</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/19/2018-02-19-pagex/">获取元素在文档流中的位置</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/12/2018-02-12-vue-dom-diff/">Vue.js 中的 DOM Diff 算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yanni4night<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

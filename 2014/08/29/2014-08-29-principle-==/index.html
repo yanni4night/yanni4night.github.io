@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Javascript &#39;==&#39; 运算符原理 | 人过不留名 雁过不留声</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="JavaScript 中的&#x3D;&#x3D;运算符用以比较两侧的值是否“近似”相等，区别于&#x3D;&#x3D;&#x3D;的严格相等。 &#x3D;&#x3D;可以达到以下效果： null&#x3D;&#x3D;undefined &#x2F;&#x2F;true []&#x3D;&#x3D;false &#x2F;&#x2F;true []&#x3D;&#x3D;&#39;&#39; &#x2F;&#x2F;true [1]&#x3D;&#x3D;&#39;1&#39; &#x2F;&#x2F;true  要说明 JavaScript 引擎在计算 &#x3D;&#x3D; 运算符时做了什么，先要了解几个内部概念和方法。 TypeE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript &#39;&#x3D;&#x3D;&#39; 运算符原理">
+<meta property="og:url" content="https://yanni4night.github.io/2014/08/29/2014-08-29-principle-==/index.html">
+<meta property="og:site_name" content="人过不留名 雁过不留声">
+<meta property="og:description" content="JavaScript 中的&#x3D;&#x3D;运算符用以比较两侧的值是否“近似”相等，区别于&#x3D;&#x3D;&#x3D;的严格相等。 &#x3D;&#x3D;可以达到以下效果： null&#x3D;&#x3D;undefined &#x2F;&#x2F;true []&#x3D;&#x3D;false &#x2F;&#x2F;true []&#x3D;&#x3D;&#39;&#39; &#x2F;&#x2F;true [1]&#x3D;&#x3D;&#39;1&#39; &#x2F;&#x2F;true  要说明 JavaScript 引擎在计算 &#x3D;&#x3D; 运算符时做了什么，先要了解几个内部概念和方法。 TypeE">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-08-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-11T10:23:50.196Z">
+<meta property="article:author" content="Yanni4night">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="人过不留名 雁过不留声" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">人过不留名 雁过不留声</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yanni4night.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2014-08-29-principle-==" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2014/08/29/2014-08-29-principle-==/" class="article-date">
+  <time class="dt-published" datetime="2014-08-28T16:00:00.000Z" itemprop="datePublished">2014-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Javascript &#39;==&#39; 运算符原理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 中的<code>==</code>运算符用以比较两侧的值是否“近似”相等，区别于<code>===</code>的严格相等。</p>
+<p><code>==</code>可以达到以下效果：</p>
+<pre><code>null==undefined //true
+[]==false //true
+[]==&#39;&#39; //true
+[1]==&#39;1&#39; //true
+</code></pre>
+<p>要说明 JavaScript 引擎在计算 <code>==</code> 运算符时做了什么，先要了解几个内部概念和方法。</p>
+<h5 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h5><p>ECMAScript 规范规定了六种变量类型：null undefined string number boolean object。<code>Type</code> 不同于运算符 <code>typeof</code> ，它可以分辨出 null 和 object，但不能分辨 function 和 object，当然事实上并没有 function 这样一种类型。</p>
+<p>可以这样模拟 <code>Type</code> 的行为：</p>
+<pre><code>function Type(e) &#123;
+    if (undefined === e) &#123;
+        return &#39;undefined&#39;;
+    &#125; else if (null === e) &#123;
+        return &#39;null&#39;;
+    &#125; else if (&#39;number&#39; === typeof e) &#123;
+        return &#39;number&#39;;
+    &#125; else if (&#39;string&#39; === typeof e) &#123;
+        return &#39;string&#39;;
+    &#125; else if (&#39;boolean&#39; === typeof e) &#123;
+        return &#39;boolean&#39;;
+    &#125; else return &#39;object&#39;;
+&#125;
+</code></pre>
+<h5 id="0的符号"><a href="#0的符号" class="headerlink" title="0的符号"></a>0的符号</h5><p>另外需要说明的是0本身包括两个值，正零：+0，和负零：-0。一般不会对这两个值进行区分，甚至使用 <code>===</code> 运算符也分辨不出：</p>
+<pre><code>+0===-0 //true
+</code></pre>
+<p>在ECMAScript中有内部内部方法可以区别出这两个值，当然我们也可以做到这一点：</p>
+<pre><code>function isPositiveZero(e) &#123;
+    return 0 === e &amp;&amp; 1 / e &gt; 0;
+&#125;
+
+function isNegativeZero(e) &#123;
+    return 0 === e &amp;&amp; 1 / e &lt; 0;
+&#125;
+</code></pre>
+<p>关于这两点将会在后面的侦断中用到。</p>
+<h5 id="ToNumber"><a href="#ToNumber" class="headerlink" title="ToNumber"></a>ToNumber</h5><p>转换为数字，规则如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">输入类型</th>
+<th align="center">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Undefined</td>
+<td align="center">NaN</td>
+</tr>
+<tr>
+<td align="center">Null</td>
+<td align="center">+0</td>
+</tr>
+<tr>
+<td align="center">Boolean</td>
+<td align="center">真返回1，假返回+0</td>
+</tr>
+<tr>
+<td align="center">Number</td>
+<td align="center">直接返回</td>
+</tr>
+<tr>
+<td align="center">String</td>
+<td align="center">字面意义</td>
+</tr>
+<tr>
+<td align="center">Object</td>
+<td align="center">调用ToNumber(toPrimitive)，hint：Number</td>
+</tr>
+</tbody></table>
+<h5 id="toPrimitive"><a href="#toPrimitive" class="headerlink" title="toPrimitive"></a>toPrimitive</h5><p>该内部方法将一个对象转换为原始类型，在上面提到的六种类型中，前五种都属于原始类型。对于非原始类型，将根据一个成为 <code>hint</code> 的值访问该对象的 <code>Default Value</code> 属性来获取原始值。<code>hint</code> 取值只能为 “string” 和 “number”（默认）。如果为 “string”，将依次调用对象的 <code>toString</code> 和 <code>valueOf</code> 来获取原始值，如果为 “number”，将依次调用 <code>valueOf</code> 和 <code>toString</code> 方法，可见顺序依赖于 <code>hint</code> 值。</p>
+<h4 id=""><a href="#" class="headerlink" title="=="></a><code>==</code></h4><p><code>==</code> 操作x，y两个值时要经过一系列的类型和值的侦断，在 ECMAScript 内部称之为 <code>The Abstract Equality Comparison Algorithm</code>：</p>
+<ol>
+<li>如果 Type(x) 不同于 Type(y)  执行第 14 步。</li>
+<li>如果 Type(x) 为 Undefined  返回真。</li>
+<li>如果 Type(x) 为 Null  返回真。</li>
+<li>如果 Type(x) 不是 Number  执行第 11 步。</li>
+<li>如果 x 为 NaN  返回假。</li>
+<li>如果 y 为 NaN  返回假。</li>
+<li>如果 x 与 y 有相同的值  返回真。</li>
+<li>如果 x 为 +0 并且 y 为 −0  返回真。</li>
+<li>如果 x 为 −0 并且 y 为 +0  返回真。</li>
+<li>返回假。</li>
+<li>如果 Type(x) 为 String  那么如果 x 和 y 具有相同的字符序列（等长并且对应位置字符相同）返回真，否则，返回假。</li>
+<li>如果 Type(x) 为 Boolean  如果 x 和 y 都是真或者都是假则返回真，否则 返回假。</li>
+<li>如果x和y引用相同的对象返回真，否则  返回假。</li>
+<li>如果 x 为 null 并且 y 为 undefined  返回真。</li>
+<li>如果 x 为 undefined 并且 y 为 null  返回真。</li>
+<li>如果 Type(x) 为 Number 并且 Type(y) 为 String 返回 x &#x3D;&#x3D; ToNumber(y) 的结果。</li>
+<li>如果 Type(x) 为 String 并且 Type(y) 为 Number 返回 ToNumber(x) &#x3D;&#x3D; y 的结果。</li>
+<li>如果 Type(x) 为 Boolean  返回 ToNumber(x) &#x3D;&#x3D; y 的结果。</li>
+<li>如果 Type(y) 为 Boolean  返回 x &#x3D;&#x3D; ToNumber(y) 的结果。</li>
+<li>如果 Type(x) 为 String 或者 Number 并且 Type(y) 为 Object 返回 x &#x3D;&#x3D; ToPrimitive(y) 的结果。</li>
+<li>如果 Type(x) 为 Object 并且 Type(y) 为 String 或者 Number 返回 ToPrimitive(x) &#x3D;&#x3D; y 的结果。</li>
+<li>返回假。</li>
+</ol>
+<p>有了这个流程，就可以知道上面提到的几个式子成立的原理：</p>
+<pre><code>[]==false
+</code></pre>
+<p>任意数组转换为布尔值时都为真，但与布尔值进行<code>==</code> 运算操作时，首先会将布尔转换为数字，即 false&#x3D;&gt;0，接着再与数组进行 <code>==</code> 运算。这时，需要进行 <code>toPrimitive([] Number)</code> 运算了，返回0，所以式子返回真。</p>
+<pre><code>[1]==&#39;1&#39;
+</code></pre>
+<p>数组与字符串比较，直接转换为 <code>toPrimitive([1] String) == &#39;1&#39;</code>，显然为真。</p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>在使用 <code>==</code> 进行操作之前，一定要明确两边值类型所带来的结果差异，必要时，直接强转为布尔值进行计算。</p>
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p><a href="/example/==.html">该页面</a>展示了比较两个不同类型值得过程中所发生的事情。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://www.adequatelygood.com/Object-to-Primitive-Conversions-in-JavaScript.html">http://www.adequatelygood.com/Object-to-Primitive-Conversions-in-JavaScript.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yanni4night.github.io/2014/08/29/2014-08-29-principle-==/" data-id="cl1ul7d5j000djc2v7ddu4ne2" data-title="Javascript &#39;==&#39; 运算符原理" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/09/06/2014-09-06-hasownproperty-in/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          hasOwnProperty与in
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/15/2014-08-15-node-semver/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">NODE 语义化版本解析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/b70-Valkyrie/">b70 Valkyrie</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bubble-event-jquery/">bubble event jquery</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome-json-performance-resource-timing/">chrome json performance resource timing</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css3-column-layout/">css3 column layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/encoding/">encoding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/engineering/">engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/">error exception throw try catch 异常</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flex-box-%E5%8F%AF%E4%BC%B8%E7%BC%A9-%E5%B8%83%E5%B1%80/">flex box 可伸缩 布局</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitbook-plugin/">gitbook plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/incremental-DOM-reactjs-emberjs-glimmer/">incremental DOM reactjs emberjs glimmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/layout/">layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/liqi-%E5%88%A9%E5%99%A8/">liqi 利器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm/">npm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm-node-semser-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%89%88%E6%9C%AC/">npm node semser 语义化版本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sublime-plugin/">sublime plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tieba-https/">tieba https</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/webcomponents/">webcomponents</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%B8%88-%E6%88%90%E9%95%BF/">工程师 成长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%8C%BA-%E6%8A%80%E6%9C%AF/">社区 技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/" rel="tag">other</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/other/" style="font-size: 10px;">other</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/09/21/2018-09-21-prettier-eslint/">prettier配合eslint执行自动化代码格式化</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/23/2018-03-23-principle-+/">Javascript &#39;+&#39; 运算符原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/">《咨询的奥秘》 第二章 培养矛盾的思维框架</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/19/2018-02-19-pagex/">获取元素在文档流中的位置</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/12/2018-02-12-vue-dom-diff/">Vue.js 中的 DOM Diff 算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yanni4night<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
