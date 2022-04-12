@@ -11,6 +11,7 @@ cp -r _site/* ../gh-pages
 
 cd ../gh-pages
 
+touch .nojekyll
 git add -A
 
 now=`date +%Y/%m/%d-%H:%M:%S`
