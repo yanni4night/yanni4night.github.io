@@ -71,6 +71,261 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2023-01-14-how-sandbox-works" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/14/2023-01-14-how-sandbox-works/" class="article-date">
+  <time class="dt-published" datetime="2023-01-14T03:32:48.000Z" itemprop="datePublished">2023-01-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/">微前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/14/2023-01-14-how-sandbox-works/">沙箱是如何工作的</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>从 <em>qiankun</em> 开始，沙箱（或沙盒、sandbox）已经成了几乎所有微前端框架的标配功能。但事实上其内部涉及实现的大量细节，导致每家的能力参差不齐。</p>
+<p>严格来说，沙箱并没有遵循的标准，在一些细节上的实现也没有对错，具体行为还是要取决于业务的需求。</p>
+<p><em>Node.js</em> 的<a href="https://nodejs.org/dist/latest-v18.x/docs/api/vm.html" target="_blank">vm 模块</a>并不能直接移植到浏览器端，一个很大的原因在于浏览器涉及的视图（包括 DOM、URL）无法被拷贝，只能共享，那么共享到什么水平就成了沙箱方案能力差别的衡量标准之一。</p>
+<h2 id="二、变量隔离"><a href="#二、变量隔离" class="headerlink" title="二、变量隔离"></a>二、变量隔离</h2><p>沙箱的基础能力就是隔离上下文，让下列操作都只局限在特定的上下文内，不会干扰到外部：</p>
+<ul>
+<li>删除已有变量，如 <em>delete obj.a</em> 或 <em>Relect.deleteProperty(obj, ‘a’)</em> ；</li>
+<li>修改已有变量<ul>
+<li>修改取值，如 <em>obj.a&#x3D;1</em> 或 <em>Reflect.set(obj, ‘a’, 1)</em> 或 <em>Reflect.defineProperty(obj, ‘a’, { value: 1 })</em></li>
+<li>修改描述符，如 <em>Reflect.defineProperty(obj, ‘a’, { writable: false })</em></li>
+<li>修改 frozen、sealed、extensible 状态，如 <em>Object.freeze(obj.a)</em> 、 <em>Object.seal(obj.a)</em> 或 <em>Object.preventExtensions(obj.a)</em></li>
+<li>修改原型链，如 <em>Object.setPrototypeOf(obj.a, null)</em></li>
+</ul>
+</li>
+<li>创建新的变量，如 <em>obj.a&#x3D;1</em> 或 <em>Relect.defineProperty(obj, ‘a’, {value: 1})</em></li>
+</ul>
+<p>上面的 <strong>obj</strong> 对象即指上下文对象，在浏览器中通常是 <em>window</em> 或 <em>document</em> ，这两个全局对象。但事实上，window 下的所有属性都可以直接取到，如 <em>addEventListener</em> 、 <em>name</em> 、 <em>CSS</em> 、 <em>location</em> 、 <em>history</em> 、 <em>navigator</em> 、 <em>HTMLElement</em> 等等，不胜枚举。因此， <strong>沙箱不可能监视所有变量的属性删除&#x2F;修改&#x2F;创建，因此也就不可能实现“完美”沙箱</strong> ，毕竟你不能遍历 window 下的所有属性，都监视一遍。</p>
+<p><strong>with(){}</strong> 的做法不在考虑范围之内，对性能损耗过大。</p>
+<p>这个事实带来的后果是，如果你想逃逸出沙箱，是非常容易的，比如 <em>navigator.no&#x3D;1</em> 。所以，沙箱在微前端中有使用价值的前提是， <strong>你必须尽可能保障对全局变量的访问是可控、无副作用的</strong> ，这是沙箱的脆弱之处，也是一种规范。接下来我们将在这一规范下继续讨论沙箱的实现问题，假设我们只考量对 window 和 document 这两个变量的属性监视。</p>
+<h3 id="2-1-属性监视"><a href="#2-1-属性监视" class="headerlink" title="2.1 属性监视"></a>2.1 属性监视</h3><p>毫无疑问，在现代浏览器中，Proxy 是监视对象的最佳方案，通过它，我们应该可以被通知且控制获取、修改、删除、遍历等几乎所有操作。但是，proxy 对象真的可以为所欲为吗？</p>
+<p>观察下列代码：</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/yanni4night/xms2nkpa/15/embedded/js,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<p>这里涉及到了关于 <em>configurable</em> 导致的错误，事实上，有大量的操作都是被 proxy 所禁止的，在 <em>ECMA262</em> 上的<a target="_blank" rel="noopener" href="https://tc39.es/ecma262/multipage/ordinary-and-exotic-objects-behaviours.html#sec-proxy-object-internal-methods-and-internal-slots">Proxy</a>部分搜索 <strong>Invariants</strong> 能查询得到。因此 proxy 对象并非无所不能，它无法任意伪装原始对象的行为， <strong>该失败的必须失败</strong> 。相关规则包括如下：</p>
+<table class="table">
+    <thead>
+        <th>对象操作</th>
+        <th>不变量</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>defineProperty</td>
+            <td>
+                <ol>
+                    <li>如果目标对象是不可扩展的，那么使用defineProperty新增属性时不能返回true；</li>
+                    <li>如果目标对象没有不可配置属性a，则代理对象也不能用defineProperty在将属性a定义成不可配置时时返回true；</li>
+                    <li>如果目标对象没有不可配置且不可写的属性a，则代理对象也不能用defineProperty在将不可配置属性a定义成不可写时返回true</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>deleteProperty</td>
+            <td>
+                <ol>
+                    <li>如果目标对象有不可配置属性a，那么代理对象在用deleteProperty删除a时不能返回true；</li>
+                    <li>如果目标对象是不可扩展的，且有属性a，那么代理对象在用deleteProperty删除a时不能返回true；</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>get</td>
+            <td>
+                <ol>
+                    <li>如果目标对象有不可配置且不可写的属性a，那么代理对象在用get取值a时必须返回和目标对象相同值；</li>
+                    <li>如果目标对象的属性a是不可配置的，且是缺少get的存取类型，那么代理在用get取值a时必须返回undefined</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>getOwnPropertyDescriptor</td>
+            <td>
+                <ol>
+                    <li>如果目标对象有不可配置的属性a，那么代理对象在用getOwnPropertyDescriptor获取a时不能返回undefined；</li>
+                    <li>如果目标对象是不可扩展的，且有属性a，那么代理对象在用getOwnPropertyDescriptor获取a时不能返回undefined；</li>
+                    <li>如果目标对象是不可扩展的，且没有有属性a，那么代理对象在用getOwnPropertyDescriptor获取a时必须返回undefined；</li>
+                    <li>除非目标对象有不可配置且不可写的属性a，那么代理对象在用getOwnPropertyDescriptor获取a时就不能是不可配置且不可写的；</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>getPrototypeOf</td>
+            <td>
+                <ol>
+                    <li>如果目标对象是不可扩展的，那么代理对象在用getPrototypeOf时必须返回与在目标对象上调用的返回值</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>has</td>
+            <td>
+                <ol>
+                    <li>如果目标对象有不可配置的属性a，那么代理对象在用has获取a时不能返回false；</li>
+                    <li>如果目标对象是不可扩展的，且有属性a，那么代理对象在用has获取a时不能返回false；</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>ownKeys</td>
+            <td>
+                <ol>
+                    <li>如果目标对象是不可扩展的，那么代理对象在用ownKeys时必须返回目标对象的全部属性名，不能包含额外属性名</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>set</td>
+            <td>
+                <ol>
+                    <li>如果目标对象有不可配置且不可写的属性a，那么代理对象就不能用set给a设置不同的值；</li>
+                    <li>如果目标对象的属性a是不可配置的，且是缺少set的存取类型，那么代理在用set设值a时必须返回false</li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>看似复杂，但实际总结来看，就是代理对象必须遵循一个原则： <strong>操作的结果要真实反应 target 的最新状态。</strong></p>
+<p>举几个例子：</p>
+<ul>
+<li>如果Reflect.has(proxyObj, ‘a’)返回true，那么target就必须不能有一个不可配置的属性a；</li>
+<li>如果Reflect.set(proxyObj, ‘a’, 1)返回true，那么target对象必然不能是不可扩展的，也不可以有一个不可写也不可配置的属性a</li>
+</ul>
+<p>如下的做法，直接代理原始 window、document 肯定是不可以的，根据上面的 Invariants 可知我们几乎必须把属性同步给原始的 window、document 才能不报错，显然违背我们做沙箱的初衷。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(<span class="variable language_">window</span>, &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>因此，通常的做法是把一个 <strong>新创建的对象</strong> 当作原始对象进行代理，下文简称为 <strong>target</strong> 。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> winProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(target, &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>所有的操作几乎都是最终体现在 target 对象上的，个别稍有例外。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123;&#125; <span class="keyword">as</span> <span class="title class_">Window</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> winProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(target, &#123;</span><br><span class="line">    <span class="attr">defineProperty</span>: <span class="keyword">function</span> (<span class="params">target: Window, p: PropertyKey, attributes: PropertyDescriptor</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="property">defineProperty</span>)(target, p, attributes);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">deleteProperty</span>: <span class="keyword">function</span> (<span class="params">target: Window, p: PropertyKey</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">deleteProperty</span>(target, p);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey <span class="comment">/*, receiver: any */</span></span>): <span class="built_in">any</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, p);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">getOwnPropertyDescriptor</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey</span>): <span class="title class_">PropertyDescriptor</span> | <span class="literal">undefined</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">getOwnPropertyDescriptor</span>(target, p);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">has</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">has</span>(target, p);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">ownKeys</span>: <span class="keyword">function</span> (<span class="params">target: T</span>): <span class="title class_">ArrayLike</span>&lt;<span class="built_in">string</span> | <span class="built_in">symbol</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">ownKeys</span>(target);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey, value: <span class="built_in">unknown</span> <span class="comment">/*, receiver: unknown */</span></span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, p, value);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">getPrototypeOf</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">getPrototypeOf</span>(<span class="variable language_">window</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>但显然这样是有严重问题的，因为 target 是伪装的 Window 对象，它身上没有任何属性，这不但会影响 get、getOwnPropertyDescriptor、has、ownKeys 这些只读操作的结果，由于 Proxy 的规则，同样也会影响 defineProperty、deletePrperty、set 这些写操作的结果。</p>
+<p>举个例子，本来真实 window 对象上有一个不可配置的属性 foo，正常来说，我们用 defineProxy 修改其描述符类型时一定会报错，但是 target 本身并没有任何属性，Reflect.defineProperty(target)却是成功的，不符合期望。</p>
+<p>于是，业界常规的做法都是会把 <strong>原始对象的自身属性拷贝到 target 中，特别是那些不可配置的属性</strong> 。这样无论是读操作还是写操作，其结果都真实反应到了代码对象的 target 中，不会被任何 Proxy 原则所影响。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123;&#125; <span class="keyword">as</span> <span class="title class_">Window</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyNames</span>(<span class="variable language_">window</span>)) &#123;</span><br><span class="line">  <span class="keyword">const</span> descriptor = <span class="title class_">Reflect</span>.<span class="title function_">getOwnPropertyDescriptor</span>(<span class="variable language_">window</span>, key);</span><br><span class="line">  <span class="keyword">if</span> (!descriptor.<span class="property">configurable</span>) <span class="title class_">Reflect</span>.<span class="title function_">defineProperty</span>(target, p, descriptor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这一步的成本稍高，但是又是必须的。在具体的实现策略上也可以区分为一次性拷贝和懒惰式拷贝，即用到某属性时才执行拷贝。</p>
+<h3 id="2-2-主动变量逃逸"><a href="#2-2-主动变量逃逸" class="headerlink" title="2.2 主动变量逃逸"></a>2.2 主动变量逃逸</h3><p>虽然沙箱的关键作用就是为了限制变量的访问和变更范围，但是毕竟在同一个浏览器页面之下，难免有需要例外放行的 case。我们称这类变量为 exception 或者 escaped，这种功能称之为“主动变量逃逸”。</p>
+<p>实现主动变量逃逸比较简单，以 set 和 get 操作为例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123;&#125; <span class="keyword">as</span> <span class="title class_">Window</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> winProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(target, &#123;</span><br><span class="line">  <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey <span class="comment">/*, receiver: any */</span></span>): <span class="built_in">any</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isEscaped</span>(p)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(<span class="variable language_">window</span>, p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, p);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span></span><br><span class="line"><span class="params">    target: T,</span></span><br><span class="line"><span class="params">    p: PropertyKey,</span></span><br><span class="line"><span class="params">    value: <span class="built_in">unknown</span> <span class="comment">/*, receiver: unknown */</span></span></span><br><span class="line"><span class="params">  </span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isEscaped</span>(p)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">set</span>(<span class="variable language_">window</span>, p, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, p, value);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>不过别忘记了 Proxy 的那些 Invariants 限制，上述这些操作的结果都要反应到 target 身上，所以最后还是得把原始对象（如 window）上的属性同步到 target 上。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123;&#125; <span class="keyword">as</span> <span class="title class_">Window</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> winProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(target, &#123;</span><br><span class="line">  <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params">target: T, p: PropertyKey <span class="comment">/*, receiver: any */</span></span>): <span class="built_in">any</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isEscaped</span>(p)) &#123;</span><br><span class="line">      <span class="comment">// 同步到target中</span></span><br><span class="line">      <span class="title class_">Reflect</span>.<span class="title function_">defineProperty</span>(</span><br><span class="line">        target,</span><br><span class="line">        p,</span><br><span class="line">        <span class="title class_">Reflect</span>.<span class="title function_">getOwnPropertyDescriptor</span>(<span class="variable language_">window</span>, p)</span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(<span class="variable language_">window</span>, p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, p);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span></span><br><span class="line"><span class="params">    target: T,</span></span><br><span class="line"><span class="params">    p: PropertyKey,</span></span><br><span class="line"><span class="params">    value: <span class="built_in">unknown</span> <span class="comment">/*, receiver: unknown */</span></span></span><br><span class="line"><span class="params">  </span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isEscaped</span>(p)) &#123;</span><br><span class="line">      <span class="comment">// 同步到target中</span></span><br><span class="line">      <span class="title class_">Reflect</span>.<span class="title function_">defineProperty</span>(</span><br><span class="line">        target,</span><br><span class="line">        p,</span><br><span class="line">        <span class="title class_">Reflect</span>.<span class="title function_">getOwnPropertyDescriptor</span>(<span class="variable language_">window</span>, p)</span><br><span class="line">      );</span><br><span class="line">      <span class="title class_">Reflect</span>.<span class="title function_">set</span>(<span class="variable language_">window</span>, p, value);</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, p, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, p, value);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-函数属性上下文"><a href="#2-3-函数属性上下文" class="headerlink" title="2.3 函数属性上下文"></a>2.3 函数属性上下文</h3><p>上面提到，我们需要把原始对象（window、document）的属性同步到 target 对象中，Proxy 才会不受到 Invariants 的影响，能更真实的模拟读写操作。</p>
+<p>我们看下面一个例子：</p>
+<iframe width="100%" height="300" src="//jsfiddle.net/yanni4night/nhtwo0x2/4/embedded/js,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<p>再来看这样一个例子：</p>
+<iframe width="100%" height="300" src="//jsfiddle.net/yanni4night/1buvLtag/2/embedded/js,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<p>有这样一类函数，它们只能在指定的上下文中执行，即便是 Proxy 也不可以，否则在 Chrome 下就会报告 <strong>Illegal invocation</strong> 错误。在 Firefox 和 Safari 上的错误信息会更通俗易懂一些。</p>
+<p>目标没有很好的办法来解决这个问题，毕竟函数内部的逻辑是无法预测的，只能尽可能兼容。一些策略有：</p>
+<ul>
+<li>如果属性名是 constructor，无需特殊处理；</li>
+<li>如果属性名以大些字母开头， <strong>认为它们是构造函数</strong> ，无需特殊处理；</li>
+<li>创建包装函数来锁定上下文:</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> newValueInTarget = <span class="keyword">function</span> (<span class="params"><span class="variable language_">this</span>: <span class="built_in">any</span>, ...args: <span class="built_in">unknown</span>[]</span>): <span class="built_in">unknown</span> &#123;</span><br><span class="line">  <span class="comment">// 小写字母也可能是构造函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">new</span>.<span class="property">target</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">construct</span>(valueInRaw, args);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">apply</span>(valueInRaw, raw, args);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一些特殊属性的处理，例如 window 上的 eval、isFinite、isNaN、parseFloat、parseInt、hasOwnProperty、decodeURI、decodeURIComponent、encodeURI、encodeURIComponent，直接走主动变量逃生即可</li>
+</ul>
+<h2 id="三、执行-JavaScript-代码"><a href="#三、执行-JavaScript-代码" class="headerlink" title="三、执行 JavaScript 代码"></a>三、执行 JavaScript 代码</h2><p>上面讨论的是沙箱的最关键能力——变量隔离，但无论实现怎样的能力，子应用的 JS 代码还是要得到执行，那么该如何执行的？</p>
+<h3 id="3-1-eval"><a href="#3-1-eval" class="headerlink" title="3.1 eval"></a>3.1 eval</h3><p>业界普遍的做法是异步 fetch 到源代码，然后 eval 它，虽然需要跨域环境的支持，但并不是难事。只是 eval 需要一些技巧。</p>
+<p>首先，eval 需要在真正的 window 上下文中执行，避免调用环境的影响，这一点，目前已经有比较明确的实现方案，就是“间接调用”：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">evalScript</span>(<span class="params">code: <span class="built_in">string</span></span>): <span class="built_in">any</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="string">&quot;&quot;</span>, <span class="built_in">eval</span>)(code);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其次，利用函数入参来改变一些全局变量名的作用域，将其指向既定的对象，比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">evalScript(<span class="string">`;</span></span><br><span class="line"><span class="string">    (function (window, self, parent, top, globalThis, document) &#123;</span></span><br><span class="line"><span class="string">        <span class="subst">$&#123;appCode&#125;</span></span></span><br><span class="line"><span class="string">    &#125;).call(winProxy, winProxy.window, winProxy.self, winProxy.parent, winProxy.top, winProxy.globalThis, winProxy.document)`</span>);</span><br></pre></td></tr></table></figure>
+
+<p>从这里也能看出，如果直接引用如 location、navigator、history 将无法被沙箱捕获，你需要用 window.location、window.navigator、window.history 的方法。进而可以推断出你在全局定义的变量，也必须以 window 属性的方式来读取，比如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> loadStartTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> loadCost = <span class="title class_">Date</span>.<span class="title function_">now</span>() - loadStartTime;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./entry.js&quot;</span> <span class="attr">entry</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>像上面这种 case，如果不以 window.loadStartTime 的方式能不能读取得到呢？也有一些技巧可做到。</p>
+<p>比如使用嵌套递归作用域的方式来实现，相当于每执行一次 JS 之后，就会为下一次执行生成一个新的嵌套上下文，这样后面的 JS 就可以直接读取上次的变量。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> loadStartTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">    <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">         <span class="keyword">var</span> loadCost = <span class="title class_">Date</span>.<span class="title function_">now</span>() - loadStartTime;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体的实现机理稍有复杂，理论上也会带来额外的性能开销，而且对于下面这种双向访问的场景也无法支持：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> loadStartTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">sendLog</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 访问未预定义变量</span></span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">sendToServer</span>(&#123; loadCost &#125;);</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> loadCost = <span class="title class_">Date</span>.<span class="title function_">now</span>() - loadStartTime;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./entry.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>不过仍然具有一定的价值，对于以 HTML 作为 entry 的子应用的容纳范围更广，子应用的灵活度更高。</p>
+<h3 id="3-2-环境变量"><a href="#3-2-环境变量" class="headerlink" title="3.2 环境变量"></a>3.2 环境变量</h3><p>有时，需要暴露给子应用的 JS 一些临时的虚拟变量，比如 qiankun 提供的 _<strong>_POWERED_BY_QIANKUN__</strong> ，而且允许不同子应用读取到的同一名称的变量有不同的取值。</p>
+<p>如果不开启沙箱的话，这一功能反而困难，需要在 window 上定义变量，然后以同步的形式运行子应用 JS 代码，最后在从 window 上移除掉。这个过程不但很可能和 window 上已经有的同名变量冲突，而且也只能保证同步代码中能读取到，异步代码中就读不到。举例说明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">__IN_MICRO_ENV__</span>) &#123;</span><br><span class="line">  <span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">window</span>.<span class="property">__IN_MICRO_ENV__</span>); <span class="comment">// undefined</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在沙箱环境中，实现环境变量更简单，而且可以不受同步&#x2F;异步的影响，可以持续访问。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">evalScript(<span class="string">`;</span></span><br><span class="line"><span class="string">    (function (window, document, __IN_MICRO_ENV__) &#123;</span></span><br><span class="line"><span class="string">        <span class="subst">$&#123;appCode&#125;</span></span></span><br><span class="line"><span class="string">    &#125;).call(winProxy, winProxy.document, winProxy.__IN_MICRO_ENV__)`</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-ESM"><a href="#3-3-ESM" class="headerlink" title="3.3 ESM"></a>3.3 ESM</h3><p><strong>ESM</strong> 格式的 JS 代码不能直接 eval 来执行。事实上，浏览器还未提供能直接运行 ESM 源码的方法。Garfish 采取来将源码转换成 URI 的方式实现了一定程度的 eval 能力，但是需要正则匹配 import 指令，存在一定的隐患。即便如此，因为不能用函数直接封装 ESM 源码，因此也无法实现沙箱运行。因此，garfish 还实现了一套运行时转译 ESM 的机制，但是对性能有较大影响，相信其稳定性也存在安全隐患。</p>
+<h2 id="四、DOM-结构"><a href="#四、DOM-结构" class="headerlink" title="四、DOM 结构"></a>四、DOM 结构</h2><p>一般来说，子应用有自认为的 DOM 环境，比如 html、body、head 以及#app 等等。</p>
+<h3 id="4-1-固定-DOM"><a href="#4-1-固定-DOM" class="headerlink" title="4.1 固定 DOM"></a>4.1 固定 DOM</h3><p>在沙箱环境中，如果把真正的 html、body、head 暴露给子应用，那么它很有可能在上面做一些副作用的操作，比如插入新 DOM、修改样式等等。为了避免这种情况，微前端框架一般都会给子应用生成一个模拟的 DOM 结构，比如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pseudo-html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pseudo-head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">pseudo-title</span>&gt;</span><span class="tag">&lt;/<span class="name">pseudo-title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pseudo-head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pseudo-body</span>&gt;</span><span class="tag">&lt;/<span class="name">pseudo-body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">pseudo-html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>DOM API 中的 <strong>document.documentElement</strong> 、 <strong>document.body</strong> 、 <strong>document.head</strong> 也都指向它们。</p>
+<p>根据业务需求，可以做更深的伪装定制，通过以下测试：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">tagName</span> === <span class="string">&quot;HTML&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">nodeName</span> === <span class="string">&quot;HTML&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">version</span> === <span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">parentNode</span> === <span class="variable language_">document</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">parentElement</span> === <span class="literal">null</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">constructor</span> === <span class="title class_">HTMLHtmlElement</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span> <span class="keyword">instanceof</span> <span class="title class_">HTMLHtmlElement</span> === <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">tagName</span> === <span class="string">&quot;BODY&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">nodeName</span> === <span class="string">&quot;BODY&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">constructor</span> === <span class="title class_">HTMLBodyElement</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span> <span class="keyword">instanceof</span> <span class="title class_">HTMLBodyElement</span> === <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">head</span>.<span class="property">tagName</span> === <span class="string">&quot;HEAD&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">head</span>.<span class="property">nodeName</span> === <span class="string">&quot;HEAD&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">head</span>.<span class="property">constructor</span> === <span class="title class_">HTMLHeadElement</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">head</span> <span class="keyword">instanceof</span> <span class="title class_">HTMLHeadElement</span> === <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注意 <strong>document.documentElement.parentElement</strong> ，如果等于 null，可能对一些视觉框架、组件库等需要用 parentElement 向上递归搜索的功能不友好。可根据需要是否开启以上伪装能力。</p>
+<h3 id="4-2-存量-DOM"><a href="#4-2-存量-DOM" class="headerlink" title="4.2 存量 DOM"></a>4.2 存量 DOM</h3><p>存量 DOM 是指那些在子应用的 HTML entry 中已有的 DOM 结构，简单的如#app，也可能有更复杂的结构。</p>
+<p>通常需要把它们同步到上述固定 DOM 的 body 中，也有些方案把 head 中的 meta 都同步了过来。</p>
+<p>一旦需要拷贝，需要考虑如下问题：</p>
+<ul>
+<li>非法元素、样式的过滤；</li>
+<li>元素在沙箱环境的适配</li>
+</ul>
+<h3 id="4-3-新增-DOM"><a href="#4-3-新增-DOM" class="headerlink" title="4.3 新增 DOM"></a>4.3 新增 DOM</h3><p>新增 DOM 有多种创建方式：</p>
+<ul>
+<li>document.createElement()；</li>
+<li>dom.clone()；</li>
+<li>dom.innerHTML&#x3D;</li>
+</ul>
+<p>通常来说只有第一种会被沙箱接管，使得新创建的 DOM 的 ownerDocument、baseURI 是符合沙箱环境的。</p>
+<p>需要特别关注的是，新创建的 script 元素会被转换成一个无实际功能的&lt;pseudo-script&gt;元素。框架会在后台自行下载&#x2F;执行其代码，模拟了 script 的能力。</p>
+<p>Custom Element默认是inline类型，除了在shadow DOM内部使用 <strong>:host{display:block}</strong> 外，只能在外部用选择器覆盖。未来如果Safari支持<a href="https://caniuse.com/custom-elementsv1" target="_blank">继承built-in元素</a>后可以解决。</p>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><ul>
+<li>沙箱只能处理有限范围内的变量隔离，通常为 window 和 document；</li>
+<li>以 eval function 的方式执行 JS 源码，全局变量引用应以 window 属性的方式使用；ESM 无法支持沙箱；</li>
+<li>子应用的 DOM 结构可以被伪装，但仍然能轻易实现逃逸</li>
+</ul>
+<p><strong>沙箱的本质是为子应用打造一个微型的独立浏览器环境，受限于成本，无法做到尽善尽美，仍然需要子应用遵循一定的规范和约定</strong> 。而由于微前端的主、子应用在管理上的独立性，往往沙箱能力的升级会对子应用造成较大的影响。</p>
+<h2 id="六、未来发展"><a href="#六、未来发展" class="headerlink" title="六、未来发展"></a>六、未来发展</h2><p>业界对沙箱的实现均强依赖 Proxy 技术，区别仅在于对副作用的拦截能力多少。随着业务复杂度的提升，以及一些存量旧业务在遵循冲突约定的改造成本上的考虑，逐渐意识到 Proxy 的能力仍然有限，想实现健壮性更强的沙箱环境，开发成本高且性能不稳定。</p>
+<p>业界已经有一些方案开始逐渐回归 iframe。iframe 天生具有强隔离性，不必对全局变量一一关注即可达到期望的隔离性能。不过这种一刀切的做法在实际的业务中仍然受到挑战，比如对主动逃逸变量的支持，比如对 DOM 的操作等等，仍然需要一定的机制将 iframe 和主页面整合到一起。这一步，仍然离不开 Proxy 的支持。</p>
+<p>ECMA 已经有一个新的提案，叫做<a href="https://github.com/tc39/proposal-shadowrealm" target="_blank">ShadowRealm</a>，位于 Stage3，对于创建独立的 JS 执行环境是一个比较理想的方案。不过微前端离不开视图，如何共享视图对象以及控制共享的粒度，就不是 ShadowRealm 的范围了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yanni4night.github.io/2023/01/14/2023-01-14-how-sandbox-works/" data-id="clcve91ko00022a2v945g6gae" data-title="沙箱是如何工作的" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2022-04-20-keep-efficient-when-dont-known-what-doing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/04/20/2022-04-20-keep-efficient-when-dont-known-what-doing/" class="article-date">
@@ -122,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2022/04/20/2022-04-20-keep-efficient-when-dont-known-what-doing/" data-id="cl27h7vks003qoc137chyggqq" data-title="《咨询的奥秘》 第三章 在不知道自己在做什么时保持高效" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2022/04/20/2022-04-20-keep-efficient-when-dont-known-what-doing/" data-id="clcve91ke00002a2v3lys9chk" data-title="《咨询的奥秘》 第三章 在不知道自己在做什么时保持高效" class="article-share-link">分享</a>
       
       
       
@@ -186,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/09/21/2018-09-21-prettier-eslint/" data-id="cl27h7vks003poc132owx7pyy" data-title="prettier配合eslint执行自动化代码格式化" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/09/21/2018-09-21-prettier-eslint/" data-id="cl1ul7d72003ajc2vdr7n3xo0" data-title="prettier配合eslint执行自动化代码格式化" class="article-share-link">分享</a>
       
       
       
@@ -251,7 +506,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/03/23/2018-03-23-principle-+/" data-id="cl27h7vkr003ooc131mls9nza" data-title="Javascript &#39;+&#39; 运算符原理" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/03/23/2018-03-23-principle-+/" data-id="cl1ul7d710038jc2vajqea0y5" data-title="Javascript &#39;+&#39; 运算符原理" class="article-share-link">分享</a>
       
       
       
@@ -316,7 +571,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/" data-id="cl27h7vkb002zoc139q5wegjp" data-title="《咨询的奥秘》 第二章 培养矛盾的思维框架" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/" data-id="cl1ul7d6z0035jc2vd45t8opq" data-title="《咨询的奥秘》 第二章 培养矛盾的思维框架" class="article-share-link">分享</a>
       
       
       
@@ -380,7 +635,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/19/2018-02-19-pagex/" data-id="cl27h7vka002woc1306379lp5" data-title="获取元素在文档流中的位置" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/19/2018-02-19-pagex/" data-id="cl1ul7d6y0033jc2vdr2xflz2" data-title="获取元素在文档流中的位置" class="article-share-link">分享</a>
       
       
       
@@ -442,7 +697,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/12/2018-02-12-vue-dom-diff/" data-id="cl27h7vk9002uoc13fmdecxfp" data-title="Vue.js 中的 DOM Diff 算法" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/12/2018-02-12-vue-dom-diff/" data-id="cl1ul7d6x0030jc2v2a9tac6l" data-title="Vue.js 中的 DOM Diff 算法" class="article-share-link">分享</a>
       
       
       
@@ -537,7 +792,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/11/2018-02-11-inferno-dom-diff/" data-id="cl27h7vk7002roc13azrje3pb" data-title="Inferno.js 中的 DOM Diff 算法" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/11/2018-02-11-inferno-dom-diff/" data-id="cl1ul7d6w002yjc2v6y1qa9x1" data-title="Inferno.js 中的 DOM Diff 算法" class="article-share-link">分享</a>
       
       
       
@@ -646,7 +901,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/06/2018-02-07-js-inherits/" data-id="cl27h7vk6002poc13gmo68oln" data-title="JavaScript 中继承的实现" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/06/2018-02-07-js-inherits/" data-id="cl1ul7d6v002vjc2v9s9s0c45" data-title="JavaScript 中继承的实现" class="article-share-link">分享</a>
       
       
       
@@ -713,78 +968,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/02/06/2018-02-06-is-plainobject/" data-id="cl27h7vk5002ooc13d2hre59u" data-title="isPlainObject 的不同实现" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2018-01-13-outlook" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/13/2018-01-13-outlook/" class="article-date">
-  <time class="dt-published" datetime="2018-01-13T13:23:40.000Z" itemprop="datePublished">2018-01-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/other/">other</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/13/2018-01-13-outlook/">2018 新年伊始·技术·工作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>已经不关注社区有大半年了，或者起码有一年了，毕竟被持续增长的业务缠了也有一年了，虽然很“充实”，但毫无疑问地说，也是一无所获。</p>
-<p>因为这一年来始终在 <code>React Naitve</code> 体系上工作，传统 Web 的知识也忘得大半了。还记得去年专门写过一篇<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/2016-review-frontend">文章</a>来总结2016年前端社区的现状，一年过去了，如果我不是特别孤陋寡闻的话，那么，我认为，现状并没有改变多少。</p>
-<h2 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h2><h3 id="React"><a href="#React" class="headerlink" title="React"></a><a target="_blank" rel="noopener" href="https://reactjs.org/">React</a></h3><p>React 经历了一次许可证的“惊心动魄”，虽然新版本的许可证已经是安全的，但有一定研发实力的公司都已经在造自己的轮子。当然，从开发者的角度，肯定是使用成熟的方案更舒服，显然近在咫尺的理想也不见得能容易实现。</p>
-<p>React 16 启用了新的引擎，这些细节是值得玩味的。</p>
-<p>除此之外，React 依然拥有大量的开发者用户，就像去年一样。</p>
-<h3 id="Angular"><a href="#Angular" class="headerlink" title="Angular"></a><a target="_blank" rel="noopener" href="https://angular.io/">Angular</a></h3><p>未曾想到的是，Angular 2 还立足未稳，Angular 4 就出现了。刚刚看到一篇文章，作者抱怨自己的项目使用了 Angular 2 的 beta 开发之后，暂且不表 TypeScript 语法的绑定，光是要快速 follow 短时间内几十个版本的升级就已经相当心累了。</p>
-<p>当然你可以说这位开发者在一开始就不应该使用 beta 版本，但是要等到正式版本发布的话，究竟是什么时候呢？我还记得 Angular 2 的核心包去掉了 <em>beta</em> 后缀的时候，其官方维护的一众功能包，比如动画等等，依旧是在 <em>alpha&#x2F;beta</em> 状态。好吧，即使等到所有包都达到了起码的 stable 状态，Angular 4 的出现又是几个意思呢？</p>
-<p>可以预见，Angular 1 时代的用户，相当一部分会放弃继续使用 Angular 的升级版本。曾经也一味推崇 Angular 2 的我，也渐渐失去了耐心。说到底，还是 Angular 的开发团队自己玩死的。</p>
-<h3 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a><a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/">Vue</a></h3><p>其实去年的这个时候，我是比较看衰 Vue 的，语法不喜欢、个人维护难以为继，和 React、Angular 甚至 <a target="_blank" rel="noopener" href="https://www.emberjs.com/">Ember</a> 完全没法比。</p>
-<p>不过 Vue.js 的流行程度经过这一年来，毫无减弱的趋势，我想至少有一下几方面原因：</p>
-<ol>
-<li>稳定，用户不必在业务迭代的同时，额外烦恼于持续升级基础框架；</li>
-<li>简单，上手容易，具有普通开发经验的人，也可以在十分钟内写出一个较为复杂的应用；</li>
-<li>生态工具较为丰富，特别是重要工具由作者维护，质量有保证且唯一，不用担心选择恐惧症</li>
-</ol>
-<p>说白了，对于真正的业务开发环境，稳定和简单是特别重要的两个特性，不求能有多激进的特性，但求省心。</p>
-<p>另外，Vue 的 ssr 方面也有足够的能力和性能支持，这在今天的 web 应用中，还是比较有吸引力的。React 生态也仅有一个简单的 <a target="_blank" rel="noopener" href="https://github.com/zeit/next.js/">next.js</a> 还算勉强能用，而 Angular 和 Ember 基本都属于残次品。</p>
-<h3 id="Ember"><a href="#Ember" class="headerlink" title="Ember"></a>Ember</h3><p>Ember 属于比较小众的框架，我已经关注它有两年了，毕竟推广不多，很多人不知道，社区发展也有限。过去这一年依旧表现平平。</p>
-<h3 id="React-Native"><a href="#React-Native" class="headerlink" title="React-Native"></a>React-Native</h3><p>如果说去年上半年我起码还在 <code>React Native</code> 上积累了点经验的话，那么下半年基本就达到了瓶颈了。许可证是一方面，公司环境是另一方面，但这都不重要。重要的是，我依旧不看好这个东西。</p>
-<p>“行百里者半九十”，我们已经写了成千上万行代码，过亿的用户，以及良好的开发上线流程，但依旧避免不了要时刻面对框架底层缺陷带给我们的额外工作量与业务损失。作为前端开发者，过去面对浏览器兼容性起码还有前辈多年的经验积累，但 <code>React Native</code> 带给我们的就是大大提升了自身的技术钻研能力。</p>
-<h2 id="工程化"><a href="#工程化" class="headerlink" title="工程化"></a>工程化</h2><h3 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a><a target="_blank" rel="noopener" href="https://webpack.js.org/">Webpack</a></h3><p>Webpack 也从 2 升级到了3，但变化俨然远远不如从 1 到 2。使用配置难度依旧居高不下，想我这种上了年纪的人，没得商量，每次使用都要再看一遍 doc。</p>
-<h3 id="Rollup"><a href="#Rollup" class="headerlink" title="Rollup"></a><a target="_blank" rel="noopener" href="https://rollupjs.org/guide/en">Rollup</a></h3><p>Rollup 的定位十分明确，与 Webpack 不构成竞争关系。写  library 用 Rollup，写 app 用 Webpack。</p>
-<h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p><a target="_blank" rel="noopener" href="https://jspm.io/">jspm</a>、<a target="_blank" rel="noopener" href="https://bower.io/">bower</a> 几乎已成骨灰，<a target="_blank" rel="noopener" href="https://yarnpkg.com/">yarn</a> 依旧不支持 scope。</p>
-<h2 id="新方向"><a href="#新方向" class="headerlink" title="新方向"></a>新方向</h2><h3 id="webassembly"><a href="#webassembly" class="headerlink" title="webassembly"></a><a target="_blank" rel="noopener" href="http://webassembly.org/">webassembly</a></h3><p>在下一代人上小学之前能看到定稿的 webassembly 我就已经满足了。</p>
-<h3 id="webcomponents"><a href="#webcomponents" class="headerlink" title="webcomponents"></a><a target="_blank" rel="noopener" href="https://www.webcomponents.org/">webcomponents</a></h3><p>在下一代人上小学之前能看到普及的 webcomponents 我就已经满足了。</p>
-<h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>断断续续学习 <a target="_blank" rel="noopener" href="https://d3js.org/">D3</a>，但明显精力不如从前。</p>
-<h3 id="微信小程序"><a href="#微信小程序" class="headerlink" title="微信小程序"></a>微信小程序</h3><p>如我所料，半温不火。令人鄙视的是，支付宝和百度都还在模仿，简直了。</p>
-<h2 id="我的工作"><a href="#我的工作" class="headerlink" title="我的工作"></a>我的工作</h2><p>去年我还在研究一种解决方案，能够兼顾的开发效率、运行时性能这两个看似简单却互为矛盾的指标。最后确实有了一个雏形。今年，我已经不再感兴趣，没有别的，就一个原因，想的太多，跟本没有那么复杂的使用场景。</p>
-<p>总体来看过去一年，对于个人来讲是毫无建树的，今年上半年，我可能需要拓展一下视野，找一找我不会做的事情做一做。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yanni4night.github.io/2018/01/13/2018-01-13-outlook/" data-id="cl27h7vk3002loc136jm12leu" data-title="2018 新年伊始·技术·工作" class="article-share-link">分享</a>
+      <a data-url="https://yanni4night.github.io/2018/02/06/2018-02-06-is-plainobject/" data-id="cl1ul7d6u002ujc2vcu0d9iuf" data-title="isPlainObject 的不同实现" class="article-share-link">分享</a>
       
       
       
@@ -811,7 +995,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/b70-Valkyrie/">b70 Valkyrie</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bubble-event-jquery/">bubble event jquery</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome-json-performance-resource-timing/">chrome json performance resource timing</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css3-column-layout/">css3 column layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/encoding/">encoding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/engineering/">engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/">error exception throw try catch 异常</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flex-box-%E5%8F%AF%E4%BC%B8%E7%BC%A9-%E5%B8%83%E5%B1%80/">flex box 可伸缩 布局</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitbook-plugin/">gitbook plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/incremental-DOM-reactjs-emberjs-glimmer/">incremental DOM reactjs emberjs glimmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/layout/">layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/liqi-%E5%88%A9%E5%99%A8/">liqi 利器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm/">npm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm-node-semser-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%89%88%E6%9C%AC/">npm node semser 语义化版本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sublime-plugin/">sublime plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tieba-https/">tieba https</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/webcomponents/">webcomponents</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%92%A8%E8%AF%A2%E7%9A%84%E5%A5%A5%E7%A7%98/">咨询的奥秘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%B8%88-%E6%88%90%E9%95%BF/">工程师 成长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%8C%BA-%E6%8A%80%E6%9C%AF/">社区 技术</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/b70-Valkyrie/">b70 Valkyrie</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bubble-event-jquery/">bubble event jquery</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome-json-performance-resource-timing/">chrome json performance resource timing</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/css3-column-layout/">css3 column layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/encoding/">encoding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/engineering/">engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/">error exception throw try catch 异常</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flex-box-%E5%8F%AF%E4%BC%B8%E7%BC%A9-%E5%B8%83%E5%B1%80/">flex box 可伸缩 布局</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitbook-plugin/">gitbook plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/incremental-DOM-reactjs-emberjs-glimmer/">incremental DOM reactjs emberjs glimmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/layout/">layout</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/liqi-%E5%88%A9%E5%99%A8/">liqi 利器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm/">npm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/npm-node-semser-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%89%88%E6%9C%AC/">npm node semser 语义化版本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sublime-plugin/">sublime plugin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tieba-https/">tieba https</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/webcomponents/">webcomponents</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%92%A8%E8%AF%A2%E7%9A%84%E5%A5%A5%E7%A7%98/">咨询的奥秘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%B8%88-%E6%88%90%E9%95%BF/">工程师 成长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/">微前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%8C%BA-%E6%8A%80%E6%9C%AF/">社区 技术</a></li></ul>
     </div>
   </div>
 
@@ -840,7 +1024,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a></li></ul>
     </div>
   </div>
 
@@ -851,6 +1035,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2023/01/14/2023-01-14-how-sandbox-works/">沙箱是如何工作的</a>
+          </li>
         
           <li>
             <a href="/2022/04/20/2022-04-20-keep-efficient-when-dont-known-what-doing/">《咨询的奥秘》 第三章 在不知道自己在做什么时保持高效</a>
@@ -868,10 +1056,6 @@
             <a href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/">《咨询的奥秘》 第二章 培养矛盾的思维框架</a>
           </li>
         
-          <li>
-            <a href="/2018/02/19/2018-02-19-pagex/">获取元素在文档流中的位置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -885,7 +1069,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2022 Yanni4night<br>
+      &copy; 2023 Yanni4night<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
