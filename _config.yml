@@ -4,7 +4,7 @@
 
 # Site
 title: 人过不留名 雁过不留声
-subtitle: ''
+subtitle: '夜莺'
 description: ''
 keywords:
 author: Yanni4night
@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
