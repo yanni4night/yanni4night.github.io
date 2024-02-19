@@ -113,7 +113,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -139,6 +139,92 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2015/01/17/2015-01-17-bugs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2015/01/17/2015-01-17-bugs/" class="post-title-link" itemprop="url">Bugs</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-01-17 00:00:00" itemprop="dateCreated datePublished" datetime="2015-01-17T00:00:00+08:00">2015-01-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:23:50" itemprop="dateModified" datetime="2022-04-11T18:23:50+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/bug/" itemprop="url" rel="index"><span itemprop="name">bug</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>继上次发现 <code>Chrome</code> 核的 <code>text-decoration</code> 的 <a target="_blank" rel="noopener" href="https://code.google.com/p/chromium/issues/detail?id=342126">bug</a> 后最近又发现了 Chrome 39 的开发者工具（DevTools）的一些故障，表现为不能显示某些 DOM 元素的样式，甚至 <code>console</code> 也会出现没有任何输出的情况，而这确和 URL 参数中含有特殊编码的值有关。虽然不知道故障的原因，但可以在 Linux&#x2F;Mac 版的Chrome 39&#x2F;Opera 26 上都100%重现，只是 Chrome 的 <code>Dev/Canary Channel</code> 都已经“意外修复”了该问题，所以也没有个结论，具体描述在<a target="_blank" rel="noopener" href="https://code.google.com/p/chromium/issues/detail?id=448702">这里</a>。我觉得这样明显的问题出现在 <code>stable</code> 分支上，<code>chromium</code> 应该给个说法才是。</p>
+<p><code>nodejs</code> 的 0.11.x 分支也出现了诡异的<a target="_blank" rel="noopener" href="https://github.com/joyent/node/issues/9008">问题</a>，<code>url</code> 模块的 <code>parse</code> 方法在第二个参数传入 <code>true</code> 时返回的对象中应始终存在一个非 <code>null</code> 的 <code>query</code> 对象，但 0.11.x 版本却返回 <code>null</code>，导致了许多 crash。这会影响到一些 CI 系统在 0.11.x 版本下的构建（0.12还没有任何发布版）。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1947,122 +2033,6 @@ document.write('Test Result:' + (function () {
       }
     })());
 </script>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/09/06/2014-09-06-hasownproperty-in/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/09/06/2014-09-06-hasownproperty-in/" class="post-title-link" itemprop="url">hasOwnProperty与in</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-09-06 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-06T00:00:00+08:00">2014-09-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:23:50" itemprop="dateModified" datetime="2022-04-11T18:23:50+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>hasOwnProperty</code> 与 <code>in</code> 都可以用来判断一个对象的成员是否存在，但有很大的区别，前者不会搜索对象的原型链中的成员，但后者会；前者是 Object 原型中的函数，后者是 Javascript 操作符等。关于第一中区别，可以通过阅读 <a target="_blank" rel="noopener" href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript</a> 规范来了解其细节。</p>
-<h6 id="hasOwnProperty-NaN"><a href="#hasOwnProperty-NaN" class="headerlink" title="hasOwnProperty"></a>hasOwnProperty</h6><p>[ECMA-262 3rd edition](<a target="_blank" rel="noopener" href="http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262">http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262</a> %203rd%20edition %20December%201999.pdf) 对 <code>hasOwnProperty</code> 的描述非常简单：“返回对象（不包括原型链）中是否有该成员”。该版本针对对象成员定义了四个属性：<code>ReadOnly</code>、<code>DontEnum</code>、<code>DontDelete</code>、<code>Internal</code>。</p>
-<p><a target="_blank" rel="noopener" href="http://ecma-international.org/ecma-262/5.1/">ECMA-262 5.1rd edition</a> 重新定义了成员属性，提供了更灵活的访问权限。在该版本中，<a target="_blank" rel="noopener" href="http://ecma-international.org/ecma-262/5.1/#sec-8.6.1">对象成员</a>分为“数据成员(Data Property)”和“存取成员(Accessor Property)”两种。前者包含属性：<code>Value</code>、<code>Writable</code>、<code>Enumerable</code>、<code>Configurable</code>，后者包含<code>Get</code>、<code>Set</code>、<code>Enumerable</code>、<code>Configurable</code>。对于不同的成员定义方式，其类型自然也不同。</p>
-<pre><code>var o = &#123;
-    a:1 //Data Property
-    set b()&#123;&#125; //Accessor Property
-    get c()&#123;&#125; //Accessor Property
-&#125;;
-o.d = 1;//Data Property
-o.__defineSetter(&#39;m&#39;  function(m)&#123;&#125;);//Accessor Property
-o.__defineGetter(&#39;n&#39;  function(n)&#123;&#125;);//Accessor Property
-Object.defineProperty(o &#39;e&#39; &#123;&#125;);//Data Property
-Object.defineProperty(o &#39;e&#39; &#123;set:function()&#123;&#125;&#125;);//Accessor Property
-Object.create(null &#123;f:&#123;&#125;&#125;);//Data Property
-Object.create(null &#123;f:&#123;set:function()&#123;&#125;&#125;&#125;);//Accessor Property
-</code></pre>
-<p>需要注意的是不能同时定义“value”与“set&#x2F;get”。</p>
-<p>ES5 中的 <code>hasOwnProperty</code> 需要访问一个内部方法：<code>GetOwnProperty</code>，该方法返回一个新的<a target="_blank" rel="noopener" href="http://ecma-international.org/ecma-262/5.1/#sec-8.10">属性描述符(Property Descriptor )</a>，或者是“数据成员”或者是“存取成员”。对于字符串来说，它有一个自己的 <a target="_blank" rel="noopener" href="http://ecma-international.org/ecma-262/5.1/#sec-15.5.5.2">GetOwnProperty</a>方法，允许以数字作为 property name，代表在指定位置上是否存在字符，该值不超过字符串长度减一。该方法仅返回“数据成员”格式，因为字符串是不可变的。</p>
-<h6 id="in"><a href="#in" class="headerlink" title="in"></a>in</h6><p><code>in</code> 操作符只能用于对象而非简单类型，它调用内部方法 <code>HasProperty</code>，该方法递归搜索原型链，直到找到对应的成员。在 ES5 中，该方法还涉及另一个内部方法：<code>GetOwnProperty</code>。因此对于字符串，下面的表达式返回真：</p>
-<pre><code>2 in new String(&#39;abc&#39;)
-</code></pre>
-<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>判断一个对象 O 是否携带有成员 P，一般可以：</p>
-<pre><code>undefined === O.P
-</code></pre>
-<p>但对于值为 <code>undefined</code> 的成员无效，这时就需要使用 <code>in</code> 操作符：<br>​<br>    var Class &#x3D; function(){this.P &#x3D; undefined;};<br>    Class.prototype &#x3D; {Q:undefined;};<br>    var O &#x3D; new Class();</p>
-<pre><code>!!O.P;//false
-!!O.Q;//false
-&#39;P&#39; in O;//true
-&#39;Q&#39; in O;//true
-O.hasOwnProperty(&#39;P&#39;);//true
-O.hasOwnProperty(&#39;Q&#39;);//false
-</code></pre>
 
       
     </div>
