@@ -26,7 +26,6 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Yanni4night">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:creator" content="@yanni4night">
 
 
 <link rel="canonical" href="https://yanni4night.github.io/page/6/">
@@ -128,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -149,9 +148,6 @@
       <span class="links-of-author-item">
         <a href="mailto:yanni4night@gmail.com" title="E-Mail → mailto:yanni4night@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/yanni4night" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yanni4night" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
-      </span>
   </div>
 
         </div>
@@ -165,6 +161,145 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/09/07/2014-09-07-error-in-javascript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/09/07/2014-09-07-error-in-javascript/" class="post-title-link" itemprop="url">Error in JavaScript</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-09-07 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-07T00:00:00+08:00">2014-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/error-exception-throw-try-catch-%E5%BC%82%E5%B8%B8/" itemprop="url" rel="index"><span itemprop="name">error exception throw try catch 异常</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/09/07/2014-09-07-error-in-javascript/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/09/07/2014-09-07-error-in-javascript/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>类似于 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/Java">Java</a> 语言中将异常（Exception）分为 <code>CheckedException</code> 和 <code>RuntimeException</code>一样，<a target="_blank" rel="noopener" href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMA262</a> 定义 <a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/5.1/#sec-16">Error</a> 分为“早期错误（early error）”与“运行时错误（runtime error）”。</p>
+<p>“早期错误”意即能够在程序进行任意构造求值操作之前检测到并报出的错误，包含下面几类：</p>
+<ol>
+<li>语法错误；</li>
+<li>对同一个属性定义多个 setter 或多个 getter；</li>
+<li>对同一个属性同时定义 value 和 setter&#x2F;getter；</li>
+<li>正则表达式语法错误；</li>
+<li><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/5.1/#sec-10.1.1">严格模式</a>中有 重复的属性赋值；</li>
+<li><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/5.1/#sec-10.1.1">严格模式</a>中使用 <a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/5.1/#sec-12.10">wi th</a> 关键字；</li>
+<li>独立<a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/5.1/#sec-10.1.1">严格模式</a>下的 函数定义中具有重复的参数定义；</li>
+<li><code>return</code>，<code>break</code> 和 <code>continue</code> 的不合适使用；</li>
+<li>向非引用赋值</li>
+</ol>
+<p> 除了这些错误以外都属于运行时错误，不同的错误类型将会对程序带来一定的影响，例如：</p>
+<pre><code>&lt;script&gt;var i =0  j = 0;&lt;/script&gt;
+&lt;script&gt;
+    ++i;
+    syntax error
+&lt;/script&gt;
+&lt;script&gt;
+    ++j;
+    throw new Error(&#39;runtime error&#39;);
+&lt;/script&gt;
+&lt;script&gt;
+    console.log(i + &#39;/&#39; + j);//0/1
+&lt;/script&gt;
+</code></pre>
+<p>内建的 Error 包含下面几种类型：</p>
+<ul>
+<li>EvalError</li>
+<li>InternalError</li>
+<li>RangeError</li>
+<li>ReferenceError</li>
+<li>SyntaxError</li>
+<li>TypeError</li>
+<li>URIError</li>
+</ul>
+<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error</a></li>
+<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx">http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2051,287 +2186,6 @@ flex:2;
 <li><a target="_blank" rel="noopener" href="http://www.guypo.com/technical/http-pipelining-not-so-fast-nor-slow/">http://www.guypo.com/technical/http-pipelining-not-so-fast-nor-slow/</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.mnot.net/blog/2011/07/11/what_proxies_must_do">http://www.mnot.net/blog/2011/07/11/what_proxies_must_do</a></li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/04/23/2014-04-23-setting-document-domain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/04/23/2014-04-23-setting-document-domain/" class="post-title-link" itemprop="url">浅谈document.domain</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-04-23 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-23T00:00:00+08:00">2014-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/04/23/2014-04-23-setting-document-domain/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/04/23/2014-04-23-setting-document-domain/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在需要主子域跨域技术的应用场景中，父 frame 和子 frame 设置相同的 <code>document.domain</code> 是一种特别常用的方式，我们可以看见<a target="_blank" rel="noopener" href="http://www.qq.com/">腾讯</a>公司的页面中很多都会有一句：</p>
-<pre><code>document.domain = &quot;qq.com&quot;;
-</code></pre>
-<p><code>qq.com</code> 域页面的登录行为很多都是依赖这种方式与iframe结合来实现的。</p>
-<p>事实上，W3C 的 <a target="_blank" rel="noopener" href="http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109/html.html#ID-2250147">DOM 2 HTML标准</a>将 <code>document.domain</code>定义为只读的：</p>
-<blockquote>
-<p>domain of type DOMString  readonly<br>The domain name of the server that served the document  or null if the server cannot be identified by a domain name.</p>
-</blockquote>
-<p>但<a target="_blank" rel="noopener" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#relaxing-the-same-origin-restriction">HTML5 草案</a> 中有关于对 <code>document.domain</code>赋值的内容。</p>
-<p>在 <a target="_blank" rel="noopener" href="http://www.webkit.org/">Webkit</a> 的 <a target="_blank" rel="noopener" href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/Document.idl">Document.idl</a> 源码中对 <code>domain</code> 有这样的定义：</p>
-<pre><code>#if defined(LANGUAGE_JAVASCRIPT) &amp;&amp; LANGUAGE_JAVASCRIPT
-    [TreatNullAs=NullString  SetterRaisesException] attribute DOMString domain;
-#else
-    readonly attribute DOMString domain;
-#endif
-</code></pre>
-<p>这也说明了 <code>domain</code> 设置为“writable” 仅用于页面脚本：即允许主子域脚本进行通信，但不涉及 <code>localStorage</code> 、<code>indexedDB</code> 和 <code>XMLHttpRequest</code> 的共享。目前市场上主流浏览器都支持 <code>domain</code>可写，可以满足几乎所有主子域脚本通信需求，但在特殊情况下也有些许不同。</p>
-<p>所有浏览器都不支持设置 <code>domain</code> 为当前域子域或不完整的超域，比如当前域为 “abc.google.com”  那么设置 <code>domain</code> 为 “<a target="_blank" rel="noopener" href="http://www.abc.google.com”/">www.abc.google.com”</a> 或”ogle.com” 都是不允许的。现在测试各个浏览器在 host 为以下情形下设置不同domain的反应：</p>
-<ul>
-<li>为IP地址</li>
-<li>单节域名</li>
-<li>多节域名</li>
-</ul>
-<p>测试 host 为 “google”、“<a target="_blank" rel="noopener" href="http://www.google.com”、“10.11.202.231”.由子域名向父域名测试,因此前面的测试不会对后面的测试造成干扰./">www.google.com”、“10.11.202.231”。由子域名向父域名测试，因此前面的测试不会对后面的测试造成干扰。</a></p>
-<table>
-<thead>
-<tr>
-<th>UA&#x2F;host</th>
-<th align="left">google</th>
-<th align="center"><a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a></th>
-<th align="right">10.11.202.231</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Firefox(Mac&#x2F;Windows&#x2F;Android)</td>
-<td align="left"><img src="/images/domain/s.ff.jpg" alt="s.ff"></td>
-<td align="center"><img src="/images/domain/m.ff.jpg" alt="m.ff"></td>
-<td align="right"><img src="/images/domain/ip.ff.jpg" alt="ip.ff"></td>
-</tr>
-<tr>
-<td>Safari(iOS&#x2F;Mac&#x2F;Windows)</td>
-<td align="left"><img src="/images/domain/s.ie8.jpg" alt="s.safari"></td>
-<td align="center"><img src="/images/domain/m.ie6.jpg" alt="m.safari"></td>
-<td align="right"><img src="/images/domain/ip.safari.jpg" alt="ip.safari"></td>
-</tr>
-<tr>
-<td>IE6~7</td>
-<td align="left"><img src="/images/domain/s.ie8.jpg" alt="s.ie67"></td>
-<td align="center"><img src="/images/domain/m.ie6.jpg" alt="m.ie67"></td>
-<td align="right"><img src="/images/domain/ip.ie6.jpg" alt="ip.ie67"></td>
-</tr>
-<tr>
-<td>Chrome(Mac Windows)&#x2F;IE8~10&#x2F;Opera(presto内核 Mac&#x2F;Windows)</td>
-<td align="left"><img src="/images/domain/s.ie8.jpg" alt="s.chrome-ie810-opera"></td>
-<td align="center"><img src="/images/domain/m.ie6.jpg" alt="m.chrome-ie810-opera"></td>
-<td align="right"><img src="/images/domain/ip.ie8.jpg" alt="ip.chrome-ie810-opera"></td>
-</tr>
-<tr>
-<td>IE(WP8)</td>
-<td align="left">无法打开</td>
-<td align="center"><img src="/images/domain/m.ie6.jpg" alt="m.chrome-ie810-opera"></td>
-<td align="right"><img src="/images/domain/ip.ie8.jpg" alt="ip.chrome-ie810-opera"></td>
-</tr>
-</tbody></table>
-<p>由上表可得出以下结论：</p>
-<ul>
-<li>Firefox 可以接受带 port 的父域名，但是任意 port 都会被忽略，其它浏览器则会报错；</li>
-<li>对于 IP 地址，IE6、IE7 和 Safari 简单地将其当做为域名；</li>
-<li>仅 Safari 允许将 <code>domain</code> 设置为最后一节域名。</li>
-</ul>
-<p> Safari 以及 国内几乎所有带 <a target="_blank" rel="noopener" href="http://www.webkit.org/">webkit</a> 内核的浏览器 使用了一种相对简单的方式，即在字符串层面上新的 <code>domain</code> 是当前 <code>domain</code> 的“父域名”即可，可以从 <a target="_blank" rel="noopener" href="http://www.webkit.org/">webkit</a> 中 <code>Document.cpp</code> 文件的源代码中看出：<br>​    </p>
-<pre><code>void Document::setDomain(const String&amp; newDomain  ExceptionCode&amp; ec)
-&#123;
-if (SchemeRegistry::isDomainRelaxationForbiddenForURLScheme(securityOrigin()-&gt;protocol()))     &#123;
-        ec = SECURITY_ERR;
-        return;
-    &#125;
-
-    // Both NS and IE specify that changing the domain is only allowed when
-    // the new domain is a suffix of the old domain.
-
-    // FIXME: We should add logging indicating why a domain was not allowed.
-
-    // If the new domain is the same as the old domain  still call
-    // securityOrigin()-&gt;setDomainForDOM. This will change the
-    // security check behavior. For example  if a page loaded on port 8000
-    // assigns its current domain using document.domain  the page will
-    // allow other pages loaded on different ports in the same domain that
-    // have also assigned to access this page.
-    if (equalIgnoringCase(domain()  newDomain)) &#123;
-        securityOrigin()-&gt;setDomainFromDOM(newDomain);
-        return;
-    &#125;
-
-    int oldLength = domain().length();
-    int newLength = newDomain.length();
-    // e.g. newDomain = webkit.org (10) and domain() = www.webkit.org (14)
-    if (newLength &gt;= oldLength) &#123;
-        ec = SECURITY_ERR;
-        return;
-    &#125;
-
-    String test = domain();
-    // Check that it&#39;s a subdomain  not e.g. &quot;ebkit.org&quot;
-    if (test[oldLength - newLength - 1] != &#39;.&#39;) &#123;
-        ec = SECURITY_ERR;
-        return;
-    &#125;
-
-    // Now test is &quot;webkit.org&quot; from domain()
-    // and we check that it&#39;s the same thing as newDomain
-    test.remove(0  oldLength - newLength);
-    if (test != newDomain) &#123;
-        ec = SECURITY_ERR;
-        return;
-    &#125;
-
-    securityOrigin()-&gt;setDomainFromDOM(newDomain);
-&#125;
-</code></pre>
-<p>因此即使是IP地址或是最后一节 <code>domain</code> 也会被允许设置。<code>Internet Explorer</code> 不开源，但可以猜测其对多节域名进行了最后一节域名限制，在 <code>IE8+</code> 上增加了IP地址限制。<code>Firefox</code> 在3.0版本增加了此限制。对于单节域名如 <code>http://hello/</code>，所有浏览器都一致性地允许设置，当然，这相当于设置 <code>domain</code> 为自身。</p>
-<p>Firefox浏览器忽略 <code>port</code> 的行为初衷不得而知，但可以测试该特性是在<code>3.0</code>版本上增加的。</p>
-<p>值得一提的是，<a target="_blank" rel="noopener" href="http://www.chromium.org/Home">chromium</a> 项目对 <a target="_blank" rel="noopener" href="http://www.webkit.org/">webkit</a> 进行了一些修改，从而带来了一些新的特性，观察 <a target="_blank" rel="noopener" href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/Document.cpp">Document.cpp</a> 文件的源代码：</p>
-<pre><code>void Document::setDomain(const String&amp; newDomain  ExceptionState&amp; exceptionState)
-&#123;
-    if (isSandboxed(SandboxDocumentDomain)) &#123;
-        exceptionState.throwSecurityError(&quot;Assignment is forbidden for sandboxed iframes.&quot;);
-        return;
-    &#125;
-
-if (SchemeRegistry::isDomainRelaxationForbiddenForURLScheme(securityOrigin()-&gt;protocol()))     &#123;
-    exceptionState.throwSecurityError(&quot;Assignment is forbidden for the &#39;&quot; + securityOrigin()-&gt;    protocol() + &quot;&#39; scheme.&quot;);
-        return;
-    &#125;
-
-    if (newDomain.isEmpty()) &#123;
-        exceptionState.throwSecurityError(&quot;&#39;&quot; + newDomain + &quot;&#39; is an empty domain.&quot;);
-        return;
-    &#125;
-
-OriginAccessEntry::IPAddressSetting ipAddressSetting = settings() &amp;&amp; settings()-&gt;treatIPAddressAsDomain() ? OriginAccessEntry::TreatIPAddressAsDomain :     OriginAccessEntry::TreatIPAddressAsIPAddress;
-OriginAccessEntry accessEntry(securityOrigin()-&gt;protocol()  newDomain      OriginAccessEntry::AllowSubdomains  ipAddressSetting);
-    OriginAccessEntry::MatchResult result = accessEntry.matchesOrigin(*securityOrigin());
-    if (result == OriginAccessEntry::DoesNotMatchOrigin) &#123;
-    exceptionState.throwSecurityError(&quot;&#39;&quot; + newDomain + &quot;&#39; is not a suffix of &#39;&quot; + domain() + &quot;&#39;.    &quot;);
-        return;
-    &#125;
-
-    if (result == OriginAccessEntry::MatchesOriginButIsPublicSuffix) &#123;
-        exceptionState.throwSecurityError(&quot;&#39;&quot; + newDomain + &quot;&#39; is a top-level domain.&quot;);
-        return;
-    &#125;
-
-    securityOrigin()-&gt;setDomainFromDOM(newDomain);
-    if (m_frame)
-        m_frame-&gt;script().updateSecurityOrigin(securityOrigin());
-&#125;
-</code></pre>
-<p>可见除了支持HTML5的 <a target="_blank" rel="noopener" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-iframe-element.html#attr-iframe-sandbox">sandbox</a> 之外，还增加了IP地址检测，因此 <code>Chrome</code> 才不会像Safari那样允许IP地址的一段设置为 <code>domain</code>。特别地，<code>Chrome</code> 还进行了顶级域名检测， <a target="_blank" rel="noopener" href="http://www.chromium.org/Home">chromium</a> 项目会生成一个 <a target="_blank" rel="noopener" href="https://code.google.com/p/chromium/codesearch#chromium/src/net/base/registry_controlled_domains/effective_tld_names.gperf">effective_tld_names.gperf</a> 文件，提供了很多域名列表，末尾标记不为0的域名将不能设置为 <code>document.domain</code>。比如，一个域名为<a target="_blank" rel="noopener" href="http://www.english.uk的页面,在/">www.english.uk的页面，在</a> <code>Chrome</code> 下将不能设置 <code>document.domain</code> 为 <code>english.uk</code>，因为 <code>english.uk</code> 被认为是<code>顶级域名</code>从而报错：</p>
-<blockquote>
-<p>SecurityError: Failed to set the ‘domain’ property on ‘Document’: ‘english.uk’ is a top-level domain.</p>
-</blockquote>
-<p>这部分逻辑的一些代码来自 <a target="_blank" rel="noopener" href="http://www.mozilla.org/">Mozilla</a> ，因此<code>Firefox</code> (3.0+)也具有同样的特性。</p>
-<p>截止今天(2014-04-24)，这个列表至少包含472个顶级域名，包括孟加拉国、文莱、库克群岛、塞浦路斯、厄立特里亚、埃塞俄比亚、斐济、马尔维纳斯群岛、关岛、以色列、牙买加、肯尼亚、柬埔寨、科威特、缅甸、莫桑比克、尼加拉瓜、尼泊尔、新西兰、巴布亚新几内亚、土耳其、英国、也门、南非、赞比亚、津巴布韦等国家和地区的顶级域名。想必这些国家的网站在设置 <code>document.domain</code> 时会遇到一些困难了:)。</p>
-<p>在对IE浏览器进行测试时，也发现了一些奇怪的事情。实验“aa.bb.cc.dd”域名，发现在 <code>IE8+</code> 下将不能设置 <code>document.domain</code> 为“cc.dd”。经过反复测试发现 <code>IE8+</code>在多节域名下允许设置 的双节域名中，两节单词中要至少有一个大于2个字母，换言之，下列域名都是不允许的：</p>
-<ul>
-<li>sa.cn</li>
-<li>o.jp</li>
-<li>x.m</li>
-</ul>
-<p>但下列是允许的：</p>
-<ul>
-<li>sax.cn</li>
-<li>o.com</li>
-<li>xxx.k</li>
-</ul>
-<p>暂不知微软用意为何，但可以联想到，新浪微博的短域名 <code>t.cn</code>在有下一级域名的情形下，将不能设置 <code>document.domain</code>为 <code>t.cn</code>。</p>
-<p>即便拥有上面的诸多问题，不过都属于特例，除了 <code>IE8+</code> 的短域名问题，其它基本都不会在日常的开发中遇到。</p>
-<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ol>
-<li><a target="_blank" rel="noopener" href="http://javascript.info/tutorial/same-origin-security-policy">http://javascript.info/tutorial/same-origin-security-policy</a></li>
-<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/ie/ms533740(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ie/ms533740(v=vs.85).aspx</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/document.domain">https://developer.mozilla.org/en-US/docs/Web/API/document.domain</a></li>
-</ol>
 
       
     </div>
