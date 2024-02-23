@@ -79,7 +79,7 @@ open_graph:
   enable: true
   options:
     #twitter_card: <twitter:card>
-    twitter_id: yanni4night
+    #twitter_id: yanni4night
     #twitter_site: <twitter:site>
     #twitter_image: <twitter:image>
     #google_plus: <g+:profile_link>
@@ -158,7 +158,7 @@ social:
   GitHub: https://github.com/yanni4night || fab fa-github
   E-Mail: mailto:yanni4night@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
-  Twitter: https://twitter.com/yanni4night || fab fa-twitter
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
   #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
   #YouTube: https://youtube.com/yourname || fab fa-youtube

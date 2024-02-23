@@ -6,11 +6,9 @@ categories: 读书
 ---
 
 
-> <font size=1>本文首发于“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
+> <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
 
 <br />
-
-<font color=grey size=1>（全文11600字，阅读可能需要23分钟）</font>
 
 不久前，因为一个短视频的原因，忽然对江户川乱步的这篇《人间椅子》有很大的兴趣，便从网上买了一本来阅读。
 
