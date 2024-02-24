@@ -6,8 +6,8 @@ git clone --depth=1 -b gh-pages git@github.com:yanni4night/yanni4night.github.io
 
 rm -rf ../gh-pages/*
 
-npm ci
-npm run build
+yarn
+yarn build
 
 cp -r _site/* ../gh-pages
 
