@@ -121,3 +121,5 @@ categories: 读书
 《生意人》是爱伦·坡为数不多的（甚至可以说是唯一的）轻松诙谐、易于理解的作品。建议大家有时间读一读，我阅读的是来自于江西人民出版社出版的，曹明伦翻译的《乌鸦：爱伦·坡短篇小说精选》一书。
 
 <img src="/images/businessman/8.png" />
+
+<font size=-1 color=lightgrey>（文中大部分图片采用AI生成）</font>
