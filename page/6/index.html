@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,691 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/09/13/2014-09-13-auto-sublime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/09/13/2014-09-13-auto-sublime/" class="post-title-link" itemprop="url">一种特殊的Sublime插件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-09-13 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-13T00:00:00+08:00">2014-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/sublime-plugin/" itemprop="url" rel="index"><span itemprop="name">sublime plugin</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/09/13/2014-09-13-auto-sublime/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/09/13/2014-09-13-auto-sublime/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a> 上捷克共和国一哥们提出几个 issues，讲我的某个石器时代土著插件不支持 <a target="_blank" rel="noopener" href="http://www.sublime.com/">Sublime</a> <code>Text Command</code> 并且 <code>Context Menu</code> 缺失。其实这两个功能入口仅需要编辑两个配置文件就可以了，但前提是命令数量是有限的，这样才可以直接写死配置文件。</p>
+<p>只是这个插件提供的主要功能即是无限扩展命令完成各种插入操作，默认提供了4种常见插入，此外可以无限配置插入种类，如果全部都要配置快捷键，确实不合理。</p>
+<p><code>Sublime</code> 插件配置文件分为几种：</p>
+<ul>
+<li>sublime-menu，右键菜单和主菜单</li>
+<li>sublime-commands，文本命令</li>
+<li>sublime-keymap，快捷键定义</li>
+<li>sublime-settings，插件主要配置文件</li>
+</ul>
+<p>前三种格式全为数组，最后一个为对象，也只有最后一个 <code>Sublime</code> 单独提供了 API 供读写：</p>
+<pre><code>sublime.load_settings()
+sublime.save_settings()
+</code></pre>
+<p>一般地，我们只需要读取就行了。</p>
+<p><code>Text Command</code> 和 <code>Context Menu</code> 需要修改 <code>menu</code> 和 <code>commands</code> 配置文件，因为它们是数组格式，不能通过上面的 API 读写，所以不得不使用 python 的原生API进行写入操作。在每次插件加载时，动态更新这两个文件，编辑器本身也能立即得到通知。</p>
+<p><code>settings</code> 配置文件被修改时理应重新进行一次上面的操作，但是 <code>Sublime</code> API 的 <code>Settings.add_on_change</code> 似乎不怎么起作用，因此不得不强制要求编辑器重启来刷新设置。</p>
+<h6 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h6><ul>
+<li><a target="_blank" rel="noopener" href="http://www.sublimetext.com/docs/2/api_reference.html">http://www.sublimetext.com/docs/2/api_reference.html</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/09/10/2014-09-10-semantic-html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/09/10/2014-09-10-semantic-html/" class="post-title-link" itemprop="url">WEB语义化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-09-10 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-10T00:00:00+08:00">2014-09-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/html/" itemprop="url" rel="index"><span itemprop="name">html</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/09/10/2014-09-10-semantic-html/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/09/10/2014-09-10-semantic-html/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>下面是从<a target="_blank" rel="noopener" href="http://justineo.github.io/slideshows/semantic-html">http://justineo.github.io/slideshows/semantic-html</a>摘录的关于大部分 <code>HTML</code> 标签语义化含义的内容，可简要理解各种标签的含义。</p>
+<h4 id="全局属性"><a href="#全局属性" class="headerlink" title="全局属性"></a>全局属性</h4><h5 id="id"><a href="#id" class="headerlink" title="id"></a>id</h5><p>标示符 (用于引用)，不应依赖其语义处理相应元素</p>
+<h5 id="class"><a href="#class" class="headerlink" title="class"></a>class</h5><p><em>authors are encouraged to use values that describe the nature of the content</em></p>
+<h5 id="title"><a href="#title" class="headerlink" title="title"></a>title</h5><ul>
+<li>链接 - 描述目标信息</li>
+<li>图片 - 版权 &#x2F; 描述</li>
+<li>引用 - 来源信息</li>
+<li>交互元素 - 操作指南</li>
+</ul>
+<h5 id="lang"><a href="#lang" class="headerlink" title="lang"></a>lang</h5><p>内容的语言</p>
+<h4 id="元数据-metadata"><a href="#元数据-metadata" class="headerlink" title="元数据 (metadata)"></a>元数据 (metadata)</h4><h5 id="meta"><a href="#meta" class="headerlink" title="meta"></a>meta</h5><ul>
+<li>元数据</li>
+<li>name 属性决定种类，content 属性表示内容</li>
+<li>标准元数据名 (application-name  author  description  generator  keywords)</li>
+<li>已注册的扩展元数据名 (<a target="_blank" rel="noopener" href="http://wiki.whatwg.org/wiki/MetaExtensions">WHATWG Wiki MetaExtensions</a>)</li>
+</ul>
+<h5 id="链接（links）"><a href="#链接（links）" class="headerlink" title="链接（links）"></a>链接（links）</h5><h6 id="链接类型"><a href="#链接类型" class="headerlink" title="链接类型"></a>链接类型</h6><ul>
+<li>外部资源链接<br>  指向用来组成当前文档的外部资源，通常由 UA 自动处理</li>
+<li>超链接<br>  用来「导航」到其他资源 (可以在 UA 中打开  下载  …)</li>
+</ul>
+<h6 id="元素：link-a-area"><a href="#元素：link-a-area" class="headerlink" title="元素：link  a  area"></a>元素：link  a  area</h6><h6 id="link"><a href="#link" class="headerlink" title="link"></a>link</h6><ul>
+<li><p>元数据，用来描述文档本身与其他资源的关系</p>
+</li>
+<li><p>必须包含 rel 及 href 属性</p>
+ <link rel="author license" href="/about"></li>
+</ul>
+<p>link + rel + author  link + rel + license 都有预定义的语义</p>
+<h6 id="link-rel"><a href="#link-rel" class="headerlink" title="link + rel"></a>link + rel</h6><ul>
+<li><p>rel&#x3D;”stylesheet” 链接到样式表 (外部资源)</p>
+</li>
+<li><p>rel&#x3D;”alternate” 链接到当前文档的其他形式 (超链接)</p>
+ <link rel="alternate" type="application/rss+xml" title="Matt Mullenweg » Feed" href="http://ma.tt/feed/" />
+</li>
+<li><p>rel&#x3D;”prev”  rel&#x3D;”next” 链接到文档的前一篇 &#x2F; 后一篇 &#x2F; 前一页 &#x2F; 后一页 (超链接) 在生成站点目录、归档视图时很有帮助。</p>
+</li>
+<li><p>rel&#x3D;”icon” 当前文档的 favicon (外部资源)</p>
+</li>
+</ul>
+<h6 id="a元素"><a href="#a元素" class="headerlink" title="a元素"></a>a元素</h6><ul>
+<li><p>存在 href 属性时为超链接</p>
+</li>
+<li><p>缺少 href 属性时为链接占位符</p>
+ <nav>
+     <ul>
+         <li><a href="/">Home</a></li>
+         <li><a href="/news">News</a></li>
+         <li><a>Examples</a></li>
+ </ul>
+ </nav></li>
+</ul>
+<p>与 link 元素不同，a 元素代表的超链接都是显式的。</p>
+<h6 id="a-rel"><a href="#a-rel" class="headerlink" title="a + rel"></a>a + rel</h6><ul>
+<li>rel&#x3D;”prev”  rel&#x3D;”next” 链接到文档的前一篇 &#x2F; 后一篇 &#x2F; 前一页 &#x2F; 后一页 (超链接)</li>
+<li>rel&#x3D;”nofollow”</li>
+</ul>
+<p>当前文档的作者并不推荐超链接指向的文档 (超链接标注)<br>由 Google 引入，他们认为适用场景有 (via)：</p>
+<ol>
+<li>不可信赖的内容</li>
+<li>付费链接</li>
+<li>按优先级别进行抓取 (比如通知 Googlebot 不要抓取「注册」或「登陆」页面)</li>
+</ol>
+<h6 id="rel-属性"><a href="#rel-属性" class="headerlink" title="rel 属性"></a>rel 属性</h6><p>其他在 HTML 规范中预定义的 rel 属性值及其含义参见 <a target="_blank" rel="noopener" href="http://www.w3.org/html/wg/drafts/html/master/links.html#linkTypes">HTML5 草案中 Link types 一节</a>。</p>
+<h4 id="区块-sections"><a href="#区块-sections" class="headerlink" title="区块 (sections)"></a>区块 (sections)</h4><h5 id="section-元素"><a href="#section-元素" class="headerlink" title="section 元素"></a>section 元素</h5><ul>
+<li>按主题将内容分组，通常会有标题 (heading)</li>
+<li>并非「语义化的 div」</li>
+</ul>
+<p>何时使用？</p>
+<p>一个简单的评判标准：当你希望这个元素的内容体现在文档的_提纲 (outline)_ 中时，用 section 是合适的。</p>
+<h5 id="nav-元素"><a href="#nav-元素" class="headerlink" title="nav 元素"></a>nav 元素</h5><ul>
+<li><p><em>a section with navigation links</em></p>
+ <nav>
+     <ul>
+         <li><a href="/">Home</a></li>
+         <li><a href="/news">News</a></li>
+         <li><a>Examples</a></li>
+     </ul>
+ </nav></li>
+</ul>
+<p>可以帮助 UA 迅速获得导航内容，例如读屏器可以省去很多渲染直接跳到导航位置。</p>
+<p>不一定要包含 ul，也可用自然文本进行导航。</p>
+<h5 id="article-元素"><a href="#article-元素" class="headerlink" title="article 元素"></a>article 元素</h5><ul>
+<li>独立的文档、页面、应用、站点</li>
+<li>可以单独发布、重用</li>
+<li>可以是…</li>
+</ul>
+<ul>
+<li>一篇帖子</li>
+<li>一篇报刊文章</li>
+<li>一则用户评论</li>
+<li>一个可交互的 widget</li>
+<li>…</li>
+</ul>
+<h5 id="aside-元素"><a href="#aside-元素" class="headerlink" title="aside 元素"></a>aside 元素</h5><ul>
+<li>表示与周围内容关系不太密切的内容 (eg. 广告)</li>
+<li>通常表现为侧边栏内容 (eg. 相关背景内容)、引述内容</li>
+</ul>
+<h5 id="h1–h6-元素"><a href="#h1–h6-元素" class="headerlink" title="h1–h6 元素"></a>h1–h6 元素</h5><pre><code>&lt;body&gt;
+    &lt;h1&gt;Let&#39;s call it a draw(ing surface)&lt;/h1&gt;
+    &lt;h2&gt;Diving in&lt;/h2&gt;
+    &lt;h2&gt;Simple shapes&lt;/h2&gt;
+&lt;/body&gt;
+</code></pre>
+<p>语义上等价于：</p>
+<pre><code>&lt;body&gt;
+  &lt;h1&gt;Let&#39;s call it a draw(ing surface)&lt;/h1&gt;
+  &lt;section&gt;
+    &lt;h1&gt;Diving in&lt;/h1&gt;
+  &lt;/section&gt;
+  &lt;section&gt;
+    &lt;h1&gt;Simple shapes&lt;/h1&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+</code></pre>
+<h5 id="hgroup-元素"><a href="#hgroup-元素" class="headerlink" title="hgroup 元素"></a>hgroup 元素</h5><ul>
+<li><p>标题的组合</p>
+</li>
+<li><p>用于副标题、标语 (tagline) 等</p>
+ <hgroup>
+   <h1>The Lord of the Rings</h1>
+   <h2>The Return of the King</h2>
+ </hgroup>
+ <hgroup>
+   <h1>The Lord of the Rings</h1>
+   <h2>"One ring to rule them all."</h2>
+ </hgroup></li>
+</ul>
+<p>hgroup 中级别最高的标题才出现在提纲中</p>
+<h5 id="header-元素"><a href="#header-元素" class="headerlink" title="header 元素"></a>header 元素</h5><ul>
+<li><p>一组介绍性描述或导航信息 (目录 &#x2F; 搜索框 &#x2F; logo &#x2F; …)</p>
+</li>
+<li><p>通常包含 h1–h6  hgroup</p>
+</li>
+<li><p>不影响文档提纲的生成</p>
+ <header>
+   <p>Welcome to...</p>
+   <h1>Voidwars!</h1>
+ </header></li>
+</ul>
+<h5 id="footer-元素"><a href="#footer-元素" class="headerlink" title="footer 元素"></a>footer 元素</h5><ul>
+<li><p>代表最近的父级区块内容的页脚</p>
+</li>
+<li><p>作者信息 &#x2F; 相关文档 &#x2F; 版权信息</p>
+</li>
+<li><p>不影响文档提纲的生成</p>
+ <footer><!-- site footer -->
+   <nav>
+     <p>
+       <a href="/credits.html">Credits</a> —
+       <a href="/tos.html">Terms of Service</a> —
+       <a href="/index.html">Blog Index</a>
+     </p>
+   </nav>
+   <p>Copyright © 2009 Gordon Freeman</p>
+ </footer></li>
+</ul>
+<h5 id="address-元素"><a href="#address-元素" class="headerlink" title="address 元素"></a>address 元素</h5><p>代表与最近的父级 article 或 body 关联的联系人信息</p>
+<pre><code>&lt;address&gt;
+  &lt;a href=&quot;../People/Raggett/&quot;&gt;Dave Raggett&lt;/a&gt; 
+  &lt;a href=&quot;../People/Arnaud/&quot;&gt;Arnaud Le Hors&lt;/a&gt; 
+  contact persons for the &lt;a href=&quot;Activity&quot;&gt;W3C HTML Activity&lt;/a&gt;
+&lt;/address&gt;
+</code></pre>
+<h4 id="分组内容-grouping-content"><a href="#分组内容-grouping-content" class="headerlink" title="分组内容 (grouping content)"></a>分组内容 (grouping content)</h4><h5 id="p-元素"><a href="#p-元素" class="headerlink" title="p 元素"></a>p 元素</h5><ul>
+<li>「段落」的显式表述<br>  <em>段落是主题接近的若干句子组成的文本块 (via)</em><br>-非优先考虑的选择<br>  <em>例如 address 的内容也是一个段落，但有更准确的语义</em></li>
+</ul>
+<h5 id="hr-元素"><a href="#hr-元素" class="headerlink" title="hr 元素"></a>hr 元素</h5><ul>
+<li>原意为「horizontal rule」(水平分隔线)</li>
+<li>HTML5 中重定义为不同主题内容间的分隔符</li>
+<li>区块内容之间不需要用 hr 元素分隔</li>
+</ul>
+<h5 id="pre-元素"><a href="#pre-元素" class="headerlink" title="pre 元素"></a>pre 元素</h5><ul>
+<li>表示已排版的内容</li>
+<li>代码片段 &#x2F; ASCII art &#x2F; …</li>
+</ul>
+<h5 id="blockquote-元素"><a href="#blockquote-元素" class="headerlink" title="blockquote 元素"></a>blockquote 元素</h5><ul>
+<li><p>引用的来自其他来源的内容</p>
+</li>
+<li><p>cite 属性表示该来源的 URL</p>
+</li>
+<li><p>署名必须放在 blockquote 外</p>
+ <p>His next piece was the aptly named <cite>Sonnet 130</cite>:</p>
+ <blockquote cite="http://quotes.example.org/s/sonnet130.html">
+   <p>My mistress' eyes are nothing like the sun <br>
+   Coral is far more red  than her lips red <br>
+   [...]</p>
+ </blockquote></li>
+</ul>
+<h5 id="ol-ul-li-元素"><a href="#ol-ul-li-元素" class="headerlink" title="ol  ul  li 元素"></a>ol  ul  li 元素</h5><ul>
+<li><p>有序 &#x2F; 无序列表</p>
+</li>
+<li><p>改变列表项顺序是否影响表达</p>
+</li>
+<li><p>ol 下 li 元素的 value 属性代表该列表项的序号值</p>
+ <p>Relegation zone:</p>
+ <ol>
+     <li value="18">Bolton Wanderers</li>
+     <li>Blackburn Rovers</li>
+     <li>Wolverhampton Wanderers</li>
+ </ol></li>
+</ul>
+<h5 id="dl-dt-dd-元素"><a href="#dl-dt-dd-元素" class="headerlink" title="dl  dt  dd 元素"></a>dl  dt  dd 元素</h5><ul>
+<li><p>名值对的集合</p>
+</li>
+<li><p>术语定义表 &#x2F; 元数据 &#x2F; FAQ &#x2F; …</p>
+ <dl>
+   <dt><dfn>happiness</dfn></dt>
+   <dd class="part-of-speech"><i><abbr>n.</abbr></i></dd>
+   <dd>The state of being happy.</dd>
+   <dd>Good fortune; success. <q>Oh <b>happiness</b>! It worked!</q></dd>
+   <dt><dfn>rejoice</dfn></dt>
+   <dd><i class="part-of-speech"><abbr>v.intr.</abbr></i> To be delighted oneself    .</dd>
+   <dd><i class="part-of-speech"><abbr>v.tr.</abbr></i> To cause one to be     delighted.</dd>
+ </dl></li>
+</ul>
+<h5 id="figure-元素"><a href="#figure-元素" class="headerlink" title="figure 元素"></a>figure 元素</h5><ul>
+<li>比较独立的、被主要内容引用的部分</li>
+<li>插画 &#x2F; 图表 &#x2F; 照片 &#x2F; 代码 &#x2F; …</li>
+<li>通常会有一个标题 (<code>figcaption</code>)</li>
+</ul>
+<h5 id="figcaption-元素"><a href="#figcaption-元素" class="headerlink" title="figcaption 元素"></a>figcaption 元素</h5><ul>
+<li>图表标题 &#x2F; 图例 &#x2F; 代码说明 &#x2F; …</li>
+</ul>
+<h5 id="div-元素"><a href="#div-元素" class="headerlink" title="div 元素"></a>div 元素</h5><ul>
+<li>本身无语义</li>
+<li>可以和 class  lang  title 等属性结合，为一系列连续的内容增加语义</li>
+<li>最后考虑的选择</li>
+</ul>
+<h4 id="文本级语义-text-level-semantics"><a href="#文本级语义-text-level-semantics" class="headerlink" title="文本级语义 (text-level semantics)"></a>文本级语义 (text-level semantics)</h4><h5 id="em-元素"><a href="#em-元素" class="headerlink" title="em 元素"></a>em 元素</h5><ul>
+<li><p>表示侧重点的强调</p>
+</li>
+<li><p>强调级别由 em 的嵌套个数决定</p>
+</li>
+<li><p>em 的位置不同，文本本身含义不同</p>
+</li>
+<li><p>在可视化 UA 上一般渲染为斜体</p>
+ <p><em>Bats</em> can fly.</p>
+ <p>Bats <em>can</em> fly.</p>
+ <p>Bats can <em>fly</em>.</p></li>
+</ul>
+<p>三句含义各不相同</p>
+<h5 id="strong-元素"><a href="#strong-元素" class="headerlink" title="strong 元素"></a>strong 元素</h5><ul>
+<li><p>表示内容的重要性</p>
+</li>
+<li><p>重要程度由 strong 的嵌套个数决定</p>
+</li>
+<li><p>strong 的位置不同，文本本身含义<strong>不变</strong></p>
+</li>
+<li><p>在可视化 UA 上一般渲染为粗体</p>
+ <p><strong>Warning.</strong> A huge wave of zombies is approaching.</p></li>
+</ul>
+<h5 id="i-元素"><a href="#i-元素" class="headerlink" title="i 元素"></a>i 元素</h5><ul>
+<li><p>不再只是「斜体」</p>
+</li>
+<li><p>表示另一种叙述方式</p>
+</li>
+<li><p>分类学名词 &#x2F; 外来语片段 &#x2F; 舞台指示 &#x2F; 船名 &#x2F; …</p>
+</li>
+<li><p>建议与 class &#x2F; lang 属性搭配使用</p>
+ <p>Sunflower (<i class="taxonomy">Helianthus annuus</i>) is an annual plant native to the Americas.</p>
+ <p>There is a certain <i lang="fr">je ne sais quoi</i> in the air.</p>
+ <p><i class="ship-name">Titanic</i> sank in the North Atlantic Ocean on 15 April 1912.</p></li>
+</ul>
+<h5 id="b-元素"><a href="#b-元素" class="headerlink" title="b 元素"></a>b 元素</h5><ul>
+<li><p>不再只是「粗体」</p>
+</li>
+<li><p>表示某种需要引起注意却又没有其他额外语义的内容</p>
+</li>
+<li><p>摘要中的关键词 &#x2F; 评介中的产品名称 &#x2F; 文章的开篇内容 …</p>
+</li>
+<li><p>建议与 class 属性搭配使用</p>
+ <article>
+   <h2>Kittens 'adopted' by pet rabbit</h2>
+   <p><b class="lede">Six abandoned kittens have found an unexpected new mother figure —     a pet rabbit.</b></p>
+   <p>Veterinary nurse Melanie Humble took the three-week-old kittens to her Aberdeen     home.</p>
+ [...]</li>
+</ul>
+<h5 id="small-元素"><a href="#small-元素" class="headerlink" title="small 元素"></a>small 元素</h5><ul>
+<li><p>不再只是「小字」</p>
+</li>
+<li><p>fine print</p>
+</li>
+<li><p>免责声明 &#x2F; 许可证声明 &#x2F; 注意事项 &#x2F; …</p>
+<p> <small><a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Share-alike license</a></small></p>
+<p> <small>请以实物为准，图片仅供参考</small></p>
+</li>
+</ul>
+<h5 id="s-元素"><a href="#s-元素" class="headerlink" title="s 元素"></a>s 元素</h5><ul>
+<li><p>不再只是「带删除线的文字」</p>
+</li>
+<li><p>表示不再准确或不再相关的内容</p>
+</li>
+<li><p>与 del 元素含义不同</p>
+ <p>Buy our Iced Tea and Lemonade!</p>
+ <p><s>Recommended retail price: $3.99 per bottle</s></p>
+ <p><strong>Now selling for just $2.99 a bottle!</strong></p></li>
+</ul>
+<h5 id="u-元素"><a href="#u-元素" class="headerlink" title="u 元素"></a>u 元素</h5><ul>
+<li><p>不再只是「带下划线的文字」</p>
+</li>
+<li><p>表示用非文本进行的标注的内容</p>
+</li>
+<li><p>中文专名 &#x2F; 拼写检查的错误内容 &#x2F; …</p>
+<p> <u class="proper-name">屈原</u>放逐，乃賦<cite class="book-name">離騒</cite>。<u class="proper-name">左丘</u>失明，厥有<cite class="book-name">國語</cite>。（司馬遷《報任安書》）</p>
+</li>
+</ul>
+<h5 id="cite-元素"><a href="#cite-元素" class="headerlink" title="cite 元素"></a>cite 元素</h5><ul>
+<li><p>引述的作品标题</p>
+</li>
+<li><p>书 &#x2F; 论文 &#x2F; 散文 &#x2F; 电影 &#x2F; 歌曲 &#x2F; 电视节目 &#x2F; 画作 &#x2F; …</p>
+ <p>My favorite movie is <cite>Transformers</cite> by Michael Bay.</p></li>
+</ul>
+<h5 id="q-元素"><a href="#q-元素" class="headerlink" title="q 元素"></a>q 元素</h5><ul>
+<li><p>引用的来自其他来源的段内内容</p>
+</li>
+<li><p>cite 属性表示该来源的 URL</p>
+</li>
+<li><p>不用 q 而用引号亦正确</p>
+ <p>The W3C page <cite>About W3C</cite> says the W3C's
+ mission is <q cite="http://www.w3.org/Consortium/">To lead the
+ World Wide Web to its full potential by developing protocols and
+ guidelines that ensure long-term growth for the Web</q>.</p></li>
+</ul>
+<h5 id="abbr-元素"><a href="#abbr-元素" class="headerlink" title="abbr 元素"></a>abbr 元素</h5><ul>
+<li><p>abbreviation or acronym (区别？)</p>
+</li>
+<li><p>其 title 属性的含义为所写的全称</p>
+ <p>The <abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr> started working on HTML5 in 2004.</p></li>
+</ul>
+<p>建议在用户不熟悉的缩写词汇第一次出现时用 abbr + title 进行语义标注，帮助其理解</p>
+<h5 id="dfn-元素"><a href="#dfn-元素" class="headerlink" title="dfn 元素"></a>dfn 元素</h5><ul>
+<li><p>用来展现一个术语的定义实例</p>
+</li>
+<li><p>最接近的父级段落、定义列表组或区块内容必须包含 dfn 元素指定术语的定义</p>
+ <p>The <dfn><abbr title="Garage Door Opener">GDO</abbr></dfn>
+ is a device that allows off-world teams to open the iris.</p></li>
+</ul>
+<p>很容易抽取出特定术语的含义，从而很容易回答「What is …?」类的问题</p>
+<h5 id="time-元素"><a href="#time-元素" class="headerlink" title="time 元素"></a>time 元素</h5><ul>
+<li><p>为表述的内容增加一个机器可读的时间数据</p>
+</li>
+<li><p>datetime 属性值必须是预定义的几种时间格式之一</p>
+</li>
+<li><p>如果不含 datetime 属性，则会解析其文本内容值</p>
+ <div class="vevent">
+   <a class="url" target="_blank" rel="noopener" href="http://www.web2con.com/">http://www.web2con.com/</a>
+   <span class="summary">Web 2.0 Conference</span>:
+   <time class="dtstart" datetime="2005-10-05">October 5</time> -
+   <time class="dtend" datetime="2005-10-07">7</time> 
+   at the <span class="location">Argent Hotel  San Francisco  CA</span>
+ </div></li>
+</ul>
+<h5 id="code-samp-kbd-元素"><a href="#code-samp-kbd-元素" class="headerlink" title="code  samp  kbd 元素"></a>code  samp  kbd 元素</h5><ul>
+<li>code - 代码片段</li>
+<li>samp - 计算机程序的输出</li>
+<li>kbd - 用户输入的内容 &#x2F; 按键</li>
+</ul>
+<h5 id="mark-元素"><a href="#mark-元素" class="headerlink" title="mark 元素"></a>mark 元素</h5><ul>
+<li><p>在引用的文字中使用，表示在当前文档中需要引起注意但原文中并没有强调的含义 (eg. 对一篇文章的分析中对原文的标注)</p>
+</li>
+<li><p>表示与用户当前的行为相关的内容 (eg. 高亮显示搜索关键词)</p>
+ <blockquote>
+ <p>6月13日下午，<mark>一场大雨</mark>过后，正阳门箭楼被带着水雾的脚手架包裹得严严实    实。北京旧城中轴线上的这座标志性建筑，正经历着新中国成立后规模最大的一次修缮。</p>
+     [...]
+     <p>6月13日的<mark>那场大雨</mark>，将故宫端门外西朝房冲洗得干干净净。</p>
+ </blockquote>
+ <p>作者为什么两次提到6月13日的大雨？请谈谈你的看法。</p></li>
+</ul>
+<h5 id="ruby-rt-rp-元素"><a href="#ruby-rt-rp-元素" class="headerlink" title="ruby  rt  rp 元素"></a>ruby  rt  rp 元素</h5><ul>
+<li><p>注音标示，「ruby」来自日本印刷业</p>
+</li>
+<li><p>主要于 CJK 文字</p>
+<p> <ruby>和<rp>(</rp><rt>hé</rt><rp>)</rp>谐<rp>(</rp><rt>xié</rt><rp>)</rp>社<rp>(</rp><rt>shè</rt><rp>)</rp>会<rp>(</rp><rt>huì</rt><rp>)</rp></ruby></p>
+</li>
+</ul>
+<h5 id="span-元素"><a href="#span-元素" class="headerlink" title="span 元素"></a>span 元素</h5><ul>
+<li><p>本身无语义</p>
+</li>
+<li><p>可以和 class  lang 等属性结合，为文本片段增加语义</p>
+</li>
+<li><p>有更合适的元素时不应选择 span</p>
+<p> <span class="keyword">var</span> greet &#x3D; <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span><br> console.log(<span class="string">“Hello world.”</span>);<br> }</p>
+</li>
+</ul>
+<h4 id="更改记录-edits"><a href="#更改记录-edits" class="headerlink" title="更改记录 (edits)"></a>更改记录 (edits)</h4><h5 id="ins-del-元素"><a href="#ins-del-元素" class="headerlink" title="ins  del 元素"></a>ins  del 元素</h5><ul>
+<li>表示对当前文档内容进行的增添与删改</li>
+<li>cite 属性指向对某个修改的说明文档的 URL</li>
+<li>datetime 属性表示了修改发生的时间 (<a target="_blank" rel="noopener" href="http://dev.w3.org/html5/spec/common-microsyntaxes.html#valid-date-string-with-optional-time">取值规范</a>)</li>
+<li>用来记录文档的编辑历史</li>
+</ul>
+<h4 id="嵌入内容-embedded-content"><a href="#嵌入内容-embedded-content" class="headerlink" title="嵌入内容 (embedded content)"></a>嵌入内容 (embedded content)</h4><h5 id="img-元素"><a href="#img-元素" class="headerlink" title="img 元素"></a>img 元素</h5><ul>
+<li>src  alt 属性决定了图片的含义</li>
+</ul>
+<ul>
+<li>有 src 且 alt 为空字符串，代表装饰用图</li>
+<li>有 src 且 alt 为非空字符串，图为文档内容的一部分</li>
+<li>有 src 且无 alt，图为内容一部分但无等价的文本内容可用</li>
+</ul>
+<ul>
+<li><p>用 alt 文本替换图片，文档含义尽可能不变</p>
+ <p>
+   You are standing in an open field west of a house.
+ <img src="house.jpeg" alt="A white houseThe house is white  with a boarded front door.    ">
+   There is a small mailbox here.
+ </p></li>
+</ul>
+<h5 id="iframe-embed-object-param-元素"><a href="#iframe-embed-object-param-元素" class="headerlink" title="iframe  embed  object  param 元素"></a>iframe  embed  object  param 元素</h5><ul>
+<li><p>iframe - 内嵌的浏览上下文</p>
+</li>
+<li><p>embed - 外部应用或可交互内容的整合入口</p>
+</li>
+<li><p>object - 通用外部资源 根据具体内容可以被处理为图片、内嵌的浏览上下文、供插件调用的资源</p>
+</li>
+<li><p>param - 为 object 元素传递的参数</p>
+<p> <object type="image/png" data="embed.png"></object><br> <object type="text/html" data="embed.html"></object></p>
+</li>
+</ul>
+<p>相当于 <code>img</code> 与 <code>iframe</code> 的效果</p>
+<pre><code>&lt;embed src=&quot;catgame.swf&quot; type=&quot;application/x-shockwave-flash&quot; quality=&quot;high&quot;&gt;
+
+&lt;object data=&quot;catgame.swf&quot; type=&quot;application/x-shockwave-flash&quot;&gt; 
+  &lt;param name=&quot;quality&quot; value=&quot;high&quot;&gt;
+  &lt;p&gt;Plugin needed.&lt;/p&gt;
+&lt;/object&gt;
+</code></pre>
+<p>功能等价但 <code>object</code> 提供更好的回退策略</p>
+<h5 id="多媒体元素"><a href="#多媒体元素" class="headerlink" title="多媒体元素"></a>多媒体元素</h5><ul>
+<li><code>video</code> - 视频</li>
+<li><code>audio</code> - 音频</li>
+</ul>
+<p>公共属性：src  crossorigin  preload  autoplay  mediagroup  loop  muted  controls</p>
+<h5 id="source-元素"><a href="#source-元素" class="headerlink" title="source 元素"></a>source 元素</h5><ul>
+<li><p>表示所在多媒体元素的可替代资源 (可能不同格式 &#x2F; 清晰度，读取失败或无法解码时可以依次尝试)</p>
+</li>
+<li><p>type 属性中除了 MIME 类型外，可使用 codecs&#x3D; 来指定编码</p>
+ <video controls autoplay>
+   <source src='video.mp4' type='video/mp4; codecs="avc1.42E01E  mp4a.40.2"'>
+   <source src='video.ogv' type='video/ogg; codecs="theora  vorbis"'>
+ </video></li>
+</ul>
+<h5 id="track-元素"><a href="#track-元素" class="headerlink" title="track 元素"></a>track 元素</h5><ul>
+<li><p>用来为多媒体元素指定「文本轨」</p>
+</li>
+<li><p>kind 属性描述文本轨的类型，可用值包括 subtitles  captions  descriptions  chapters  metadata</p>
+ <video src="brave.webm">
+   <track kind="subtitles" src="brave.en.vtt" srclang="en" label="English">
+   <track kind="captions" src="brave.en.hoh.vtt" srclang="en" label="English for the     Hard of Hearing">
+   <track kind="subtitles" src="brave.fr.vtt" srclang="fr" lang="fr" label="Français">
+   <track kind="subtitles" src="brave.de.vtt" srclang="de" lang="de" label="Deutsch">
+ </video></li>
+</ul>
+<h4 id="表格数据-tabular-data"><a href="#表格数据-tabular-data" class="headerlink" title="表格数据 (tabular data)"></a>表格数据 (tabular data)</h4><h5 id="table-元素"><a href="#table-元素" class="headerlink" title="table 元素"></a>table 元素</h5><ul>
+<li>用来表示超过一维的数据</li>
+</ul>
+<h5 id="caption-元素"><a href="#caption-元素" class="headerlink" title="caption 元素"></a>caption 元素</h5><ul>
+<li>表示所处的 table 的标题</li>
+</ul>
+<p>当所处的 <code>table</code> 是外部 <code>figure</code> 元素的唯一子元素，应首选 <code>figcaption</code></p>
+<h5 id="tbody-thead-tfoot-元素"><a href="#tbody-thead-tfoot-元素" class="headerlink" title="tbody  thead  tfoot 元素"></a>tbody  thead  tfoot 元素</h5><ul>
+<li>均为一组表格行</li>
+<li>thead 表示列头 (通常为列标题，单元格用 th 元素)</li>
+<li>tfoot 表示列脚 (通常为列数据汇总)</li>
+</ul>
+<h5 id="col-colgroup-tr-元素"><a href="#col-colgroup-tr-元素" class="headerlink" title="col  colgroup  tr 元素"></a>col  colgroup  tr 元素</h5><ul>
+<li>列，列组，行</li>
+</ul>
+<h5 id="td-th-元素"><a href="#td-th-元素" class="headerlink" title="td  th 元素"></a>td  th 元素</h5><ul>
+<li>td - 数据单元格</li>
+<li>th - 标题单元格</li>
+</ul>
+<p>th 的 scope 属性表示标题对应的数据范围</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1811,380 +2496,6 @@ flex:2;
 <li><a target="_blank" rel="noopener" href="http://css-tricks.com/snippets/css/a-guide-to-flexbox/">http://css-tricks.com/snippets/css/a-guide-to-flexbox/</a></li>
 <li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/zh-cn/subscriptions/downloads/hh673531.aspx">http://msdn.microsoft.com/zh-cn/subscriptions/downloads/hh673531.aspx</a></li>
 <li><a target="_blank" rel="noopener" href="http://css-tricks.com/old-flexbox-and-new-flexbox/">http://css-tricks.com/old-flexbox-and-new-flexbox/</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/04/29/2014-04-29-getelementsbyname-in-document/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/04/29/2014-04-29-getelementsbyname-in-document/" class="post-title-link" itemprop="url">getElementsByName方法的出身</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-04-29 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-29T00:00:00+08:00">2014-04-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/04/29/2014-04-29-getelementsbyname-in-document/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/04/29/2014-04-29-getelementsbyname-in-document/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h6 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h6><p>在几个 <code>getElementsBy*</code> 方法中，<code>getElementsByName</code> 算是比较特殊的，表面上看即只有它不能在 <code>Element</code> 上调用。</p>
-<p><a target="_blank" rel="noopener" href="http://www.w3.org/">W3C</a> 将该方法定义在 <a target="_blank" rel="noopener" href="http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109/html.html#ID-26809268">HTMLDocument</a> 接口中：</p>
-<pre><code>interface HTMLDocument : Document &#123;
-           attribute DOMString       title;
-  readonly attribute DOMString       referrer;
-  readonly attribute DOMString       domain;
-  readonly attribute DOMString       URL;
-           attribute HTMLElement     body;
-  readonly attribute HTMLCollection  images;
-  readonly attribute HTMLCollection  applets;
-  readonly attribute HTMLCollection  links;
-  readonly attribute HTMLCollection  forms;
-  readonly attribute HTMLCollection  anchors;
-           attribute DOMString       cookie;
-    
-  void               open();
-  void               close();
-  void               write(in DOMString text);
-  void               writeln(in DOMString text);
-  NodeList           getElementsByName(in DOMString elementName);
-&#125;;
-</code></pre>
-<p>按照此定义， <code>getElementsByName</code> 方法应该仅存在于 <code>HTMLDocument</code> 中而非 <code>Document</code> 中。在能够访问 <code>Document</code> 接口的浏览器（Opera，Chrome，Firefox，Safari和 Internet Explorer 10）中，测试下列代码：</p>
-<pre><code>!!Document.prototype.getElementsByName
-</code></pre>
-<p>结果如下：</p>
-<table>
-<thead>
-<tr>
-<th align="center">浏览器</th>
-<th align="center">Opera</th>
-<th align="center">Chrome</th>
-<th align="center">Firefox</th>
-<th align="center">Safari</th>
-<th align="center">IE10</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">结果</td>
-<td align="center">false</td>
-<td align="center">true</td>
-<td align="center">false</td>
-<td align="center">true</td>
-<td align="center">true</td>
-</tr>
-</tbody></table>
-<p>分别观察一下 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Mozilla/Gecko">Gecko</a> 和 <a target="_blank" rel="noopener" href="http://www.webkit.org/">Webkit</a> 关于 <code>(HTML)Document</code> 部分的 IDL ：<br>​<br>    &#x2F;&#x2F;Gecko 中 HTMLDocument.webidl 文件<br>    interface HTMLDocument : Document {<br>        NodeList getElementsByName(DOMString elementName);<br>    };<br>    &#x2F;&#x2F;Webkit 中 Document.idl 文件<br>    interface Document : Node {<br>        NodeList getElementsByName([Default&#x3D;Undefined] optional DOMString<br>    }</p>
-<p>可见两者将 <code>getElementsByName</code> 定义在了不同的接口中，似乎 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Mozilla/Gecko">Gecko</a> 的做法更符合 <a target="_blank" rel="noopener" href="http://www.w3.org/">W3C</a> 规范。</p>
-<p>对此的解释可能是 <a target="_blank" rel="noopener" href="http://www.webkit.org/">Webkit</a> 和 <code>Internet Explorer</code> 按照 <a target="_blank" rel="noopener" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">whatwg</a> 的 HTML5 草案进行了实现。</p>
-<h6 id="返回类型"><a href="#返回类型" class="headerlink" title="返回类型"></a>返回类型</h6><p>关于 <code>getElementsBy*</code> 方法的返回类型，<a target="_blank" rel="noopener" href="http://dom.spec.whatwg.org/#document">whatwg</a> 规定为 <code>HTMLCollection</code> ， <a target="_blank" rel="noopener" href="http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407/core.html#i-Document">W3C</a> 规定为 <code>NodeList</code> 。<code>HTMLCollection</code> 和 <code>NodeList</code> 两者很类似，都有 length 属性，都可以用数字索引或 <code>item()</code> 方法方位其中元素。但其差异也是明显的，前者成员为 <code>HTMLElement</code> ，而后者为 <code>Node</code> ，前者拥有 <code>namedItem()</code> 方法。现代浏览器对其实现不一致：</p>
-<table>
-<thead>
-<tr>
-<th align="center">浏览器</th>
-<th align="center">Opera&#x2F;Safari&#x2F;Android</th>
-<th align="center">Chrome&#x2F;Firefox</th>
-<th align="center">Internet Explorer(+WP8)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">getElementsByTagName</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-<td align="center">HTMLCollection</td>
-</tr>
-<tr>
-<td align="center">getElementsByName</td>
-<td align="center">NodeList</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-</tr>
-<tr>
-<td align="center">getElementsByClassName</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-<td align="center">HTMLCollection</td>
-</tr>
-</tbody></table>
-<p>显然应该退化到 <code>Node</code> 和 <code>NodeList</code> 进行编程，避免依赖特定的类型返回值。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/04/28/2014-04-28-http-connection-header/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/04/28/2014-04-28-http-connection-header/" class="post-title-link" itemprop="url">HTTP协议的Connection头</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-04-28 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-28T00:00:00+08:00">2014-04-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/http/" itemprop="url" rel="index"><span itemprop="name">http</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/04/28/2014-04-28-http-connection-header/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/04/28/2014-04-28-http-connection-header/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>Connection</code> 是一种 HTTP 通用头，应用于 HTTP 请求与响应首部之中，几乎广泛地存在于每一个可见的连接之中。最常见的取值为 <code>close</code> 与 <code>keep-alive</code> ，前者表示请求响应完成之后立即关闭连接，后者表示连接不立即关闭，可以期望继续响应下一个请求。</p>
-<p><code>close</code> 很容易理解，关于 <code>keep-alive</code> ，我们知道 HTTP 建立在 TCP 传输层协议之上，而 TCP 的建立需要握手，关闭需要发通知，这些步骤都需要时间，带给 HTTP 的就是请求响应时延。</p>
-<p><code>close</code> 模式请求3个资源的时间线是这样的：</p>
-<pre>
-服务器--------------------------------------------
-        /   \           /   \            / \
-       /     \         /     \          /   \
-      /       \       /       \        /     \
-浏览器--------------------------------------------
-</pre>
-
-<p>那么 <code>keep-alive</code> 模式就可能就是这样的：</p>
-<pre>
-服务器--------------------------------------------
-        /   \     /   \     / \
-       /     \   /     \   /   \
-      /       \ /       \ /     \
-浏览器--------------------------------------------
-</pre>
-
-<p>这里忽略了软件的数据处理时延，可以明显的看到节省了 TCP 连接建立时间和连接关闭时间所带来的益处。另外，这种方式也可以避免 TCP 多次经历<code>慢启动</code>过程，其带来的时间受益并没有在图中表现出来。</p>
-<p>这样看来，<code>keep-alive</code> 应该一直使用来提高 web 加载性能。</p>
-<h6 id="哑代理问题"><a href="#哑代理问题" class="headerlink" title="哑代理问题"></a>哑代理问题</h6><p>HTTP 首部可分为<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-13.5.1">两类</a>，<code>hop-by-hop</code> 和 <code>end-to-end</code>：</p>
-<blockquote>
-<ul>
-<li><p>End-to-end headers  which are  transmitted to the ultimate<br>recipient of a request or response. End-to-end headers in<br>responses MUST be stored as part of a cache entry and MUST be<br>transmitted in any response formed from a cache entry.</p>
-</li>
-<li><p>Hop-by-hop headers  which are meaningful only for a single<br>transport-level connection  and are not stored by caches or<br>forwarded by proxies.</p>
-</li>
-</ul>
-</blockquote>
-<p>显然 <code>hop-by-hop</code> 是不能缓存不能被代理转发的，下面即 HTTP 1.1 定义的8个 <code>hop-by-hop</code> 首部，其它均属于 <code>end-to-end</code> 首部。</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.10">Connection</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2068#section-19.7.1.1">Keep-Alive</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.33">Proxy-Authenticate</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.34">Proxy-Authorization</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.39">TE</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.40">Trailers</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.41">Transfer-Encoding</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-14.42">Upgrade</a></li>
-</ul>
-<p>因此理论上 <code>Connection</code> 首部是不能被代理、中继等中间 HTTP 节点转发的，另外根据 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616">RFC2616</a> 的定义：</p>
-<blockquote>
-<p>Connection &#x3D; “Connection” “:” 1#(connection-token)</p>
-<p>connection-token  &#x3D; token</p>
-</blockquote>
-<p><code>Connection</code> 列举的所有 HTTP 首部都不能被转发，如一个请求头中如下：</p>
-<blockquote>
-<p>GET &#x2F; HTTP&#x2F;1.1</p>
-<p>Accept: <em>&#x2F;</em></p>
-<p>Connection:Proxy-Time Non-Header Keep-Alive</p>
-<p>Proxy-Time:0810</p>
-<p>Keep-Alive: max&#x3D;5 timeout&#x3D;120</p>
-</blockquote>
-<p>经过代理后应该被修改为：</p>
-<blockquote>
-<p>GET &#x2F; HTTP&#x2F;1.1</p>
-<p>Accept: <em>&#x2F;</em></p>
-</blockquote>
-<p>即移除 <code>Connection</code> 首部及其列举的其它首部。但这是理想情况，万维网上还工作着无数称之为<code>哑代理</code>的盲中继：它们仅把数据按字节转发，并不理会 HTTP 首部中的意义。在这种情况下，就会出现一些非预期的状况：</p>
-<pre class="courier">
-    ____       keep-alive      ____      keep-alive       ____
-   |    |   =+++++++++++++++- |    |  =+++++++++++++++-  |    |
-   |    |      keep-alive     |    |     keep-alive      |    |
-   \____/   -+++++++++++++++= \____/  -+++++++++++++++=  \____/
-
-   Browser                     Proxy                     Server
-</pre>
-
-<p>如上图，浏览器向服务器发送带有 <code>Connection:Keep-Alive</code> 的请求，中间经过一个哑代理，从而导致该首部到达服务器。对于服务器来说，代理与浏览器没有什么分别，它认为浏览器（代理）尝试建立 <code>Keep-Alive</code> 连接，便在响应头中发回 <code>Connection:Keep-Alive</code> ，并保持连接开启。哑代理将响应首部原封不动的发回给浏览器，并等待服务器关闭连接。浏览器收到响应数据后立即准备进行下一条请求。此时，浏览器和服务器都认为与对方建立了 <code>Keep-Alive</code> 连接，但是中间的代理确对此一无所知。因此哑代理不认为这条连接上还会有请求，接下来来自浏览器的任何请求都会被忽略。这样，浏览器和服务器都会在代理处挂起，直到一方超时将连接关闭为止。这一过程不仅浪费服务器资源，也使得浏览器响应缓慢或失败。</p>
-<h6 id="Proxy-Connection"><a href="#Proxy-Connection" class="headerlink" title="Proxy-Connection"></a>Proxy-Connection</h6><p>一个变通的做法即是引入一个叫做 <code>Proxy-Connection</code> 的新首部。在浏览器后面紧跟代理的情况下，会以 <code>Proxy-Connection</code> 首部取代 <code>Connection</code><br> 首部发送。如果代理不能理解该首部，会透传给服务器，这不会带来任何副作用，服务器仅会将其忽略；如果这个代理足够聪明（有能力支持这种 <code>Keep-Alive</code> 连接），会将 <code>Proxy-Connection</code> 首部替换成 <code>Connection</code> 发送给服务器，从而达到建立双向 <code>Keep-Alive</code> 连接的目的。</p>
-<p>我们可以开启 <a target="_blank" rel="noopener" href="http://www.telerik.com/fiddler">Fiddler</a> 并观察 Chrome 或 IE 开发工具中 Network中的请求头，都会有 <code>Proxy-Connection</code> 。Firefox好像并没有发送这个首部，Safari可能同时发送了 <code>Proxy-Connection</code> 和 <code>Connection</code> 首部，<a target="_blank" rel="noopener" href="http://www.telerik.com/fiddler">Fiddler</a> 没有移除 <code>Connection</code> 首部但将 <code>Proxy-Connection</code> 替换为 <code>Connection</code> ，导致出现两个 <code>Connection</code> 首部。</p>
-<p>显然，在聪明代理和哑代理共存的链路上，上面的提到的挂起的问题仍然存在，<code>Proxy-Connection</code>并没有从根本上解决问题。其实 <code>Proxy-Connection</code> 也并非是一个标准的协议首部，任何标准或草案中都没有提到它，仅仅是应用广泛罢了。</p>
-<h6 id="持久化连接"><a href="#持久化连接" class="headerlink" title="持久化连接"></a>持久化连接</h6><p>HTTP 1.1 已经废弃了使用 <code>Keep-Alive</code>，而以”持久化连接”的概念取代之。与 HTTP 1.0 不同的是，在 HTTP 1.1 中，持久化连接是默认开启的，除非你手动设置 <code>Connection:close</code>。为了避免收到哑代理误转发过来的 <code>Keep-Alive</code> ，HTTP 1.1 代理应当拒绝与所有来自  HTTP 1.0 设备建立持久化连接（实际厂商并非如此）。</p>
-<h6 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h6><p>HTTP 1.1 还提供了在持久化连接基础上的一个性能优化特性：<code>请求管道</code>。它可以在一条连接上同时发起多个请求而不必等到前面的请求得到响应，降低网络的环回响应时间，如下图：</p>
-<pre>
-服务器--------------------------------------------
-        /\/\/\/\
-       / /\/\/\ \
-      / / /\/\ \ \
-浏览器--------------------------------------------
-</pre>
-
-<p>但使用<code>请求管道</code>有一些限制：</p>
-<ul>
-<li>连接必须是持久的；</li>
-<li>服务器必须按照请求的顺序返回；</li>
-<li>浏览器必须能应对部分请求失败的情况，并重试；</li>
-<li>不能进行非幂等这类可能带来副作用的请求，如 POST 请求，因为无法安全重试。</li>
-</ul>
-<p>一些现代的浏览器支持管道但利用尚不广泛，特别是页面使用较多域名的情况下，管道技术更是难以施展。<a href="www.chromium.org/spdy%E2%80%8E">SPDY</a> 技术更进一步，做到了跨域的多路复用，理论上可以让web的加载速度有显著提升，期待该技术的普及。</p>
-<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ul>
-<li><a target="_blank" rel="noopener" href="http://homepage.ntlworld.com./jonathan.deboynepollard/FGA/web-proxy-connection-header.html">http://homepage.ntlworld.com./jonathan.deboynepollard/FGA/web-proxy-connection-header.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2068#section-19.7.1">https://tools.ietf.org/html/rfc2068#section-19.7.1</a></li>
-<li><a target="_blank" rel="noopener" href="http://www-archive.mozilla.org/projects/netlib/http/pipelining-faq.html">http://www-archive.mozilla.org/projects/netlib/http/pipelining-faq.html</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.guypo.com/technical/http-pipelining-not-so-fast-nor-slow/">http://www.guypo.com/technical/http-pipelining-not-so-fast-nor-slow/</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.mnot.net/blog/2011/07/11/what_proxies_must_do">http://www.mnot.net/blog/2011/07/11/what_proxies_must_do</a></li>
 </ul>
 
       

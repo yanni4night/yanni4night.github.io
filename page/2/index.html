@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,248 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2018/03/23/2018-03-23-principle-+/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/03/23/2018-03-23-principle-+/" class="post-title-link" itemprop="url">Javascript '+' 运算符原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-23 15:02:57" itemprop="dateCreated datePublished" datetime="2018-03-23T15:02:57+08:00">2018-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:23:50" itemprop="dateModified" datetime="2022-04-11T18:23:50+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/03/23/2018-03-23-principle-+/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/03/23/2018-03-23-principle-+/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>继了解完“&#x3D;&#x3D;”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。</p>
+<p>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+<p>第一步，对 a 和 b 执行 *toPrimitive()*，不指定 <a target="_blank" rel="noopener" href="https://tc39.github.io/ecma262/#sec-ordinarytoprimitive">hint</a>。</p>
+<p>以 <em>toPrimitive(a)</em> 为例，先看 a 有没有定义 <em>Symbol.toPrimitive</em>，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a[<span class="title class_">Symbol</span>.<span class="property">toPrimitive</span>] = customToPrimitive;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">customToPrimitive</span>(<span class="params">hint</span>) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (hint) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;number&#x27;</span>:</span><br><span class="line">            ...</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">            ...</span><br><span class="line">        <span class="attr">default</span>: <span class="comment">// &#x27;default&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果定义了 <em>Symbol.toPrimitive</em> 属性，则执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">customToPrimitive.<span class="title function_">call</span>(a, <span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>否则执行原生 *toPrimitive(“number”)*，也就是要依次调用 a 的 <em>valueOf</em> 和 <em>toString</em> 方法。</p>
+<p>如果执行 <em>a.valueOf()</em> 返回不是 Object，则为 <em>toPrimitive(a)</em> 的终值，否则执行 *a.toString()*。</p>
+<p>接下来，看 a 有没有定义 toString，如果有，则执行 *a.toString()*，为 <em>toPrimitive(a)</em> 的终值。</p>
+<p>如果没有，则执行原型链顶端的 <em>Object.prototype.toString</em>,这首先要看 a 有没有定义 <em>Symbol.toStringTag</em>。</p>
+<p>如果定义了，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">customStringTag</span>(<span class="params"></span>) &#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(a, <span class="title class_">Symbol</span>.<span class="property">toStringTag</span>, &#123;</span><br><span class="line">    <span class="attr">get</span>: customStringTag</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>那么返回 *”[object “ + customStringTag.apply(a) + “]”*，否则返回 *”[object Object]”*，为 <em>toPrimitive(a)</em> 的终值。</p>
+<p>如果发现 <em>toPrimitive(a)</em> 或者 <em>toPrimitive(b)</em> 任一为字符串，则执行字符串拼接，否则执行数字加法，即 *toNumber(a) + toNumber(b)*，这也能解释 <strong>true + true &#x3D; 2</strong> 的问题。</p>
+<hr>
+<p>可见 <em>a + b</em> 核心就是 <em>toPrimitive</em> 操作，只不过从 ES2015 以来，<em>toPrimitive</em> 受到 Symbol 的影响，变得越来越复杂。</p>
+<p>相比之下，减号“-”就很简单了，就是执行 *toNumber(a) - toNumber(b)*。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/" class="post-title-link" itemprop="url">《咨询的奥秘》 第二章 培养矛盾的思维框架</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-27 16:43:11" itemprop="dateCreated datePublished" datetime="2018-02-27T16:43:11+08:00">2018-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-14 11:28:13" itemprop="dateModified" datetime="2023-01-14T11:28:13+08:00">2023-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%92%A8%E8%AF%A2%E7%9A%84%E5%A5%A5%E7%A7%98/" itemprop="url" rel="index"><span itemprop="name">咨询的奥秘</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/27/2018-02-27-cultivating-a-paradoxical-frame-of-mind/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对于社会主义的中国人来讲，经过初中、高中、大学的思想政治课的洗礼，理解矛盾并非难事，我们辩证唯物主义的内容要更丰富得多。</p>
+<h1 id="第二章-培养矛盾的思维框架"><a href="#第二章-培养矛盾的思维框架" class="headerlink" title="第二章 培养矛盾的思维框架"></a>第二章 培养矛盾的思维框架</h1><h2 id="不要理性，要合理"><a href="#不要理性，要合理" class="headerlink" title="不要理性，要合理"></a>不要理性，要合理</h2><p>这两个相似的词忽然让我很难揣摩这句只包含6个字的话。什么样的事情是合理但不理性的呢？我理解，理性是对事件真实客观的描述，是能用逻辑严格证明的，往往获取“理性”需要很大的成本，甚至在有意义的时间内无法获取；而合理则是一种模棱两可的适当妥协，在有些事情无法获取“理性”之时，委曲求全的权宜之计都可能是一种合理。合理是一种“反牛角尖的”行为，似乎更倾向于“糊弄”。</p>
+<p>在作者涉猎的软件咨询行业，很难想象不求甚解的方案也能行得通。从技术上来讲，确实再隐晦的故障都是可以绝对定位的，但对于项目来说，往往最初的设计和真正的落地会有很大差距，如果没有绝对的经验积累，那么项目在循循渐进的过程中往往都会带着猜的成份。换句话说，没有理性，只要比上一版本又说改进，即为合理。从这角度上来说，一味得追求最佳既是不可能的任务，也不能称之为理性的抉择，毕竟世界是个矛盾体，在矛盾中寻求理性的过程收获利益，才是上上之选。</p>
+<p>从这里可以衍生出一种经典的产品进化模型，比如想造一辆汽车，下面有两种方案：</p>
+<ol>
+<li>第一种，先造轮子、发动机、车架，最终拼接成完善的汽车；</li>
+<li>第二种，先造一辆自行车、摩托车、三轮车，最后一辆汽车</li>
+</ol>
+<p>第二种方案看似费时费力，往往更容易被人接受，也更容易实现。</p>
+<h2 id="自以为无所不知的人最容易上当"><a href="#自以为无所不知的人最容易上当" class="headerlink" title="自以为无所不知的人最容易上当"></a>自以为无所不知的人最容易上当</h2><p>过于自信就是自负，往往容易对客观事实视而不见。这和“撞车的都是老司机”、“淹死的都是会水的”是类似的道理。</p>
+<h2 id="生活太重要，所以不能太较真"><a href="#生活太重要，所以不能太较真" class="headerlink" title="生活太重要，所以不能太较真"></a>生活太重要，所以不能太较真</h2><p>这论题太大了，似乎已经上升到了哲学和三观的高度上来了。我想作者要表达的意思应该是，对于无法解释的事物不必过于在意，毕竟你的无知正是矛盾世界里的必不可少的成份。</p>
+<h2 id="不付出就什么也得不到"><a href="#不付出就什么也得不到" class="headerlink" title="不付出就什么也得不到"></a>不付出就什么也得不到</h2><p>正是矛盾的合理体现，要想得到什么，不可避免地要失去什么，当然，反过来不一定成立，往往都不成立。</p>
+<h2 id="提升一方面，就要牺牲另一方面"><a href="#提升一方面，就要牺牲另一方面" class="headerlink" title="提升一方面，就要牺牲另一方面"></a>提升一方面，就要牺牲另一方面</h2><p>同上</p>
+<h2 id="费舍基本定理——你越适应现状，就越难适应变化"><a href="#费舍基本定理——你越适应现状，就越难适应变化" class="headerlink" title="费舍基本定理——你越适应现状，就越难适应变化"></a>费舍基本定理——你越适应现状，就越难适应变化</h2><p>显然，与现有系统耦合越大，与其它系统兼容越小。抽象与具象。</p>
+<blockquote>
+<p>伴随着年纪的增长，我觉得自己就越来越难以适应变化。</p>
+</blockquote>
+<h2 id="顾问一般在解决你提出的第三个问题时最有成效"><a href="#顾问一般在解决你提出的第三个问题时最有成效" class="headerlink" title="顾问一般在解决你提出的第三个问题时最有成效"></a>顾问一般在解决你提出的第三个问题时最有成效</h2><p>这也解释了为什么人在20多岁的时候最富创造性，因为年老后才更“善于”和这个“平庸”的世界打交道。</p>
+<p>始终关注自己在什么时候拥有最高效的进步，在合适的时候，应当勇于舍弃舒适的温床。</p>
+<blockquote>
+<p>我确实应该换个工作了🍟</p>
+</blockquote>
+<h2 id="我们能做，这是所需的费用"><a href="#我们能做，这是所需的费用" class="headerlink" title="我们能做，这是所需的费用"></a>我们能做，这是所需的费用</h2><p>没有成本的改变是不现实的，懂得这个道理，避免在愚蠢的任务上浪费时间与口舌。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1223,347 +1465,6 @@
 <li>一旦消灭了头号问题，二号问题就升级了</li>
 <li>帮助自己要比帮助别人更难</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2017/07/13/2017-07-13-react-native-reality/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/07/13/2017-07-13-react-native-reality/" class="post-title-link" itemprop="url">理想与现实，黑与白，总结半年来React-Native的深度应用经验</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-07-13 15:17:01" itemprop="dateCreated datePublished" datetime="2017-07-13T15:17:01+08:00">2017-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/react-native/" itemprop="url" rel="index"><span itemprop="name">react-native</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/07/13/2017-07-13-react-native-reality/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/07/13/2017-07-13-react-native-reality/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。</p>
-<p>往往在产品上应用一项新技术的KickOff上，都必然要涉及该项技术的明显领先优势，React-Native 给人的一贯明显优势无非是：</p>
-<ol>
-<li><strong>开发效率提升</strong>；</li>
-<li><strong>与Native一致的用户体验</strong>；</li>
-<li><strong>无需发版，随时上线</strong></li>
-</ol>
-<p> 那么如果工程做得好的话，也要必然提到它的劣势——<em>不够稳定</em>。</p>
-<p>我以前向来是个React-Native黑，我不认为它的稳定性足以支撑一项C端产品，更何况是亿级用户产品。</p>
-<p>因此，当初做React-Native算是有些被迫的，毕竟万事俱备只欠开发，毕竟要用事实说话，毕竟挣钱吃饭重要。</p>
-<hr>
-<p>初期的开发工作可谓极其艰苦，不但没有开发经验，而且基础调试设施不完善，效率很低，更何况连实体测试机都不够。但最终总算是上线了。</p>
-<p>另我十分惊讶的是，不稳定性带来的客户端Crash比预想中的要低得多得多。在平台的横向比较上，Android要比iOS的奔溃率高，但还不算很离奇，勉强可以忍受。</p>
-<p>我从来不会想到这么一个残缺不堪的东西竟然真的没有掉链子，由此我反思了一下，想起了我党在40年前的那句话：</p>
-<p><em><strong>实践是检验真理的唯一标准</strong></em></p>
-<p><img src="/images/rn/reality.jpg" alt="实践是检验真理的唯一标准"></p>
-<p>是的，不能因为外界的评论甚至是自己的无知，就对新事物抱有成见。除非自己亲自实践，否则无权瞎BB。</p>
-<p>经过这么一来，我对手头上的这个项目信心大增，业务的迭代速度即将迎来一次飞跃。</p>
-<p>然，下面才是冷静之后的现实，更说明了海量事实的总体分布就像那宇宙微波背景辐射一样的均匀各项同性。</p>
-<p><img src="/images/rn/bg.jpg" alt="宇宙微波背景辐射"></p>
-<h3 id="线上追踪问题困难"><a href="#线上追踪问题困难" class="headerlink" title="线上追踪问题困难"></a>线上追踪问题困难</h3><p>React 异步渲染的性质，导致了在渲染视图中出现crash，崩溃堆栈是不会追溯到你的业务代码中的。</p>
-<p><img src="/images/rn/stack.png" alt="crash stack"></p>
-<p>在这种情形下，代码被压缩根本就不是问题，问题是你完全不知道哪里出了故障，只能靠猜。</p>
-<blockquote>
-<p>年初我就强行猜了一次，幸运地解决了一个bug。</p>
-</blockquote>
-<p>然后如果说线上问题毕竟不在现场，不好追踪的话，那么如果同样的问题发生在了调试阶段，你能看到的只是样式错乱的页面，也不会报给你任何错误信息，就很难让人接受了。</p>
-<p>因此，【<strong>猜</strong>】是开发React-Native的一项重要技能。</p>
-<p><img src="/images/rn/guess.gif" alt="石头剪子布"></p>
-<h3 id="Android-无头问题居多"><a href="#Android-无头问题居多" class="headerlink" title="Android 无头问题居多"></a>Android 无头问题居多</h3><p>这依然算是固有的稳定性问题。此类问题有两个特点：</p>
-<ol>
-<li>偶发不可复现；</li>
-<li>逻辑上不可能</li>
-</ol>
-<p>不可复现的原因很繁杂，可能与设备型号、操作系统版本、软件版本、当前运存容量、用户操作路径都有关系。还有就是一些原则上根本不可能发生的错误。</p>
-<p>这些问题由于迟迟无法解决，长时间耽误了我们全量的进程。最后属于不了了之，算是向bug妥协了。</p>
-<h3 id="性能差"><a href="#性能差" class="headerlink" title="性能差"></a>性能差</h3><p>相信我，KickOff 中“与Native具有相同或相近的性能”的说辞是不成立的，特别是在Android上。</p>
-<p>为了提升性能，我们不得不把能耗高的部分交给Native去实现，但这样显然又减弱了效率的优势。</p>
-<h3 id="兼容客户端版本"><a href="#兼容客户端版本" class="headerlink" title="兼容客户端版本"></a>兼容客户端版本</h3><p>如果说Web可以不考虑浏览器环境，做到始终如一的版本发布，没人会有异议，但React-Native不行。</p>
-<p>React-Native是运行在客户端上的，它的行为和格调都必须与当前客户端的环境相匹配。</p>
-<p>这意味着，一套React-Native代码必须考虑到多个客户端环境。特别是在视觉大改版的情况下，React-Native融入两套视觉代码，是什么感觉你造吗？</p>
-<p>根据版本号的if-else逻辑目前已充斥相当一部分逻辑代码中，代码越来越不够优雅。</p>
-<h3 id="文本渲染不准确"><a href="#文本渲染不准确" class="headerlink" title="文本渲染不准确"></a>文本渲染不准确</h3><p>我们已经有充分的证据证明React-Native在渲染文本特别是多行文本时存在明显的bug。这导致我们不能按照设计的预期严格的排版。</p>
-<p>此问题很深奥，而且以目前的能力来看，基本无解。</p>
-<h3 id="坑多多"><a href="#坑多多" class="headerlink" title="坑多多"></a>坑多多</h3><p>这些坑不一定是不可解决的，其实大部分我们都可以通过规避来解决，但问题是如果不进行全网搜索，你很难提前预知风险，也就严重影响了效率，往往一个奇葩的问题能耽误你一天的时间。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/super-fe/superfe-rn-troubleshooting/issues">https://github.com/super-fe/superfe-rn-troubleshooting/issues</a></p>
-<hr>
-<p>总结来看，应用React-Native技术带来的收益并非是特别明显的，在我看来，它最大的贡献是把一拨做业务的人悄无声息地分成了两拨，显然迭代效率就上来了。</p>
-<p>客观上，你不能无视上面提到的各种问题，但这些问题说严重就严重，说不严重也不严重，总体看来是可勉强接受的，相对于传统的客户端开发方式，依然是<em>各向同性的</em>。</p>
-<p>从最初的腹黑到今天的淡然面对，深深感到世界系统的复杂性以及熵增的强大扭矩，革命性没那么容易，起码React-Native不是。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/12/18/2016-12-18-2016-front-end/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/12/18/2016-12-18-2016-front-end/" class="post-title-link" itemprop="url">2016 前端开发巡礼</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-12-18 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-18T00:00:00+08:00">2016-12-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2016/12/18/2016-12-18-2016-front-end/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/12/18/2016-12-18-2016-front-end/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文首发于 <a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/2016-review-frontend">http://www.infoq.com/cn/articles/2016-review-frontend</a>，此处为原稿。</p>
-<blockquote>
-<p>2016年马上过去了，像过去六年中的每一年一样，Web前端领域又产生了“面目全非”而又“耳目一新”的变化，不但旧事物持续不断地被淘汰，新事物也难保坐久江山，大有岌岌可危之势。开源界如群雄逐鹿，不断生产新的概念、新的框架、新的工具，去年中一些流行的技术今年大多得到了进一步的演进和升级，活跃度非常高，却仍然不能保证前端的未来属于它们。在今年整体资本市场冷却的大环境下，<em>to B</em>业务的创业公司显现出了较强的生命力，这种类型的业务也给Web前端的工作带来了明显的差异性，工程师整体技能方向也展露出一丝不一样的分支。本文将从下至上、由低到高的维度盘点过去一年中Web前端领域发生的重要事件以及影响未来2017的关键性因素。视野所限，不尽完整。</p>
-</blockquote>
-<h2 id="一、更新的网络与软件环境"><a href="#一、更新的网络与软件环境" class="headerlink" title="一、更新的网络与软件环境"></a>一、更新的网络与软件环境</h2><h3 id="1-1-HTTP-2-的持续普及"><a href="#1-1-HTTP-2-的持续普及" class="headerlink" title="1.1 HTTP&#x2F;2 的持续普及"></a>1.1 HTTP&#x2F;2 的持续普及</h3><p>今年中，几乎所有的现代桌面浏览器都已经支持了HTTP&#x2F;2协议，移动端依靠降级为Spdy依旧可以覆盖几乎所有平台，这样使得从协议上优化页面的性能成为了可能。</p>
-<p>同时，前端静态资源打包的必要性成为了一定程度上的争论焦点，打包合并作为传统的前端性能优化方案，它的存留对前端工程化影响极大，Facebook公司著名的静态资源动态打包方案的优越性也会被弱化。社区上多篇文章纷纷发表对HTTP&#x2F;2的性能实验数据，却不仅相同。</p>
-<p>在2017年，我们相信所有大型站点都会切换HTTP&#x2F;2，但依旧不会放弃对静态资源打包合并的依赖。而且。对于Server Push等高级特性，也不会有太多的应用。</p>
-<h3 id="1-2-Internet-Explorer-8"><a href="#1-2-Internet-Explorer-8" class="headerlink" title="1.2 Internet Explorer 8"></a>1.2 Internet Explorer 8</h3><p>三年前还在考虑兼容IE6的前端技术社区，在前不久天猫宣布不再支持IE8后又引起了一股躁动。IE8是Windows XP操作系统支持的最高IE版本，放弃IE8意味着放弃了使用IE的所有XP用户。</p>
-<p>其实在2016年的今天，前端社区中框架、工具的发展早已不允许IE8的存在，angular 早在1.3版本就果断放弃了IE8，React 也在年初的v15版本上宣布放弃。在PC领域，你依旧可以使用像Backbone一样的其它框架继续对IE进行支持，但无论是从研发效率上还是从运行时效率上，放弃它都是更好的选择。</p>
-<p>由于对HTML5兼容性不佳，在2017年，相信IE9也会逐渐被社区放弃，以取得更好的性能、更少的代码体积。</p>
-<h2 id="二、如何编写-Java-Script"><a href="#二、如何编写-Java-Script" class="headerlink" title="二、如何编写(Java)Script"></a>二、如何编写(Java)Script</h2><h3 id="2-1-ES2016？ES2017？babel！"><a href="#2-1-ES2016？ES2017？babel！" class="headerlink" title="2.1 ES2016？ES2017？babel！"></a>2.1 ES2016？ES2017？babel！</h3><p>去年定稿的ES2015（亦称ES6）带来了大量令人激动的新语言特性，并快速被V8和SpiderMonkey所实现。但由于浏览器版本碎片化问题，目前编写生产环境代码仍然以ES5为主。今年年中发布的ES2017带来的新特性数量少的可怜，但这正好给了浏览器厂商消化ES2015的时间，在ES2017到来之前喘口气——是的，明年的ES2017势必又会带来一大波新特性。</p>
-<p>JS解释引擎对新特性的支持程度并不能阻碍狂热的开发者使用他们，在接下来的很长时间，业界对babel的依赖必然有增无减。babel生态对下一代ECMAScript的影响会进一步加大，人们通过先增加新的babel-plugin，后向ECMA提案的方式成为了ECMAScript进化的常态。开发者编写的代码能直接运行在浏览器上的会越来越少。</p>
-<p>但使用babel导致的编译后代码体积增大的问题并没有被特别关注，由于polyfill可能被重复引入，部署到生产环境的代码带有相当一部分冗余。</p>
-<h3 id="2-2-TypeScript"><a href="#2-2-TypeScript" class="headerlink" title="2.2 TypeScript"></a>2.2 TypeScript</h3><p>作为ECMAScript语言的超集，TypeScript在今年取得了优异的成绩，angular 2放弃了传说中的AtScript，成为了TypeScript的最大客户。人们可以像编写Java一样编写JavaScript，有效提升了代码的表述性和类型安全性。</p>
-<p>但凡事有两面，TypeScript的特快也在不断升级，在生产环境中，你可能需要一套规范来约束开发者，防止滥用导致的不兼容，这反而增加了学习成本、应用复杂性和升级安全性。个中优劣，仍需有大量的工程实践去积累经验。</p>
-<p>此外，TypeScript也可以看做一种转译器，与babel有着类似的新特性支持。在2017年，我们期待TypeScript与babel会发展成怎样的一种微妙关系。</p>
-<h3 id="2-3-promise、generator-与-async-await"><a href="#2-3-promise、generator-与-async-await" class="headerlink" title="2.3 promise、generator 与 async&#x2F;await"></a>2.3 promise、generator 与 async&#x2F;await</h3><p>在回调地狱问题上，近两年我们不断被新的方案乱花了眼。过去我们会利用<a target="_blank" rel="noopener" href="http://npm.org/async">async</a>来简化异步流的设计，直到“正房”Promise的到来。但它们只是callback模式的语法糖，并没有完全消除callback的使用。</p>
-<p>ES2015带来的generator&#x2F;yield似乎成为了解决异步编程的一大法宝，虽然它并非为解决异步编程所设计的。但generaor的运行是十分繁琐的，因此另一个工具<a target="_blank" rel="noopener" href="http://npmjs.org/co">co</a>又成为了使用generator的必备之选。Node.js社区的koa框架初始就设计为使用generator编写洋葱皮一样的控制流。</p>
-<p>但昙花一现，转眼间async&#x2F;await的语法，配合Promise编写异步代码的方式立即席卷整个前端社区，虽然async&#x2F;await仍然在ES2017的草案中，但在今天，不写async&#x2F;await立刻显得你的设计落后社区平均水平一大截。</p>
-<p>在Node.js上，v7已经支持在harmony参数下的async&#x2F;await直接解释，在明年4月份的v8中，将会正式支持，届时，koa 2的正式版也会发布，几乎完全摒弃了generator。</p>
-<h3 id="2-4-fetch"><a href="#2-4-fetch" class="headerlink" title="2.4 fetch"></a>2.4 fetch</h3><p>受到回调问题的影响，传统的<code>XMLHttpRequest</code>有被<code>fetch</code> API 取代之势。如今，成熟的polyfill如<a target="_blank" rel="noopener" href="http://npmjs.org/whatwg-fetch">whatwg-fetch</a>、<a target="_blank" rel="noopener" href="http://npmjs.org/node-fetch">node-fetch</a>、<a target="_blank" rel="noopener" href="http://npmjs.org/isomorphic-fetch">isomorphic-fetch</a>在npm上的每日下载量都非常大，即便对于兼容性不好的移动端，开发者也不愿使用繁琐的Ajax。借助async&#x2F;await的语法，使用fetch API能让代码更简洁。</p>
-<h2 id="三、node-js服务与工具"><a href="#三、node-js服务与工具" class="headerlink" title="三、node.js服务与工具"></a>三、node.js服务与工具</h2><h3 id="3-1-Koa-2"><a href="#3-1-Koa-2" class="headerlink" title="3.1 Koa 2"></a>3.1 Koa 2</h3><p>Koa与流行的Express属于“同根生”的关系，它们由同一团队打造。相比Express，新的Koa框架更轻量、更灵活。但Koa的设计在短时间内曾经出现了较大的变动，这主要受到了async&#x2F;await语法对异步编程的影响。在v2版本中，koa的middleware抛弃generator转而支持async，所有第三方middleware实现，要么自行升级，要么使用<a target="_blank" rel="noopener" href="http://npmjs.org/koa-convert">koa-convert</a>进行包装转换。</p>
-<p>目前koa在node.js社区的HTTP服务端框架中受到关注度比较高，不过其在npm上latest目前仍处于1.x阶段，预计在2017年4月份发布node.js v8后，就会升级到2.x。</p>
-<p>Koa的轻量级设计意味着你需要大量第三方中间件去实现一个完整的web应用，目前鲜有看到对koa的大规模重度使用，因此也就对其无从评价。相信在明年，越来越多的产品应该会尝试部署koa 2，届时，对第三方资源的依赖冲突也会尖锐起来，这需要一个过程才能让koa的生态完备起来。预计在2018年，我们会得到一个足够健壮的koa技术栈。这会促进node.js在服务端领域的扩展，轻量级的web服务将会逐渐成为市场上的主流。</p>
-<h2 id="四、框架纷争"><a href="#四、框架纷争" class="headerlink" title="四、框架纷争"></a>四、框架纷争</h2><h3 id="4-1-jQuery已死？"><a href="#4-1-jQuery已死？" class="headerlink" title="4.1 jQuery已死？"></a>4.1 jQuery已死？</h3><p>今年六月份jQuery发布了3.0版本，距离2.0发布已经有三年多的时间，但重大的更新几乎没有。由于老旧浏览器的逐渐放弃和升级，jQuery需要处理的浏览器兼容性问题越来越少，专注于API易用性和效率越来越多。</p>
-<p>随着如angular、react、ember、vue等大量具备视图数据单双向绑定能力的框架被普及，使用jQuery编写指令式的代码操作DOM的人越来越少。早在2015年便有人声称jQuery已死，社区中也进行了大量雷同的讨论，今天我们看到确实jQuery的地位已大不如前，著名的sizzle选择器在今天已完全可由*querySelector**原生方法替代，操作DOM也可以由框架根据数据的变动自动完成。</p>
-<p>明年jQuery在构建大型前端产品的过程中的依赖会被持续弱化，但其对浏览器特性的理解和积淀将对现有的和未来的类angular的MVVM框架的开发依旧具有很大的借鉴意义。</p>
-<h3 id="4-2-angular-2"><a href="#4-2-angular-2" class="headerlink" title="4.2 angular 2"></a>4.2 angular 2</h3><p>好事多磨，angular 2的正式版终于在今年下半年发布，相比于1.x，新的版本几乎是完全重新开发的框架，已经很难从设计中找到1.x的影子。陡峭的学习曲线也随之而来，npm、ES2015 Modules、decorator、TypeScript、zone.js、rxjs、JIT&#x2F;AOT、e2e test，几乎都是业界这两年中的最新概念，这着实给初学者带来了不小的困难。</p>
-<p>angular 2也更面向于开发单页应用（SPA），这是对ES2015 Modules语法描述的模块进行打包（bundle）的必然结果，因此angular 2也更依赖于webpack等“bundler”工具。</p>
-<p>虽然angular 声称支持TypeScript、ECMAScript和Dart三种语言，不过显然业界对Dart没什么太大兴趣，而对于ECMAScript和TypeScript，两种语言模式下angular 2在API和构建流程上都有着隐式的（文档标注不明的）差异化，这必然会给开发者以困扰。加上业界第三方工具和组件的支持有限，TypeScript几乎是现在开发者唯一的选择。</p>
-<p>此外，angular团队已声明并没有完全放弃对1.x组件的支持，通过特有的兼容API，你可以在2.x中使用针对1.x开发的组件。鉴于不明确的风险，相信很少有团队愿意这样折腾。</p>
-<p>现在在产品中使用angular 2，在架构上，你需要考虑生产环境和开发环境下两种完全不同的构建模式，也就是JIT和AOT，这需要你有两套不一样的编译流程和配置文件。在不同环境下模块是否符合期望，可以用e2e、spec等方式来进行自动化测试，好的，那么angular 2的测试API又可能成了技术壁垒，它的复杂度可能更甚angular本身。可以确信，在业务压力的迫使下，绝大部分团队都会放弃编写测试。</p>
-<p>总之angular 2是一个非常具有竞争力的框架，其设计非常具有前瞻性，但也由于太过复杂，很多特性都会成为鸡肋，被开发者所无视。由于react*和vue的竞争，angular 2对社区的影响肯定不如其前辈1.x版本，且其更高级的特性如Server Render还没有被工程化实践，因此相信业界还会持续观望，甚至要等到下一个4.x版本的发布。</p>
-<h3 id="4-3-vue-2-0"><a href="#4-3-vue-2-0" class="headerlink" title="4.3 vue 2.0"></a>4.3 vue 2.0</h3><p>vue绝对是类MVVM框架中的一匹黑马，由作者一人打造，更可贵的是作者还是华人。vue在社区内的影响非常之大，特别是2.0的发布，社区快速生产出了无数基于vue的解决方案，这主要还是受益于其简单的接口API和友好的文档。可见作为提供商，产品的简单易用性显得尤为重要。在性能上，vue基于ES5 setter，得到了比angular 1.x脏检查机制成倍的性能提升。而2.0在模块化上又更进一步，开发难度更低，维护性更好。可以说vue准确地戳中了普通web开发者的痛点。在国内，vue与weex达成了合作，期待能给社区带来怎样的惊喜。</p>
-<h3 id="4-4-react"><a href="#4-4-react" class="headerlink" title="4.4 react"></a>4.4 react</h3><p>目前看来，react似乎仍是今年最流行的数据视图层解决方案，并且几乎已经成为了每名前端工程师的标配技能。今年react除了版本从0.14直接跃升至15，放弃了IE8以外，并没有更多爆发式的发展。人们对于使用JSX语法编写web应用已经习以为常，就像过去十年间写jQuery一样。</p>
-<p>react的代码在维护性能上显而易见，如果JSX编写得当，在重渲染性能上也具备优势，但如果只部署在浏览器环境中，那么首屏性能将会受到负面影响，毕竟在现阶段，纯前端渲染仍然快不过后端渲染，况且后端具备天生的chunked分段输出优势。我们在业界中可以看到一些负面的案例，比如某新闻应用利用react全部改写的case，就是对react的一种误用，完全不顾其场景劣势。</p>
-<p>围绕着react发展的替代品和配套工具依旧很活跃，<a target="_blank" rel="noopener" href="https://github.com/developit/preact">preact</a>以完全兼容的API和小巧的体积为卖点，<a target="_blank" rel="noopener" href="https://github.com/trueadm/inferno">inferno</a>以更快的速度为卖点，等等。每个框架都想在Virtual DOM上有所创新，但它们的提升都不是革命性的，由此而带来的第三方插件不兼容性，这种风险是开发者不愿承担的，笔者认为它们最大的意义在于能为react的内部实现提供另外的思路。就像在自然界，生物多样性是十分必要的，杂交能带来珍贵的进化优势。</p>
-<h3 id="4-5-react-native"><a href="#4-5-react-native" class="headerlink" title="4.5 react-native"></a>4.5 react-native</h3><p>今年是react-native（一下简称RN）支持双端开发的第一年，不断有团队分享了自己在RN上的实践成果，似乎前途一片大好，RN确实有效解决了传统客户端受限于发版周期、H5受限于性能的难题，做到了鱼和熊掌兼得的理想目标。</p>
-<p>但我们仍然需要质疑：首先，RN目前以两周为周期发布新版本，没有LTS，每个版本向前不兼容。也就是说，你使用0.39.0的版本编写bundle代码，想运行在0.35.0的runtime上，这几乎会100%出问题。在这种情况下，如何制定客户端上RN的升级策略？如果升级，那么业务上如何针对一个以上的runtime版本编写代码？如果不升级，那么这意味着你需要自己维护一个LTS。要知道目前每个RN的版本都会有针对前版本的bug fix，相信没有团队有精力可以在一个老版本上同步这些，如果不能，那业务端面对的将是一个始终存在bug的runtime，其开发心理压力可想而知。</p>
-<p>其次，虽然RN声称支持Android与iOS双端，但在实践中却存在了极多系统差异性，有些体现在了RN文档中，有一些则体现在了issue中，包括其它一些问题，github上RN的近700个issue足以让人望而却步。如果不能高效处理开发中遇到的各种匪夷所思的问题，那么工期就会出现严重风险。此外，RN在Android和iOS上的性能也不尽相同，Android上更差一些，即便你完成了整个业务功能，却还要在性能优化上消耗精力。并且无论如何优化，单线程模型既要实现流畅的转场动画，又要操作一系列数据，需要很高的技巧才能保证可观的性能表现。在具体的实践中，对于H5，往往由于时间关系，业务上先会上一个还算过得去的版本，过后再启动性能优化。然而对于RN，很有可能达到“过得去”的标准都需要大量的重构工作。</p>
-<p>再次，RN虽然以Native渲染元素，但毕竟是运行在JavaScript Core内核之上，依旧是单线程，相对于H5这并没有对性能有革命性质的提升。Animated动画、大ListView滚动都是老生常谈的性能瓶颈，为了解决一些复杂组件所引起的性能和兼容性问题，诸多团队纷纷发挥主动能动性，自己建设基于Native的高性能组件，这有两方面问题，一是不利于分发共享，因为它严重依赖特定的客户端环境，二是它仍依赖客户端发版，仍需要客户端的开发，违背了RN最最重要的初衷。可以想象，在大量频繁引用Native组件后，RN又退化成了H5+Hybrid模式，其UI的高性能优势将会在设备性能不断升级下被削弱，同时其无stable版本反而给开发带来了更多不可预测的风险变量。</p>
-<p>最后，RN仍然难以调试和测试，特别是依赖了特定端上组件之后，本地的自动化测试几乎成为了不可能，而绝大多数客户端根本不支持自动化测试。而调试只能利用remote debugger有限的能力，在性能分析上都十分不便。</p>
-<p>可以说RN的出现带给了移动开发以独特的新视角，使得利用JavaScript开发Native成为了可能，NativeScript、Weex等类似的解决方案也发展开来。显然RN目前最大的问题仍然是不够成熟和稳定，利用RN替代Native依然存在着诸多风险，这对于重量级的、长期维护的客户端产品可能并不是特别适合，比如Facebook自己。RN的优势显而易见，但其问题也是严重的，需要决策者对个方面利弊都有所了解，毕竟这种试错的成本不算小。</p>
-<p>由于时间关系，市场上并没有一个产品在RN的应用上有着足够久的实践经验，大部分依然属于“我们把RN部署到客户端了”的阶段，我们也无法预测这门技术的长久表现，现在评价RN的最终价值还为时尚早。在2017年，期待RN团队能做出更长足的进步，但不要太乐观，以目前的状态来看，想达到stable状态还是有着相当大的难度。</p>
-<h3 id="4-6-redux-与-mobx"><a href="#4-6-redux-与-mobx" class="headerlink" title="4.6 redux 与 mobx"></a>4.6 redux 与 mobx</h3><p><a target="_blank" rel="noopener" href="https://github.com/reactjs/redux">redux</a> 成功成为了 react 技术栈中的最重要成员之一。与vue一样，redux也是凭借着比其它Flux框架更简单易懂的API才能脱颖而出。不过已经很快有人开发厌烦它每写一个应用都要定义action、reducer、store以及一大堆函数式调用的繁琐做法了。</p>
-<p><a href="mobxjs.github.io/mobx">mobx</a>也是基于ES5 setter，让开发者可以不用主动调用action函数就可以触发视图刷新，它只需要一个store对象以及几个decorator就能完成配置，确实比redux简单得多。</p>
-<p>在数据到视图同步上，无论使用什么样的框架，都有一个至关重要的问题是需要开发者自己操心，那就是在众多数据变动的情形下，如何保证视图以最少的但合理的频率去刷新，以节省极其敏感的性能消耗。在redux或mobx上都会出现这个问题，而mobx尤甚。为了配合提升视图的性能，你依然需要引入action、transaction等高级概念。在控制流与视图分离的架构中，这是开发者无可避免的关注点，而对于angular、vue，框架会帮你做很多事情，开发者需要考虑的自然少了许多。</p>
-<h3 id="4-7-bootstrap-4"><a href="#4-7-bootstrap-4" class="headerlink" title="4.7 bootstrap 4"></a>4.7 bootstrap 4</h3><p>bootstrap 4处于<a target="_blank" rel="noopener" href="https://v4-alpha.getbootstrap.com/">alpha</a>阶段已经非常久了，即使现在3.x已经停止了维护，它似乎受到了twitter公司业务不景气的影响，github上的<a target="_blank" rel="noopener" href="https://github.com/twbs/bootstrap/issues">issue</a>还非常多。bootstrap是建设内部平台最佳的CSS框架，特别是对于那些对前端不甚了解的后端工程师。我们不清楚bootstrap还能坚持多久，如果twitter不得不放弃它，最好的归宿可能是把它交给第三方开源社区去维护。</p>
-<h2 id="五、工程化与架构"><a href="#五、工程化与架构" class="headerlink" title="五、工程化与架构"></a>五、工程化与架构</h2><h3 id="5-1-rollup-与-webpack-2"><a href="#5-1-rollup-与-webpack-2" class="headerlink" title="5.1 rollup 与 webpack 2"></a>5.1 rollup 与 webpack 2</h3><p><a target="_blank" rel="noopener" href="http://rollupjs.org/">rollup</a>是近一年兴起的又一打包工具，其最大卖点是可以对ES2015 Modules的模块直接打包，以及引入了Tree-Shaking算法。通过引入babel-loader，webpack一样可以对ES2015 Modules进行打包，于是rollup的亮点仅在于Tree-Shaking，这是一种能够去除冗余，减少代码体积的技术。通过分析AST（抽象语法树），rollup可以发现那些不会被使用的代码，并去除它。</p>
-<p>不过Tree-Shaking即将不是rollup的专利了，webpack 2也将支持，并也原生支持ES6 Modules。这可以说是“旁门左道”对主流派系进行贡献的一个典型案例。</p>
-<p>webpack是去年大热的打包工具，俨然已经成为了替代grunt&#x2F;gulp的最新构建工具，但显然并不是这样。笔者一直认为webpack作为一个<em>module bundler</em>，做了太多与其无关的事情，从而表象上看来这就是一个工程构建工具。经典的构建需要有任务的概念，然后控制任务的执行顺序，这正是Ant、Grunt、Gulp做的事情。webpack不是这样，它最重要的概念是<em>entry</em>，一个或者多个，它必须是类JavaScript语言编写的磁盘文件，所有其它如CSS、HTML都是围绕着entry被处理的。估计你很难一眼从配置文件中看出webpack对当前项目进行了怎样的“构建”，不过似乎社区中并没有人提出过异议，一切都运行得很好。</p>
-<blockquote>
-<p>题外话：如果使用webpack构建一个没有任何JavaScript代码的工程？</p>
-</blockquote>
-<p>新的angular 2使用webpack 2编译效果更加，不过，已经提了一年的webpack 2，至今仍处于beta阶段，好在现在已经rc，相信离release不远了。</p>
-<h3 id="5-2-npm、jspm、bower与yarn"><a href="#5-2-npm、jspm、bower与yarn" class="headerlink" title="5.2 npm、jspm、bower与yarn"></a>5.2 npm、jspm、bower与yarn</h3><p>在模块管理器这里，npm依旧是王者，但要说明的是，npm的全称是<code>node package mamager</code>，主要用来管理运行在node上的模块，但现在却托管了大量只能运行在浏览器上的模块。造成这种现象的几个原因：</p>
-<ol>
-<li>webpack的大量使用，使得前端也可以并习惯于使用CommonJS类型的模块；</li>
-<li>没有更合适的替代者，bower以前不是，以后更不会是</li>
-</ol>
-<p>前端的模块化规范过去一直处于战国纷争的年代。在node上CommonJS没什么意见。在浏览器上，虽然现在有了ES2015 Modules，却缺少了模块加载器，未来可能是<a target="_blank" rel="noopener" href="https://github.com/systemjs/systemjs">SystemJS</a>，但现在仍处于草案阶段。无论哪种，都仍处于JavaScript语言层面，而完整的前端模块化还要包括CSS与HTML，以及一些二进制资源。目前最贴近的方案也就只能是JSX+CSS in JS的模式了，这在webpack环境下大行其道。这种现象甚至影响了angular 2、ember 2等框架的设计。从这点看来，jspm只是一个加了层包装的壳子，完全没有任何优势。</p>
-<p>npm本身也存在着各种问题，这在实践中总会影响效率、安全以及一致性，Facebook果断地出品了yarn——npm的替代升级版，支持离线模式、严格的依赖版本管理等在工程中非常实用的特性。</p>
-<p>至于前端模块化，JavaScript有CommonJS和ES2015 Modules就够了，但工程中的组件，可能还需要在不同的框架环境中重复被开发，它们依旧不兼容。未来的话，webcomponents可能是一个比较优越的方案。</p>
-<h3 id="5-3-同构"><a href="#5-3-同构" class="headerlink" title="5.3 同构"></a>5.3 同构</h3><p>同构的设计在软件行业早就被提出，不过在web前端，还是在node.js、特别是react的出现后，才真正成为了可能，因为react内核的运行并不依赖于浏览器DOM环境。</p>
-<p>react的同构是一个比较低成本的方案，只要注意代码的执行环境，前后端确实可以共享很大一部分代码，随之带来的一大收益是有效克服了SPA这种前端渲染的页面在首屏性能上的瓶颈，这是所有具备视图能力的框架angular、vue、react等的共性问题，而现在，它们都在一种程度上支持server render。</p>
-<p>可以想到的做前后端同构面临的几个问题：</p>
-<ol>
-<li>静态资源如何引入，CSS in JS模式需要考虑在node.js上的兼容性；</li>
-<li>数据接口如何fetch，在浏览器上是Ajax，在node.js上是什么；</li>
-<li>如何做路由同构，浏览器无刷新切换页面，新路由在服务端可用；</li>
-<li>大量DOM渲染如何避免阻塞node.js的执行进程</li>
-</ol>
-<p>目前github上star较多的同构框架包括vue的<a target="_blank" rel="noopener" href="https://github.com/nuxt/nuxt.js">nuxt</a>和react的<a target="_blank" rel="noopener" href="https://github.com/zeit/next.js">next.js</a>，以及数据存储全包的<a target="_blank" rel="noopener" href="https://www.meteor.com/">meteor</a>。可以肯定的是，不论它们是否能部署在生产环境中，都不可能满足你的所有需求，适当的重新架构是必要的，在这个新的领域，没有太多的经验可以借鉴。</p>
-<h2 id="六、未来技术与职业培养"><a href="#六、未来技术与职业培养" class="headerlink" title="六、未来技术与职业培养"></a>六、未来技术与职业培养</h2><h3 id="6-1-大数据方向"><a href="#6-1-大数据方向" class="headerlink" title="6.1 大数据方向"></a>6.1 大数据方向</h3><p>越来越多做<em>toB</em>业务的公司对前端的需求都是在数据可视化上，或者更通俗一些——报表。这个部分在从前通常都是前端工程师嗤之以鼻的方向，认为无聊、没技术。不过在移动端时代，特别是大数据时代，对此类技能的需求增多，技术的含金量也持续提升。根据“面向工资编程”的原则，一定会有大量工程师加入进来。</p>
-<p>对这个方向的技术技能要求是canvas、webgl，但其实绝大多数需求都不需要你直接与底层API打交道，已经有大量第三方工具帮你做到了，不乏非常优秀的框架。如百度的<a target="_blank" rel="noopener" href="http://echarts.baidu.com/">echarts</a>，国外的<a target="_blank" rel="noopener" href="http://www.chartjs.org/">chart.js</a>、<a target="_blank" rel="noopener" href="http://www.highcharts.com/">highcharts</a>、<a target="_blank" rel="noopener" href="http://d3js.org/">d3.js</a>等等，特别是d3.js，几乎是大数据前端方向的神器，非常值得学习。</p>
-<p>话说回来，作为工程师，心存忧患意识，一定不能以学会这几款工具就满足，在实际的业务场景中，更多的需要你扩展框架，生产自己的组件，这需要你具备一定的数学、图形和opengl底层知识，可以说是非常大的技术壁垒和入门门槛。</p>
-<h3 id="6-2-webVR"><a href="#6-2-webVR" class="headerlink" title="6.2 webVR"></a>6.2 webVR</h3><p>今年可以说是VR技术爆发式的一年，市场上推出了多款VR游戏设备，而淘宝更是开发出了平民的*buy+*购物体验，等普及开来，几乎可以颠覆传统的网上购物方式。</p>
-<p>VR的开发离不开对3D环境的构建，webVR标准还在草案阶段，<a target="_blank" rel="noopener" href="https://aframe.io/">A-Frame</a>可以用来体验，另一个<a target="_blank" rel="noopener" href="https://threejs.org/">three.js</a>框架是一个比较成熟的构建3D场景的工具，除了能在未来的VR应用中大显身手，同样也在构建极大丰富的3D交互移动端页面中显得必不可少，淘宝就是国内这方面的先驱。</p>
-<h3 id="6-3-webassembly"><a href="#6-3-webassembly" class="headerlink" title="6.3 webassembly"></a>6.3 webassembly</h3><p>asm.js已发展成<a target="_blank" rel="noopener" href="http://webassembly.org/">webassembly</a>，由谷歌、微软、苹果和Mozilla四家共同推动，似乎是非常喜人乐见的事情，毕竟主要浏览器内核厂商都在这里了。不过合作的一大问题就是低效，今年终于有了可以演示的demo，允许编写C++代码来运行在浏览器上了，你需要下载一大堆依赖库，以及一次非常耗时的编译，不过好歹是个进步。</p>
-<p>短时间内，我们都不太可能改变使用JavaScript编写前端代码的现状，Dart失败了，只能期望于未来的webassembly。有了它，前端在运行时效率、安全性都会上一个台阶，其它随之而来的问题，就只能等到那一天再说了。</p>
-<h3 id="6-4-webcomponents"><a href="#6-4-webcomponents" class="headerlink" title="6.4 webcomponents"></a>6.4 webcomponents</h3><p>webcomponent能带给我们什么呢？HTML Template、Shadow DOM、Custom Element和HTML Import，是的，非常完美的组件化系统。angular、react的组件化系统中，都是以Custom Element的方式组合HTML，但这都是假象，它们最终都会被编译成JavaScript才会执行。但webcomponents不一样，Custom Element原生就可以被浏览器解析，DOM元素本身的方法都可以自定义，而且元素内部的子元素、样式，由于Shadow DOM的存在，不会污染全局空间，真正成为了一个沙箱，组件化就应该是这个样子，外部只关心接口，不关心也不能操纵内部的实现。</p>
-<p>当前的组件化，无不依赖于某一特定的框架环境，或者是angular，或者是react，想移植就需要翻盘推倒重来，也就是说他们是不兼容的。有了webcomponents，作为浏览器厂商共同遵循和支持的标准，这一现状将极有可能被改写。</p>
-<p>未来的前端组件化分发将不会是npm那么简单，可能只是引用一个html文件，更有可能的是包含CSS、HTML、JavaScript和其它二进制资源的一个目录。</p>
-<p>目前只有最新的Chrome完全支持webcomponents的所有特性，所以距离真正应用它还尚需时日。由于技术上的限制，webcomponents polyfill的能力都非常受限，Shadow DOM不可能实现，而其它三者则更多需要离线编译实现，可以参考vue 2的实现，非常类似于webcomponents。</p>
-<h3 id="6-5-关于微信小程序"><a href="#6-5-关于微信小程序" class="headerlink" title="6.5 关于微信小程序"></a>6.5 关于微信小程序</h3><p>微信小程序对于今年不得不说，却也无话可说。依托于庞大的用户量，微信官方出品了自有的一套开发技术栈，只能说给繁杂的前端开发又填了一个角色——微信前端工程师，此外，从技术上，笔者确实无语。</p>
-<h2 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h2><p>最后还有几点需要说明。</p>
-<h3 id="7-1-工程化"><a href="#7-1-工程化" class="headerlink" title="7.1 工程化"></a>7.1 工程化</h3><p>首先，现在业界都在大谈前端工程化，人人学构建，个个会打包。鄙人认为，工程化的要点在于“平衡诸方案利弊，取各指标的加权收益最大化”。仅仅加入了项目构建是远远不够的，在实践中，我们经常需要考虑的方向大可以分为两种：一是研发效率，这直接应该响应业务需求的能力；二是运行时性能，这直接影响用户的使用体验，同时也是产品经理所关心的。这两点都直接影响了公司的收入和业绩。</p>
-<p>具体到细节的问题上来，比如说：</p>
-<ol>
-<li>静态资源如果组织和打包，对于具备众多页面的产品，考虑到不断的迭代更新，如何打包能让用户的代码下载量最少（性能）？不要说使用webpack打成一个包，也不要说编译commonchunk就万事大吉了，难道还需要不断地调整编译脚本（效率）？改错了怎么办？有测试方案么？</li>
-<li>利用angular特别是react构建纯前端渲染页面，首屏性能如何保证（性能）？引入服务端同构渲染，好的，那么服务端由谁来编写？想来必是由前端工程师来编写，那么服务端的数据层架构是怎么样的？运维角度看，前端如何保证服务的稳定（效率）？</li>
-<li>组件化方案如何制定（效率）？如果保证组件的分发和引用的便捷性？如何保证组件在用户端的即插即用（性能）？</li>
-</ol>
-<p>对于工程师来说，首先需要量化每个指标的权重，然后对于备选方案，逐个计算加权值，取最大值者，这才是科学的技术选型方法论。</p>
-<p>然而在业界，很少能看到针对工程化的更深入分享和讨论，大多停留在“哪个框架好”，“使用XXX实现XXX”的阶段，往往是某一特定方向的优与劣，很少有科学的全局观。甚至只看到了某一方案的优势，对其弊端和可持续性避而不谈。造成这种现状的原因是多方面的，一是技术上，工程师能力的原因并没有考虑得到，二是政治上，工程师需要快速实现某一目标，以取得可见的KPI收益，完成团队的绩效目标，但更多的可能是，国内绝大多数产品的复杂性都还不够高，根本无需考虑长久的可持续发展和大规模的团队合作对于技术方案的影响。</p>
-<p>因此，你必须接受的现状是，无论你是否使用CSS预处理器、使用webpack还是grunt、使用react还是angular，使用RN还是Hybrid，对于产品极有可能都不是那么地敏感和重要，往往更取决于决策者的个人喜好。</p>
-<h3 id="7-2-角色定位"><a href="#7-2-角色定位" class="headerlink" title="7.2 角色定位"></a>7.2 角色定位</h3><p>确实，近两年，web前端工程师开始不够老实，要么用node.js插手服务端开发，要么用RN插手客户端开发。如何看待这些行为呢？</p>
-<p>鄙人以为，涉足服务端开发是没问题的，因为只涉及到渲染层面，还是属于“前端”的范畴的。况且，在实际的工程实践中，已经可以证明，优秀的前端研发体系确实离不开服务端的参与，想想Facebook的BigPipe。不过，这需要服务端良好的分层架构，数据与渲染完全解耦分离，后端工程师只负责业务数据的CRUD，并提供接口，前端工程师从接口中获取数据，并推送到浏览器上。数据解耦是比接口解耦更加优越的方案。因此现在只要你的服务端架构允许，node.js作为web服务已经比较成熟，前端负责服务端渲染是完全没有问题的。</p>
-<p>前端涉足客户端开发也是合理的，毕竟都运行在用户端，也属于前端的范畴。抛开阿里系的weex鄙人不甚了解，NativeScript、RN都还缺乏大规模持续使用的先例，这是与涉足服务端领域的不同，客户端上的方案都还不够成熟，工具的限制阻碍了前端向客户端的转型，仍然需要时间的考验。不过时间可能不会很多，未来的web技术依托高性能硬件以及普及的webgl、webrtc、Payment API等能力，在性能和功能上都会挑战Native的地位。最差的情况，还可以基于Hybrid，利用Native适当扩展能力，这就是合作而非竞争关系了。</p>
-<p>总之前端工程师的<strong>本</strong>仍然在浏览器上，就这一点，范围就足够广使得没人有敢言自己真正“精通”前端。如果条件允许的话，特别是技术成熟之后，涉猎其它领域也是鼓励的。</p>
-<h3 id="7-3-写在最后"><a href="#7-3-写在最后" class="headerlink" title="7.3 写在最后"></a>7.3 写在最后</h3><p>在各种研发角色中，前端注定是一个比较心累的一个。每一年的年末，我们都能看到几乎完全不一样的世界，这背后是无数前端人烧脑思考、激情迸发的结果。无论最终产品的流行与否，都推动着前端技术领域的高速更新换代。正是印证了那一句“唯有变化为不变”。作为业务线的研发工程师，我们的职责是甄选最佳组合方案，取得公司利益最大化。这个“最佳”的涉猎面非常广，取决于设计者的技术视野广度，也有关于决策者的管理经验，从来都不是一件简单的事。</p>
-<p>未来的web前端开发体验一定是更丰富的，依托webcomponents的标准化组件体系，基于webassembly的高性能运行时代码，以及背靠HTTP&#x2F;2协议的高速资源加载，前端工程师不必在性能上、兼容性上分散太多精力，从而可以专注于开发具备丰富式交互体验的下一代web APP，可能是VR，也可能是游戏。</p>
-<p>在迎接2017的同时，我们仍然要做好心理准备，新的概念、新的框架和工具以及新的语法依旧会源源不断的生产出来，不完美的现状也依旧会持续。</p>
-<p>由于水平有限，笔者在上述内容中难免有失偏颇，请多包涵。</p>
 
       
     </div>
