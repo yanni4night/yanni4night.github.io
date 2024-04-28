@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,149 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2017/11/23/2017-11-23-utf8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/11/23/2017-11-23-utf8/" class="post-title-link" itemprop="url">Unicode 如何编码成 UTF-8</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-11-23 22:17:38" itemprop="dateCreated datePublished" datetime="2017-11-23T22:17:38+08:00">2017-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/encoding/" itemprop="url" rel="index"><span itemprop="name">encoding</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/11/23/2017-11-23-utf8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/23/2017-11-23-utf8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Unicode 是<strong>字符集（charset）</strong>，UTF-8、UTF-16 只是 Unicode 的编码规则（encoding）。</p>
+<p>标准的 UTF-8 对 Unicode 分为4种变长的编码格式。</p>
+<table>
+<thead>
+<tr>
+<th align="center">区间</th>
+<th align="center">字节数</th>
+<th align="center">编码格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0~0x7F</td>
+<td align="center">1</td>
+<td align="center"><font color="blue">0</font>xxxxxxx</td>
+</tr>
+<tr>
+<td align="center">0x80~0x7FF</td>
+<td align="center">2</td>
+<td align="center"><font color="blue">110</font>xxxxx <font color="blue">10</font>xxxxxx</td>
+</tr>
+<tr>
+<td align="center">0x800~0xFFFF</td>
+<td align="center">3</td>
+<td align="center"><font color="blue">1110</font>xxxx <font color="blue">10</font>xxxxxx <font color="blue">10</font>xxxxxx</td>
+</tr>
+<tr>
+<td align="center">0x10000~0x10FFFF</td>
+<td align="center">4</td>
+<td align="center"><font color="blue">11110</font>xxx <font color="blue">10</font>xxxxxx <font color="blue">10</font>xxxxxx <font color="blue">10</font>xxxxxx</td>
+</tr>
+</tbody></table>
+<p>也就是说，对于英文字母这种ASCII字符，UTF-8与ASCII是兼容的，都采用1字节存储。</p>
+<p>对于希伯来语字母 <code>א</code>，UTF-8采用两个字节存储，方法是把它的 Unicode 码 0x05d0 的二进制形式拆成两部分，后6位前补10，再前数5位前补110，拼到一起（余下全为0），即为 0xd790。</p>
+<pre>
+0x05D0 = b00000<font color="red">10111</font>   <font color="red">010000</font>
+            110<font color="red">10111</font> 10<font color="red">010000</font> = 0xD790
+</pre>
+
+<p>同样道理，汉字“我”采用3字节，Unicode 码拆成3部分：</p>
+<pre>
+0x6211 = b<font color="red">0110   001000   010001</font>
+      1110<font color="red">0110</font> 10<font color="red">001000</font> 10<font color="red">010001</font> = 0xE68891
+</pre>
+
+<p>总结来看，字节起始为0则为单字节字符，起始为110、1110、11110分别代表有2个、3个、4个字节组合代表一个字符。其它字节起始必然全为10，代表不是字符起始位置。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1340,113 +1483,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/04/19/2016-04-19-writing-mode/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/04/06/2016-04-06-ordered-bigpipe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/04/06/2016-04-06-ordered-bigpipe/" class="post-title-link" itemprop="url">有序 BigPipe</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-04-06 16:13:12" itemprop="dateCreated datePublished" datetime="2016-04-06T16:13:12+08:00">2016-04-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/performance/" itemprop="url" rel="index"><span itemprop="name">performance</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2016/04/06/2016-04-06-ordered-bigpipe/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/04/06/2016-04-06-ordered-bigpipe/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/images/bigpipe/shenshen.jpg" alt="纪念此猫"></p>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>BigPipe</code> 的原理是使用 <em>HTTP&#x2F;1.1</em> 的 <strong>chunk</strong> 能力分片多线程加载页面的不同部分，以降低白屏&#x2F;首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/04/06/2016-04-06-ordered-bigpipe/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

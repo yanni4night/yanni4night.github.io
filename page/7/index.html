@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,139 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/05/02/2014-05-02-ie11-as-not-ie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/05/02/2014-05-02-ie11-as-not-ie/" class="post-title-link" itemprop="url">不是IE的IE11</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2014-05-02T00:00:00+08:00">2014-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-11 18:44:30" itemprop="dateModified" datetime="2022-04-11T18:44:30+08:00">2022-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/other/" itemprop="url" rel="index"><span itemprop="name">other</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/05/02/2014-05-02-ie11-as-not-ie/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/05/02/2014-05-02-ie11-as-not-ie/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>Internet Explorer 11</code>(IE11) 自去年六月份发布以来虽然据说也取得了不错的成绩，但在中国好像还看不到其占有率。获取 IE11 可以从两种方式：安装 <code>Win8</code>，自带 IE11；从 <code>Win7</code> 的 IE9&#x2F;10 升级，但 <code>XP</code> 在中国仍然有超过<a target="_blank" rel="noopener" href="http://tongji.baidu.com/data/browser">60%</a>的占有率，而 <code>XP</code> 最高也只能升级到 <code>IE8</code>。</p>
+<p>前端测试仍在徘徊在 IE6 ~ IE10 之间，但在开发过程中偶然间发现了 IE11 与众 IE 不同之处。</p>
+<p>前端开发一直将浏览器分为 W3C 和 IE 两种，特别是将 IE 众版本当做异类对待。微软这次决定洗心革面，将 IE11 打造成一款不是 ‘IE’ 的浏览器，拥有与其它 ‘W3C’ 浏览器一样的特性。</p>
+<h6 id="重要变动"><a href="#重要变动" class="headerlink" title="重要变动"></a>重要变动</h6><p>IE11 支持了完整的 <code>flex</code> 能力（参见<a href="/blog/flexbox-layout.html">利用flexbox构建可伸缩布局</a>），于 Firefox 之后第二个拥有无前缀 CSS 属性名。</p>
+<p>支持了 <a href="www.chromium.org/spdy%E2%80%8E">SPDY</a> 协议。</p>
+<p><code>ActiveXObject</code> 对象不再存在了，这使得许多依靠检测该对象来嗅探浏览器类型的代码失效。</p>
+<p>同样，<code>document.all</code> 的布尔值也会返回 false 。许多浏览器拥有该对象但是在转成布尔值时故意返回 false 用以兼容之前无数使用该对象判断浏览器类型的代码。现在，只有 IE6~9 会返回 true。</p>
+<p>UA中一直存在的 <code>MSIE</code> 被删除，依赖于此获取浏览器类型和版本号的代码将失效。要判断其类型和版本，必须 <code>MSIE</code> 和 <code>Trident</code> 共用了。</p>
+<p>移除了 <code>attachEvent</code> ，以 <code>addEventListener</code> 取代之，这也会破坏使用该方法判断浏览器类型的代码。</p>
+<p>IE8 引入的 <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/ie/cc288060.aspx">XDomainRequest</a> 被删除，取而代之的是支持跨域资源共享（<a target="_blank" rel="noopener" href="http://www.w3.org/TR/cors/">CORS</a>）的 <code>XMLHttpRequest</code>。</p>
+<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>显然 IE11 的改进破坏了几乎所有用于区分 <code>W3C</code> 和 <code>IE</code> 浏览器的方法，使得无数现存代码无法取得其是 IE 浏览器的事实。或许这就是微软的目的：IE11 不再是 ‘IE’ 了，你不需要在判断出来它了。</p>
+<p>下面给出使用 UA 获取 IE 版本的代码：<br>​<br>    &#x2F;**<br>     * Get version if it’s a microsoft internet explorer.<br>     *<br>     * @return version code or else null if it’s not a IE.<br>     *&#x2F;<br>    function getIEVersion(){<br>        var ua &#x3D; navigator.userAgent matches tridentMap&#x3D;{‘4’:8 ‘5’:9 ‘6’:10 ‘7’:11};</p>
+<pre><code>    matches = ua.match(/MSIE (\d+)/i);
+
+    if(matches&amp;&amp;matches[1])
+    &#123;   
+        //find by msie
+        return +matches[1];
+    &#125;
+
+    matches = ua.match(/Trident\/(\d+)/i);
+    if(matches&amp;&amp;matches[1])
+    &#123;   
+        //find by trident
+        return tridentMap[matches[1]]||null;
+    &#125;
+    
+    //we did what we could
+    return null;
+&#125;
+</code></pre>
+<p> 由于 UA 可以随意伪造，所以并没有合适的方法能够保证检测出真正的浏览器环境，因此代码都不应依赖于具体的环境和版本。</p>
+<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ul>
+<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/ie/bg182625(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ie/bg182625(v=vs.85).aspx</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
