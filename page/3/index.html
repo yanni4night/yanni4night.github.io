@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,127 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2018/03/23/2018-03-23-principle-+/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/03/23/2018-03-23-principle-+/" class="post-title-link" itemprop="url">Javascript '+' 运算符原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-23 15:02:57" itemprop="dateCreated datePublished" datetime="2018-03-23T15:02:57+08:00">2018-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/03/23/2018-03-23-principle-+/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/03/23/2018-03-23-principle-+/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>继了解完“&#x3D;&#x3D;”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。</p>
+<p>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+<p>第一步，对 a 和 b 执行 *toPrimitive()*，不指定 <a target="_blank" rel="noopener" href="https://tc39.github.io/ecma262/#sec-ordinarytoprimitive">hint</a>。</p>
+<p>以 <em>toPrimitive(a)</em> 为例，先看 a 有没有定义 <em>Symbol.toPrimitive</em>，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a[<span class="title class_">Symbol</span>.<span class="property">toPrimitive</span>] = customToPrimitive;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">customToPrimitive</span>(<span class="params">hint</span>) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (hint) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;number&#x27;</span>:</span><br><span class="line">            ...</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">            ...</span><br><span class="line">        <span class="attr">default</span>: <span class="comment">// &#x27;default&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果定义了 <em>Symbol.toPrimitive</em> 属性，则执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">customToPrimitive.<span class="title function_">call</span>(a, <span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>否则执行原生 *toPrimitive(“number”)*，也就是要依次调用 a 的 <em>valueOf</em> 和 <em>toString</em> 方法。</p>
+<p>如果执行 <em>a.valueOf()</em> 返回不是 Object，则为 <em>toPrimitive(a)</em> 的终值，否则执行 *a.toString()*。</p>
+<p>接下来，看 a 有没有定义 toString，如果有，则执行 *a.toString()*，为 <em>toPrimitive(a)</em> 的终值。</p>
+<p>如果没有，则执行原型链顶端的 <em>Object.prototype.toString</em>,这首先要看 a 有没有定义 <em>Symbol.toStringTag</em>。</p>
+<p>如果定义了，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">customStringTag</span>(<span class="params"></span>) &#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(a, <span class="title class_">Symbol</span>.<span class="property">toStringTag</span>, &#123;</span><br><span class="line">    <span class="attr">get</span>: customStringTag</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>那么返回 *”[object “ + customStringTag.apply(a) + “]”*，否则返回 *”[object Object]”*，为 <em>toPrimitive(a)</em> 的终值。</p>
+<p>如果发现 <em>toPrimitive(a)</em> 或者 <em>toPrimitive(b)</em> 任一为字符串，则执行字符串拼接，否则执行数字加法，即 *toNumber(a) + toNumber(b)*，这也能解释 <strong>true + true &#x3D; 2</strong> 的问题。</p>
+<hr>
+<p>可见 <em>a + b</em> 核心就是 <em>toPrimitive</em> 操作，只不过从 ES2015 以来，<em>toPrimitive</em> 受到 Symbol 的影响，变得越来越复杂。</p>
+<p>相比之下，减号“-”就很简单了，就是执行 *toNumber(a) - toNumber(b)*。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1344,154 +1465,6 @@
 <li>一旦消灭了头号问题，二号问题就升级了</li>
 <li>帮助自己要比帮助别人更难</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2017/07/13/2017-07-13-react-native-reality/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/07/13/2017-07-13-react-native-reality/" class="post-title-link" itemprop="url">理想与现实，黑与白，总结半年来React-Native的深度应用经验</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-07-13 15:17:01" itemprop="dateCreated datePublished" datetime="2017-07-13T15:17:01+08:00">2017-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/react-native/" itemprop="url" rel="index"><span itemprop="name">react-native</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/07/13/2017-07-13-react-native-reality/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/07/13/2017-07-13-react-native-reality/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。</p>
-<p>往往在产品上应用一项新技术的KickOff上，都必然要涉及该项技术的明显领先优势，React-Native 给人的一贯明显优势无非是：</p>
-<ol>
-<li><strong>开发效率提升</strong>；</li>
-<li><strong>与Native一致的用户体验</strong>；</li>
-<li><strong>无需发版，随时上线</strong></li>
-</ol>
-<p> 那么如果工程做得好的话，也要必然提到它的劣势——<em>不够稳定</em>。</p>
-<p>我以前向来是个React-Native黑，我不认为它的稳定性足以支撑一项C端产品，更何况是亿级用户产品。</p>
-<p>因此，当初做React-Native算是有些被迫的，毕竟万事俱备只欠开发，毕竟要用事实说话，毕竟挣钱吃饭重要。</p>
-<hr>
-<p>初期的开发工作可谓极其艰苦，不但没有开发经验，而且基础调试设施不完善，效率很低，更何况连实体测试机都不够。但最终总算是上线了。</p>
-<p>另我十分惊讶的是，不稳定性带来的客户端Crash比预想中的要低得多得多。在平台的横向比较上，Android要比iOS的奔溃率高，但还不算很离奇，勉强可以忍受。</p>
-<p>我从来不会想到这么一个残缺不堪的东西竟然真的没有掉链子，由此我反思了一下，想起了我党在40年前的那句话：</p>
-<p><em><strong>实践是检验真理的唯一标准</strong></em></p>
-<p><img src="/images/rn/reality.jpg" alt="实践是检验真理的唯一标准"></p>
-<p>是的，不能因为外界的评论甚至是自己的无知，就对新事物抱有成见。除非自己亲自实践，否则无权瞎BB。</p>
-<p>经过这么一来，我对手头上的这个项目信心大增，业务的迭代速度即将迎来一次飞跃。</p>
-<p>然，下面才是冷静之后的现实，更说明了海量事实的总体分布就像那宇宙微波背景辐射一样的均匀各项同性。</p>
-<p><img src="/images/rn/bg.jpg" alt="宇宙微波背景辐射"></p>
-<h3 id="线上追踪问题困难"><a href="#线上追踪问题困难" class="headerlink" title="线上追踪问题困难"></a>线上追踪问题困难</h3><p>React 异步渲染的性质，导致了在渲染视图中出现crash，崩溃堆栈是不会追溯到你的业务代码中的。</p>
-<p><img src="/images/rn/stack.png" alt="crash stack"></p>
-<p>在这种情形下，代码被压缩根本就不是问题，问题是你完全不知道哪里出了故障，只能靠猜。</p>
-<blockquote>
-<p>年初我就强行猜了一次，幸运地解决了一个bug。</p>
-</blockquote>
-<p>然后如果说线上问题毕竟不在现场，不好追踪的话，那么如果同样的问题发生在了调试阶段，你能看到的只是样式错乱的页面，也不会报给你任何错误信息，就很难让人接受了。</p>
-<p>因此，【<strong>猜</strong>】是开发React-Native的一项重要技能。</p>
-<p><img src="/images/rn/guess.gif" alt="石头剪子布"></p>
-<h3 id="Android-无头问题居多"><a href="#Android-无头问题居多" class="headerlink" title="Android 无头问题居多"></a>Android 无头问题居多</h3><p>这依然算是固有的稳定性问题。此类问题有两个特点：</p>
-<ol>
-<li>偶发不可复现；</li>
-<li>逻辑上不可能</li>
-</ol>
-<p>不可复现的原因很繁杂，可能与设备型号、操作系统版本、软件版本、当前运存容量、用户操作路径都有关系。还有就是一些原则上根本不可能发生的错误。</p>
-<p>这些问题由于迟迟无法解决，长时间耽误了我们全量的进程。最后属于不了了之，算是向bug妥协了。</p>
-<h3 id="性能差"><a href="#性能差" class="headerlink" title="性能差"></a>性能差</h3><p>相信我，KickOff 中“与Native具有相同或相近的性能”的说辞是不成立的，特别是在Android上。</p>
-<p>为了提升性能，我们不得不把能耗高的部分交给Native去实现，但这样显然又减弱了效率的优势。</p>
-<h3 id="兼容客户端版本"><a href="#兼容客户端版本" class="headerlink" title="兼容客户端版本"></a>兼容客户端版本</h3><p>如果说Web可以不考虑浏览器环境，做到始终如一的版本发布，没人会有异议，但React-Native不行。</p>
-<p>React-Native是运行在客户端上的，它的行为和格调都必须与当前客户端的环境相匹配。</p>
-<p>这意味着，一套React-Native代码必须考虑到多个客户端环境。特别是在视觉大改版的情况下，React-Native融入两套视觉代码，是什么感觉你造吗？</p>
-<p>根据版本号的if-else逻辑目前已充斥相当一部分逻辑代码中，代码越来越不够优雅。</p>
-<h3 id="文本渲染不准确"><a href="#文本渲染不准确" class="headerlink" title="文本渲染不准确"></a>文本渲染不准确</h3><p>我们已经有充分的证据证明React-Native在渲染文本特别是多行文本时存在明显的bug。这导致我们不能按照设计的预期严格的排版。</p>
-<p>此问题很深奥，而且以目前的能力来看，基本无解。</p>
-<h3 id="坑多多"><a href="#坑多多" class="headerlink" title="坑多多"></a>坑多多</h3><p>这些坑不一定是不可解决的，其实大部分我们都可以通过规避来解决，但问题是如果不进行全网搜索，你很难提前预知风险，也就严重影响了效率，往往一个奇葩的问题能耽误你一天的时间。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/super-fe/superfe-rn-troubleshooting/issues">https://github.com/super-fe/superfe-rn-troubleshooting/issues</a></p>
-<hr>
-<p>总结来看，应用React-Native技术带来的收益并非是特别明显的，在我看来，它最大的贡献是把一拨做业务的人悄无声息地分成了两拨，显然迭代效率就上来了。</p>
-<p>客观上，你不能无视上面提到的各种问题，但这些问题说严重就严重，说不严重也不严重，总体看来是可勉强接受的，相对于传统的客户端开发方式，依然是<em>各向同性的</em>。</p>
-<p>从最初的腹黑到今天的淡然面对，深深感到世界系统的复杂性以及熵增的强大扭矩，革命性没那么容易，起码React-Native不是。</p>
 
       
     </div>

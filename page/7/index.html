@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,123 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/09/13/2014-09-13-auto-sublime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/09/13/2014-09-13-auto-sublime/" class="post-title-link" itemprop="url">一种特殊的Sublime插件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-09-13 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-13T00:00:00+08:00">2014-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/sublime-plugin/" itemprop="url" rel="index"><span itemprop="name">sublime plugin</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/09/13/2014-09-13-auto-sublime/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/09/13/2014-09-13-auto-sublime/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a> 上捷克共和国一哥们提出几个 issues，讲我的某个石器时代土著插件不支持 <a target="_blank" rel="noopener" href="http://www.sublime.com/">Sublime</a> <code>Text Command</code> 并且 <code>Context Menu</code> 缺失。其实这两个功能入口仅需要编辑两个配置文件就可以了，但前提是命令数量是有限的，这样才可以直接写死配置文件。</p>
+<p>只是这个插件提供的主要功能即是无限扩展命令完成各种插入操作，默认提供了4种常见插入，此外可以无限配置插入种类，如果全部都要配置快捷键，确实不合理。</p>
+<p><code>Sublime</code> 插件配置文件分为几种：</p>
+<ul>
+<li>sublime-menu，右键菜单和主菜单</li>
+<li>sublime-commands，文本命令</li>
+<li>sublime-keymap，快捷键定义</li>
+<li>sublime-settings，插件主要配置文件</li>
+</ul>
+<p>前三种格式全为数组，最后一个为对象，也只有最后一个 <code>Sublime</code> 单独提供了 API 供读写：</p>
+<pre><code>sublime.load_settings()
+sublime.save_settings()
+</code></pre>
+<p>一般地，我们只需要读取就行了。</p>
+<p><code>Text Command</code> 和 <code>Context Menu</code> 需要修改 <code>menu</code> 和 <code>commands</code> 配置文件，因为它们是数组格式，不能通过上面的 API 读写，所以不得不使用 python 的原生API进行写入操作。在每次插件加载时，动态更新这两个文件，编辑器本身也能立即得到通知。</p>
+<p><code>settings</code> 配置文件被修改时理应重新进行一次上面的操作，但是 <code>Sublime</code> API 的 <code>Settings.add_on_change</code> 似乎不怎么起作用，因此不得不强制要求编辑器重启来刷新设置。</p>
+<h6 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h6><ul>
+<li><a target="_blank" rel="noopener" href="http://www.sublimetext.com/docs/2/api_reference.html">http://www.sublimetext.com/docs/2/api_reference.html</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2380,183 +2497,6 @@ flex:2;
 <li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/zh-cn/subscriptions/downloads/hh673531.aspx">http://msdn.microsoft.com/zh-cn/subscriptions/downloads/hh673531.aspx</a></li>
 <li><a target="_blank" rel="noopener" href="http://css-tricks.com/old-flexbox-and-new-flexbox/">http://css-tricks.com/old-flexbox-and-new-flexbox/</a></li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/04/29/2014-04-29-getelementsbyname-in-document/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/04/29/2014-04-29-getelementsbyname-in-document/" class="post-title-link" itemprop="url">getElementsByName方法的出身</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-04-29 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-29T00:00:00+08:00">2014-04-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/04/29/2014-04-29-getelementsbyname-in-document/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/04/29/2014-04-29-getelementsbyname-in-document/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h6 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h6><p>在几个 <code>getElementsBy*</code> 方法中，<code>getElementsByName</code> 算是比较特殊的，表面上看即只有它不能在 <code>Element</code> 上调用。</p>
-<p><a target="_blank" rel="noopener" href="http://www.w3.org/">W3C</a> 将该方法定义在 <a target="_blank" rel="noopener" href="http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109/html.html#ID-26809268">HTMLDocument</a> 接口中：</p>
-<pre><code>interface HTMLDocument : Document &#123;
-           attribute DOMString       title;
-  readonly attribute DOMString       referrer;
-  readonly attribute DOMString       domain;
-  readonly attribute DOMString       URL;
-           attribute HTMLElement     body;
-  readonly attribute HTMLCollection  images;
-  readonly attribute HTMLCollection  applets;
-  readonly attribute HTMLCollection  links;
-  readonly attribute HTMLCollection  forms;
-  readonly attribute HTMLCollection  anchors;
-           attribute DOMString       cookie;
-    
-  void               open();
-  void               close();
-  void               write(in DOMString text);
-  void               writeln(in DOMString text);
-  NodeList           getElementsByName(in DOMString elementName);
-&#125;;
-</code></pre>
-<p>按照此定义， <code>getElementsByName</code> 方法应该仅存在于 <code>HTMLDocument</code> 中而非 <code>Document</code> 中。在能够访问 <code>Document</code> 接口的浏览器（Opera，Chrome，Firefox，Safari和 Internet Explorer 10）中，测试下列代码：</p>
-<pre><code>!!Document.prototype.getElementsByName
-</code></pre>
-<p>结果如下：</p>
-<table>
-<thead>
-<tr>
-<th align="center">浏览器</th>
-<th align="center">Opera</th>
-<th align="center">Chrome</th>
-<th align="center">Firefox</th>
-<th align="center">Safari</th>
-<th align="center">IE10</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">结果</td>
-<td align="center">false</td>
-<td align="center">true</td>
-<td align="center">false</td>
-<td align="center">true</td>
-<td align="center">true</td>
-</tr>
-</tbody></table>
-<p>分别观察一下 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Mozilla/Gecko">Gecko</a> 和 <a target="_blank" rel="noopener" href="http://www.webkit.org/">Webkit</a> 关于 <code>(HTML)Document</code> 部分的 IDL ：<br>​<br>    &#x2F;&#x2F;Gecko 中 HTMLDocument.webidl 文件<br>    interface HTMLDocument : Document {<br>        NodeList getElementsByName(DOMString elementName);<br>    };<br>    &#x2F;&#x2F;Webkit 中 Document.idl 文件<br>    interface Document : Node {<br>        NodeList getElementsByName([Default&#x3D;Undefined] optional DOMString<br>    }</p>
-<p>可见两者将 <code>getElementsByName</code> 定义在了不同的接口中，似乎 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Mozilla/Gecko">Gecko</a> 的做法更符合 <a target="_blank" rel="noopener" href="http://www.w3.org/">W3C</a> 规范。</p>
-<p>对此的解释可能是 <a target="_blank" rel="noopener" href="http://www.webkit.org/">Webkit</a> 和 <code>Internet Explorer</code> 按照 <a target="_blank" rel="noopener" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">whatwg</a> 的 HTML5 草案进行了实现。</p>
-<h6 id="返回类型"><a href="#返回类型" class="headerlink" title="返回类型"></a>返回类型</h6><p>关于 <code>getElementsBy*</code> 方法的返回类型，<a target="_blank" rel="noopener" href="http://dom.spec.whatwg.org/#document">whatwg</a> 规定为 <code>HTMLCollection</code> ， <a target="_blank" rel="noopener" href="http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407/core.html#i-Document">W3C</a> 规定为 <code>NodeList</code> 。<code>HTMLCollection</code> 和 <code>NodeList</code> 两者很类似，都有 length 属性，都可以用数字索引或 <code>item()</code> 方法方位其中元素。但其差异也是明显的，前者成员为 <code>HTMLElement</code> ，而后者为 <code>Node</code> ，前者拥有 <code>namedItem()</code> 方法。现代浏览器对其实现不一致：</p>
-<table>
-<thead>
-<tr>
-<th align="center">浏览器</th>
-<th align="center">Opera&#x2F;Safari&#x2F;Android</th>
-<th align="center">Chrome&#x2F;Firefox</th>
-<th align="center">Internet Explorer(+WP8)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">getElementsByTagName</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-<td align="center">HTMLCollection</td>
-</tr>
-<tr>
-<td align="center">getElementsByName</td>
-<td align="center">NodeList</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-</tr>
-<tr>
-<td align="center">getElementsByClassName</td>
-<td align="center">NodeList</td>
-<td align="center">HTMLCollection</td>
-<td align="center">HTMLCollection</td>
-</tr>
-</tbody></table>
-<p>显然应该退化到 <code>Node</code> 和 <code>NodeList</code> 进行编程，避免依赖特定的类型返回值。</p>
 
       
     </div>
