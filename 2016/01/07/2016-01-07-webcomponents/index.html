@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yanni4night.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Webcomponents 草案包含四个特性：  Custom Elements HTML Imports Templates Shadow DOM  具体每个特性的意义不再冗述，网上到处都有，但对四个特性之间的联系及应用普遍缺少更深入的解释。 关联Webcomponents 的名字立即会让人想起组件化，有观点认为 Custom Elements 与 HTML Imports 是主要部分，Temp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webcomponents">
+<meta property="og:url" content="https://yanni4night.github.io/2016/01/07/2016-01-07-webcomponents/index.html">
+<meta property="og:site_name" content="人过不留名 雁过不留声">
+<meta property="og:description" content="Webcomponents 草案包含四个特性：  Custom Elements HTML Imports Templates Shadow DOM  具体每个特性的意义不再冗述，网上到处都有，但对四个特性之间的联系及应用普遍缺少更深入的解释。 关联Webcomponents 的名字立即会让人想起组件化，有观点认为 Custom Elements 与 HTML Imports 是主要部分，Temp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yanni4night.github.io/images/webcomponents/webcomponents.png">
+<meta property="article:published_time" content="2016-01-07T08:44:15.000Z">
+<meta property="article:modified_time" content="2025-07-12T18:12:59.725Z">
+<meta property="article:author" content="Yanni4night">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yanni4night.github.io/images/webcomponents/webcomponents.png">
+
+
+<link rel="canonical" href="https://yanni4night.github.io/2016/01/07/2016-01-07-webcomponents/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yanni4night.github.io/2016/01/07/2016-01-07-webcomponents/","path":"2016/01/07/2016-01-07-webcomponents/","title":"Webcomponents"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Webcomponents | 人过不留名 雁过不留声</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVVTY641FP"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-SVVTY641FP","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?102a03a6de835cd378834b32e2639fbe"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">人过不留名 雁过不留声</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">夜莺</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%81%94"><span class="nav-number">1.</span> <span class="nav-text">关联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polyfill"><span class="nav-number">2.</span> <span class="nav-text">Polyfill</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Polymer"><span class="nav-number">2.1.</span> <span class="nav-text">Polymer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#X-tag"><span class="nav-number">2.2.</span> <span class="nav-text">X-tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bosonic"><span class="nav-number">2.3.</span> <span class="nav-text">Bosonic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rosetta"><span class="nav-number">2.4.</span> <span class="nav-text">Rosetta</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">3.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Yanni4night"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Yanni4night</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanni4night" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanni4night" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yanni4night@gmail.com" title="E-Mail → mailto:yanni4night@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/01/07/2016-01-07-webcomponents/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Webcomponents | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Webcomponents
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-01-07 16:44:15" itemprop="dateCreated datePublished" datetime="2016-01-07T16:44:15+08:00">2016-01-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/webcomponents/" itemprop="url" rel="index"><span itemprop="name">webcomponents</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2016/01/07/2016-01-07-webcomponents/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/07/2016-01-07-webcomponents/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><code>Webcomponents</code> 草案包含四个特性：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://w3c.github.io/webcomponents/spec/custom/">Custom Elements</a></li>
+<li><a target="_blank" rel="noopener" href="http://w3c.github.io/webcomponents/spec/imports/">HTML Imports</a></li>
+<li><a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/scripting.html#the-template-element">Templates</a></li>
+<li><a target="_blank" rel="noopener" href="http://w3c.github.io/webcomponents/spec/shadow/">Shadow DOM</a></li>
+</ul>
+<p>具体每个特性的意义不再冗述，网上到处都有，但对四个特性之间的联系及应用普遍缺少更深入的解释。</p>
+<h2 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h2><p><code>Webcomponents</code> 的名字立即会让人想起组件化，有观点认为 <code>Custom Elements</code> 与 <code>HTML Imports</code> 是主要部分，<code>Templates</code> 与 <code>Shadow DOM</code> 是次要部分，毕竟，传统的组件系统就是由组件依赖以及组件内容构成的。甚至有人经常把 <code>Custom Elements</code> 与 <code>HTML Imports</code> 绑定在一起，认为 <code>Custom Elements</code> 都是 <em>import</em> 进来的。</p>
+<p>以上观点肯定是错误的，可能由于 <code>Webcomponents</code> 还在草案之中，文档不全，造成误解也难怪。</p>
+<p>先来看 <code>Custom Elements</code>，如何注册一个自定义元素？是这样么：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Demo<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;import&quot;</span> <span class="attr">href</span>=<span class="string">&quot;wc-rank.html&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>不是，如果是，就证明了 <code>Custom Elements</code> 都是 <em>import</em> 进来的观点了。</p>
+<p>自定义元素需要通过 JavaScript 脚本来注册：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">registerElement</span>(<span class="string">&#x27;x-rank&#x27;</span>, options)</span><br></pre></td></tr></table></figure>
+
+<p>使用没有注册过的自定义元素通常也不会有问题，不过它只能代表其后代元素的意义，本身并没有语义。一般地，我们会通过定义 <strong>options</strong> 参数来扩展 DOM 元素的方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="title class_">RankElement</span> = <span class="variable language_">document</span>.<span class="title function_">registerElement</span>(<span class="string">&#x27;x-rank&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">prototype</span>: &#123;</span><br><span class="line">        <span class="attr">next</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> $fooRank = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#foo-rank&#x27;</span>);</span><br><span class="line"></span><br><span class="line">$fooRank.<span class="title function_">next</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在这种场景下，<code>registerElement</code> 就是必须的了。因此，在不支持 <code>Custom Elements</code> 的浏览器上，polyfill 是不可能完全实现的。</p>
+<p>好了，现在我们实现的 <code>Custom Elements</code> 已经有了自定义方法，但还可能需要在内部添加一些固定的后代元素，比如，对于一个 Article 来讲，Header，Footer 就是固定的后代元素，而 Summary 则非。这时候，我们一般使用模板引擎，渲染后直接将 HTML 片段插入到 DOM 中进行解析和展现。<code>Webcomponents</code> 提供了原生的 <em>template</em> 元素，预先解析了这部分 DOM，但并不展现，需要时，取出其后代元素的集合（DocumentFragment）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span> <span class="attr">id</span>=<span class="string">&quot;rank&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">header</span>&gt;</span>yanni4night.com<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="symbol">&amp;copy;</span>copyright yanni4night.com 2014~2016<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> template = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;template&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(template.<span class="property">content</span> <span class="keyword">instanceof</span> <span class="title class_">DocumentFragment</span>) <span class="comment">//true</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#rank&#x27;</span>).<span class="title function_">appendChild</span>(template.<span class="property">content</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果自定义元素在创建时就已经拥有了固定的后代元素呢，该如何实现？</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span> <span class="attr">id</span>=<span class="string">&quot;rank&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">header</span>&gt;</span>yanni4night.com<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="symbol">&amp;copy;</span>copyright yanni4night.com 2014~2016<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> template = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;template&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(template.<span class="property">content</span> <span class="keyword">instanceof</span> <span class="title class_">DocumentFragment</span>) <span class="comment">//true</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#rank&#x27;</span>).<span class="title function_">insertBefore</span>(template.<span class="property">content</span>, <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#rank&#x27;</span>).<span class="property">lastChild</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可见，template 数量增多后会使操作十分麻烦，<code>Shadow DOM</code> 可以解决这个问题：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span> <span class="attr">id</span>=<span class="string">&quot;rank&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">header</span>&gt;</span>yanni4night.com<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">&quot;h1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="symbol">&amp;copy;</span>copyright yanni4night.com 2014~2016<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">var</span> proto = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="title class_">HTMLElement</span>.<span class="property"><span class="keyword">prototype</span></span>);</span></span><br><span class="line"><span class="language-javascript">proto.<span class="property">createdCallback</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> root = <span class="variable language_">this</span>.<span class="title function_">createShadowRoot</span>();</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> template = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;template&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> clone = <span class="variable language_">document</span>.importNode(template.<span class="property">content</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="language-javascript">  root.<span class="title function_">appendChild</span>(clone);</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="title function_">registerElement</span>(<span class="string">&#x27;wc-rank&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">prototype</span>: proto</span></span><br><span class="line"><span class="language-javascript">&#125;);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，便以优雅的方式达到了定义自定义元素以及高效重用的目的。现在，将 <code>Custom Elements</code> 的定义分离出去，维护在单独的文档中，这就是 <code>HTML Imports</code> 的用处之一。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- wc-rank.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">header</span>&gt;</span>yanni4night.com<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">&quot;h1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="symbol">&amp;copy;</span>copyright yanni4night.com 2014~2016<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">var</span> proto = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="title class_">HTMLElement</span>.<span class="property"><span class="keyword">prototype</span></span>);</span></span><br><span class="line"><span class="language-javascript">proto.<span class="property">createdCallback</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> root = <span class="variable language_">this</span>.<span class="title function_">createShadowRoot</span>();</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> template = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;template&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> clone = <span class="variable language_">document</span>.importNode(template.<span class="property">content</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="language-javascript">  root.<span class="title function_">appendChild</span>(clone);</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="title function_">registerElement</span>(<span class="string">&#x27;wc-rank&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">prototype</span>: proto</span></span><br><span class="line"><span class="language-javascript">&#125;);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;import&quot;</span> <span class="attr">href</span>=<span class="string">&quot;wc-rank.html&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，四个 <code>Webcomponents</code> 的特性全部有了用武之地：</p>
+<blockquote>
+<p>(语义)-&gt;<br>Custom Elements<br>(内容)-&gt;<br>Templates<br>(效率)-&gt;<br>Shadow DOM<br>(重用)-&gt;<br>HTML Imports</p>
+</blockquote>
+<p>它们都可以独立使用，但相互组合，更能实现优雅和高效的组件化。</p>
+<p><img src="/images/webcomponents/webcomponents.png"></p>
+<h2 id="Polyfill"><a href="#Polyfill" class="headerlink" title="Polyfill"></a>Polyfill</h2><p> 由于目前仅 Chrome（Opera）实现了全部特性，因此 Polyfill 仍有存在一定的价值。下面几个项目都依赖了 <a target="_blank" rel="noopener" href="https://github.com/WebComponents/webcomponentsjs">webcomponentsjs</a>，但在 API 上有所不同。</p>
+<h3 id="Polymer"><a href="#Polymer" class="headerlink" title="Polymer"></a>Polymer</h3><p>谷歌发起的项目。Polymer 使用 &lt; dom-module &gt; 标签来定义 <code>Custom Elements</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--Custom element defination--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dom-module</span> <span class="attr">id</span>=<span class="string">&quot;wc-rank&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m a DOM element. This is my local DOM!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">&quot;footer&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">Polymer</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="attr">is</span>: <span class="string">&quot;wc-rank&quot;</span></span></span><br><span class="line"><span class="language-javascript">    &#125;);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">dom-module</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--Custom element usage--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="symbol">&amp;copy;</span>copyright<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>内部同时声明了 <code>Templates</code> ，并使用 <em>shady</em> DOM 来针对不支持 <em>shadow</em> DOM 的浏览器。<code>HTML Imports</code> 也被支持。</p>
+<p>值得一提的是，Polymer 支持更复杂的 template，比如 <strong>mustache</strong> 语法及 <em>dom-if_、_dom-repeat</em> 指令，有点类似于 Angular 的 <em>ng-if</em> 和 _ng-repeat_。</p>
+<h3 id="X-tag"><a href="#X-tag" class="headerlink" title="X-tag"></a>X-tag</h3><p><a href="x-tag.github.io">X-tag</a> 是微软支持的项目。X-tag 以纯 JavaScript 脚本声明 <code>Custom Elements</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xtag.<span class="title function_">register</span>(<span class="string">&#x27;wc-rank&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="comment">/*</span></span><br><span class="line"><span class="comment">    ‹h2›My name is rank/h2›</span></span><br><span class="line"><span class="comment">    ‹span›I work for a mad scientist‹/span›</span></span><br><span class="line"><span class="comment">  */</span>&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>X-tag 实现了 <code>Custom elements</code> 的生命周期回调，对 <code>HTML Imports</code>、<code>Templates</code> 和 <code>Shadow DOM</code>  没有明显的支持。</p>
+<h3 id="Bosonic"><a href="#Bosonic" class="headerlink" title="Bosonic"></a>Bosonic</h3><p><a target="_blank" rel="noopener" href="http://bosonic.github.io/">Bosonic</a> 旨在构建一套低级的 UI 元素：即拿即用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">name</span>=<span class="string">&quot;wc-rank&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>I&#x27;m Shadow DOM<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="title class_">Bosonic</span>.<span class="title function_">register</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">tip</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">var</span> span = <span class="variable language_">this</span>.<span class="property">shadowRoot</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;span&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                span.<span class="property">textContent</span> = <span class="string">&#x27;Hello, world!&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;wc-rank&#x27;</span>).<span class="title function_">tip</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Rosetta"><a href="#Rosetta" class="headerlink" title="Rosetta"></a>Rosetta</h3><p><a target="_blank" rel="noopener" href="http://rosetta-org.github.io/">Rosetta</a> 是百度的一套 <code>Webcomponents</code> 解决方案，与上面三个项目最大的区别是在线下利用构建进行 polyfill，以提高运行时效率。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">name</span>=<span class="string">&quot;r-slider&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            &#123;attrs.text&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">&#x27;.aaa&#x27;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="title class_">Rosetta</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">is</span>: <span class="string">&#x27;r-slider&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">properties</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">list</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">type</span>: <span class="title class_">Array</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">value</span>:[</span></span><br><span class="line"><span class="language-javascript">                        &#123;</span></span><br><span class="line"><span class="language-javascript">                            <span class="attr">title</span>: <span class="string">&#x27;111&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                            <span class="attr">src</span>: <span class="string">&#x27;xxx&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                        &#125;,</span></span><br><span class="line"><span class="language-javascript">                        &#123;</span></span><br><span class="line"><span class="language-javascript">                            <span class="attr">title</span>: <span class="string">&#x27;222&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                            <span class="attr">src</span>: <span class="string">&#x27;zzz&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                        &#125;</span></span><br><span class="line"><span class="language-javascript">                    ]</span></span><br><span class="line"><span class="language-javascript">                &#125;,</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">text</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">type</span>: <span class="title class_">String</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">value</span>: <span class="string">&#x27;测试&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> API 与 Polymer 如出一辙。 </p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>换个角度，<code>Webcomponents</code> 目前在前端生产环境中使用还为时尚早，但其组织方式可以被服务端借鉴。试想，每个组件或者自定义元素都组织在私有的目录下：</p>
+<ul>
+<li>components<ul>
+<li>wc-rank<ul>
+<li>wc-rank.html</li>
+<li>wc-rank.js</li>
+<li>wc-rank.less</li>
+</ul>
+</li>
+<li>wc-rank-content<ul>
+<li>wc-rank-content.html</li>
+<li>wc-rank-content.js</li>
+<li>wc-rank-content.less</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>将 <code>Custom Elements</code> 作为 <strong>组件名</strong> 和 __组件引用指令__，如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--wc-rank.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is a rank<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">wc-rank-content</span>&gt;</span><span class="tag">&lt;/<span class="name">wc-rank-content</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aside</span>&gt;</span>Aside of rank<span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--wc-rank-content.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">&quot;ul&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank-content</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wc-rank</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">wc-rank-content</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>First<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Second<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">wc-rank-content</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">wc-rank</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>那么最终输出可以是：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">is</span>=<span class="string">&quot;wc-rank&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is a rank<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">is</span>=<span class="string">&quot;wc-rank&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>First<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Second<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aside</span>&gt;</span>Aside of rank<span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>该过程完全可以在服务端完成，已经成为了一种简单的模板引擎。同时，如果需要执行 document.createElement(‘wc-rank’) ，可以将 wc-rank.html 和 wc-rank-content.html 带到前端进行动态解析。</p>
+<p>接着，css 和 js 可以按照传统的方式进行依赖搜索和 combo。这样便将 <code>Webcomponents</code> 应用于服务端，并沿用组件化的思想和 <code>Webcomponents</code> 的草案 API，不失为前端工程化的一种解决方案。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://webcomponents.org/">http://webcomponents.org/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/01/03/2016-01-03-incremental-dom/" rel="prev" title="Incremental DOM">
+                  <i class="fa fa-angle-left"></i> Incremental DOM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/03/10/2016-03-10-redux-black-magic/" rel="next" title="Redux 的黑魔法">
+                  Redux 的黑魔法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yanni4night</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yanni4night" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"yanni4night","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

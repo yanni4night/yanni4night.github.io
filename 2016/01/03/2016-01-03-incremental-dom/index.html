@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yanni4night.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介Incremental DOM 是谷歌公司在 2015年4月起发起的一种支持模板引擎的高效 DOM 操作技术。相比于 React.js 的 DOM Diff 算法和 Ember.js 的 Glimmer 引擎，Incremental DOM 没有使用 Virtual DOM 的概念，转而直接去操作 DOM，因此其特点就是节约内存消耗，这对于移动端来说可能存在积极的意义。 先来看 Increme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Incremental DOM">
+<meta property="og:url" content="https://yanni4night.github.io/2016/01/03/2016-01-03-incremental-dom/index.html">
+<meta property="og:site_name" content="人过不留名 雁过不留声">
+<meta property="og:description" content="简介Incremental DOM 是谷歌公司在 2015年4月起发起的一种支持模板引擎的高效 DOM 操作技术。相比于 React.js 的 DOM Diff 算法和 Ember.js 的 Glimmer 引擎，Incremental DOM 没有使用 Virtual DOM 的概念，转而直接去操作 DOM，因此其特点就是节约内存消耗，这对于移动端来说可能存在积极的意义。 先来看 Increme">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yanni4night.github.io/images/incremental/LayoutAndPaint.png">
+<meta property="og:image" content="https://yanni4night.github.io/images/incremental/MajorGC.png">
+<meta property="og:image" content="https://yanni4night.github.io/images/incremental/MinorGC.png">
+<meta property="article:published_time" content="2016-01-03T08:13:27.000Z">
+<meta property="article:modified_time" content="2025-07-12T18:12:59.725Z">
+<meta property="article:author" content="Yanni4night">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yanni4night.github.io/images/incremental/LayoutAndPaint.png">
+
+
+<link rel="canonical" href="https://yanni4night.github.io/2016/01/03/2016-01-03-incremental-dom/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yanni4night.github.io/2016/01/03/2016-01-03-incremental-dom/","path":"2016/01/03/2016-01-03-incremental-dom/","title":"Incremental DOM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Incremental DOM | 人过不留名 雁过不留声</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVVTY641FP"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-SVVTY641FP","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?102a03a6de835cd378834b32e2639fbe"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">人过不留名 雁过不留声</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">夜莺</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E6%8C%87%E9%92%88"><span class="nav-number">2.0.1.</span> <span class="nav-text">节点指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E9%81%8D%E5%8E%86"><span class="nav-number">2.0.2.</span> <span class="nav-text">节点遍历</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM-%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">DOM 操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">如何使用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Yanni4night"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Yanni4night</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanni4night" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanni4night" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yanni4night@gmail.com" title="E-Mail → mailto:yanni4night@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/01/03/2016-01-03-incremental-dom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Incremental DOM | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Incremental DOM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-01-03 16:13:27" itemprop="dateCreated datePublished" datetime="2016-01-03T16:13:27+08:00">2016-01-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/incremental-DOM-reactjs-emberjs-glimmer/" itemprop="url" rel="index"><span itemprop="name">incremental DOM reactjs emberjs glimmer</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2016/01/03/2016-01-03-incremental-dom/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/03/2016-01-03-incremental-dom/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a target="_blank" rel="noopener" href="https://github.com/google/incremental-dom">Incremental DOM</a> 是谷歌公司在 2015年4月起发起的一种支持模板引擎的高效 DOM 操作技术。相比于 <code>React.js</code> 的 <code>DOM Diff</code> 算法和 <code>Ember.js</code> 的 <code>Glimmer</code> 引擎，<code>Incremental DOM</code> 没有使用 <code>Virtual DOM</code> 的概念，转而直接去操作 DOM，因此其特点就是节约内存消耗，这对于移动端来说可能存在积极的意义。</p>
+<p>先来看 <code>Incremental DOM</code> 的 API 的样子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, [<span class="string">&#x27;title&#x27;</span>, <span class="string">&#x27;tip&#x27;</span>]);</span><br><span class="line"><span class="title function_">text</span>(<span class="string">&#x27;Hello World!&#x27;</span>);</span><br><span class="line"><span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以说 <code>Incremental DOM</code> 的 API 十分地原始和简陋。<a target="_blank" rel="noopener" href="https://medium.com/google-developers/introducing-incremental-dom-e98f79ce2c5f">Google Developers</a> 也提到，<code>Incremental DOM</code> 并非为开发者直接使用，而是用于模板引擎的底层实现。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>现在来简单分析下 <code>Incremental DOM</code> 的实现原理。</p>
+<p>由于操作 DOM 的代价相当高，因此 <code>React.js</code> 和 <code>Glimmer</code> 都有一套算法来计算最小的 DOM 操作量。在 <code>Incremental DOM</code> 内部，通过__遍历__原始 DOM 进行脏检查来计算这个值。</p>
+<p>首先了解 <code>Incremental DOM</code> 的几个概念：</p>
+<h4 id="节点指针"><a href="#节点指针" class="headerlink" title="节点指针"></a>节点指针</h4><p>在 <code>Incremental DOM</code> 内部，维护了多个节点（HTMLElement）指针：</p>
+<ul>
+<li>currentNode：当前节点；</li>
+<li>currentParent：当前节点的父节点；</li>
+<li>previousNode：当前节点的前置兄弟节点；</li>
+<li>prevCurrentNode：之前遍历的最后一个节点；</li>
+<li>prevCurrentParent：之前遍历的最后一个节点的父节点；</li>
+<li>prevPreviousNode：之前遍历的最后一个节点的前置兄弟节点</li>
+</ul>
+<h4 id="节点遍历"><a href="#节点遍历" class="headerlink" title="节点遍历"></a>节点遍历</h4><p>主要操作有 <code>enterNode</code>、<code>exitNode</code>、<code>nextNode</code>。</p>
+<p>假设当前指针指向为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span> <span class="comment">&lt;!--currentParent--&gt;</span> <span class="comment">&lt;!--prevCurrentParent--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item1&quot;</span>&gt;</span> <span class="comment">&lt;!--prevPreviousNode--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item2&quot;</span>&gt;</span> <span class="comment">&lt;!--previousNode--&gt;</span> <span class="comment">&lt;!--prevCurrentNode--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item3&quot;</span>&gt;</span> <span class="comment">&lt;!--currentNode--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">title</span>=<span class="string">&quot;tip&quot;</span>&gt;</span></span><br><span class="line">            Hello World!</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item4&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item5&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>enterNode()</code> 操作，即进入 <code>.item3</code> 内部，各指针变为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span>  <span class="comment">&lt;!--prevCurrentParent--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item1&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item2&quot;</span>&gt;</span> <span class="comment">&lt;!--prevPreviousNode--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item3&quot;</span>&gt;</span> <span class="comment">&lt;!--prevCurrentNode--&gt;</span> <span class="comment">&lt;!--currentParent--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--previousNode--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">title</span>=<span class="string">&quot;tip&quot;</span>&gt;</span> <span class="comment">&lt;!--currentNode--&gt;</span></span><br><span class="line">            Hello World!</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item4&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item5&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>exitNode()</code> 操作，离开 <code>.item3</code>，各指针变为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span> <span class="comment">&lt;!--currentParent--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item1&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item2&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item3&quot;</span>&gt;</span> <span class="comment">&lt;!--prevCurrentParent--&gt;</span> <span class="comment">&lt;!--previousNode--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--prevPreviousNode--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">title</span>=<span class="string">&quot;tip&quot;</span>&gt;</span> <span class="comment">&lt;!--prevCurrentNode--&gt;</span></span><br><span class="line">            Hello World!</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item4&quot;</span>&gt;</span> <span class="comment">&lt;!--currentNode--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item5&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>nextNode()</code> 操作，遍历至下一个节点，各指针变为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span> <span class="comment">&lt;!--currentParent--&gt;</span> <span class="comment">&lt;!--prevCurrentParent--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item1&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item2&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item3&quot;</span>&gt;</span> <span class="comment">&lt;!--prevPreviousNode--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">title</span>=<span class="string">&quot;tip&quot;</span>&gt;</span></span><br><span class="line">            Hello World!</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item4&quot;</span>&gt;</span> <span class="comment">&lt;!--prevCurrentNode--&gt;</span> <span class="comment">&lt;!--previousNode--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item5&quot;</span>&gt;</span> <span class="comment">&lt;!--currentNode--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="DOM-操作"><a href="#DOM-操作" class="headerlink" title="DOM 操作"></a>DOM 操作</h2><p>明白了 <code>Incremental DOM</code> 的内部指针状态后，我们来看一个例子。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;parent&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;child&quot;</span> <span class="attr">title</span>=<span class="string">&quot;James&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们要修改 <code>.child</code> 元素的 title 值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">patch</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#content&#x27;</span>), <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">        <span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, [<span class="string">&#x27;title&#x27;</span>, <span class="string">&#x27;Jim&#x27;</span>]);</span><br><span class="line">            <span class="title function_">text</span>(<span class="string">&#x27;Hello World!&#x27;</span>);</span><br><span class="line">        <span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">    <span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>实际的 DOM 遍历和操作为：</p>
+<ol>
+<li>enterNode(#content)</li>
+<li>enterNode(.parent)</li>
+<li>enterNode(.child)</li>
+<li><code>setAttribute(&#39;title&#39;, &#39;Jim&#39;)</code></li>
+<li>nextNode()</li>
+<li>exitNode(.child)</li>
+<li>exitNode(.parent)</li>
+<li>exitNode(#content)</li>
+</ol>
+<p>由于 JS 代码与 HTML 在结构上是一致的，因此当遍历到 <code>.child</code> 元素时，直接修改其元素，而其它元素由于结构属性都没有改变，因而没有额外的 DOM 操作。</p>
+<p>如果我们要进一步修改 DOM 为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;parent&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;child&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;sibling&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Incremental DOM</code> 的 API 操作为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">patch</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#content&#x27;</span>), <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">        <span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">            <span class="title function_">text</span>(<span class="string">&#x27;Hello World!&#x27;</span>);</span><br><span class="line">        <span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">        <span class="title function_">elementOpen</span>(<span class="string">&#x27;div&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">            <span class="title function_">text</span>(<span class="string">&#x27;Hello World!&#x27;</span>);</span><br><span class="line">        <span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">    <span class="title function_">elementClose</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>实际的 DOM 遍历和操作为：</p>
+<ol>
+<li>enterNode(#content)</li>
+<li>enterNode(.parent)</li>
+<li>enterNode(.child)</li>
+<li><code>removeAttribute(&#39;title&#39;)</code></li>
+<li>nextNode()</li>
+<li>exitNode(.child)</li>
+<li>enterNode(.sibling)</li>
+<li><code>createElement()</code></li>
+<li><code>createText()</code></li>
+<li>nextNode()</li>
+<li>exitNode(.sibling)</li>
+<li>exitNode(.parent)</li>
+<li>exitNode(#content)</li>
+</ol>
+<p><code>Incremental DOM</code> 正是通过这种简单粗暴的方式来实现最小量的 DOM 操作。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>由于直接在原始 DOM 上做脏检查，<code>Incremental DOM</code> 在性能上有所下降。</p>
+<p><img src="/images/incremental/LayoutAndPaint.png"></p>
+<p>上图是各个框架在布局和绘画上的性能比较，可见 <code>Incremental DOM</code> 是垫底的。</p>
+<p><code>Incremental DOM</code> 用性能来换取内存优化：</p>
+<p><img src="/images/incremental/MajorGC.png"><br><img src="/images/incremental/MinorGC.png"></p>
+<p>上图是各个框架在 GC 上的性能，<code>Incremental DOM</code> 表现十分优越。</p>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p><code>Incremental DOM</code> 的特点使得它适用于内存敏感型而非性能敏感型的应用。同时，前面也提到，<code>Incremental DOM</code> 为模板引擎的底层所设计，不适合直接调用其 API。</p>
+<p>已经应用了 <code>Incremental DOM</code> 的模板引擎有：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/closure/templates/">Closure Templates</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jridgewell/babel-plugin-incremental-dom">JSX</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/davidjamesstone/superviews.js">superviews.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/littlstar/starplate">starplate</a></li>
+</ul>
+<p><code>Incremental DOM</code> 仍在发展中，相比 <code>react.js</code> 与 <code>ember.js</code> 而言并没有受到太多的关注，期待其对模板引擎在性能上的促进和发展。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/01/01/2016-01-01-npm3-dependencies/" rel="prev" title="npm3 的依赖管理方案">
+                  <i class="fa fa-angle-left"></i> npm3 的依赖管理方案
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/01/07/2016-01-07-webcomponents/" rel="next" title="Webcomponents">
+                  Webcomponents <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yanni4night</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yanni4night" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"yanni4night","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
