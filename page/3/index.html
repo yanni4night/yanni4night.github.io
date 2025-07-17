@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,126 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2018/09/21/2018-09-21-prettier-eslint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/21/2018-09-21-prettier-eslint/" class="post-title-link" itemprop="url">prettier配合eslint执行自动化代码格式化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-21 17:24:25" itemprop="dateCreated datePublished" datetime="2018-09-21T17:24:25+08:00">2018-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/21/2018-09-21-prettier-eslint/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/21/2018-09-21-prettier-eslint/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://eslint.org/">eslint</a> 早已取代 <a target="_blank" rel="noopener" href="https://www.jslint.com/">jslint</a> 成为了 JavaScript 标准的风格检查工具，提供了大量规则（rule）。这些规则部分是可以支持 <em>fixable</em> 的，也就是说可以自动修复代码。但是现在来看，eslint 提供的修复功能还是太弱。因此 Facebook 开发了 <a target="_blank" rel="noopener" href="https://prettier.io/">prettier</a>，一个专门司职代码格式化的工具，它不仅仅支持 JavaScript 语法，甚至还支持 Markdown。因此，把它们配合起来是一种自然而然的想法，首先我们有一个 eslint-config 定义，我们希望经过 format 之后的代码能100%通过 lint 校验。我们也希望在 git hook 中能自动 format 代码。</p>
+<p>在实际应用中，让 prettier 完美配合 eslint 并不容易。根本原因在于 prettier 格式化代码的一些行为是不可配置的，而这些配置极有可能与 eslint 配置是冲突的。</p>
+<p>例如下面的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span> || b === <span class="number">2</span> || c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>在 eslint 中，我们经常配置在折行时把符号写在前边：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span></span><br><span class="line">|| b === <span class="number">2</span></span><br><span class="line">|| c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>但 prettier 则强行写在后面：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span> ||</span><br><span class="line">b === <span class="number">2</span> ||</span><br><span class="line">c ===<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>prettier 提供了与 eslint 配合使用的<a target="_blank" rel="noopener" href="https://prettier.io/docs/en/eslint.html">官方方法</a>。但这种方式的本质是使用 eslint-config-prettier 来抹平 prettier 与 eslint 之间不可调和的冲突。一旦我们定义的私有 eslint-config 与 eslint-config-prettier 有影响格式化结果的冲突，那么 lint 必然失败。不过这种方式的一大好处是仅仅对接 eslint 就能完成 lint 与 fix 的操作，集成性很强。</p>
+<p>理解这种现象很容易，eslint 的 rules 是没有顺序的，因此在 fix 阶段，极有可能 prettier 的 rule 执行在最后阶段，结果显然与我们定义的最终 eslint 配置是冲突的。</p>
+<hr>
+<p>相比于引用一系列 eslint-config，并维护它们的顺序，我们索性只维护我们自己的一份 eslint-config，反而更清晰。有这一份配置来执行 fix，产出一定可以通过lint。</p>
+<p>但我们肯定不想直接抛弃 prettier，那么就把它的执行放在最前面，让它的产出再通过 eslint 即可。</p>
+<p>已经存在这种现成的解决方案，就是 <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier-eslint">prettier-eslint</a>。虽然看起来比较畸形，但可能是唯一一种比较能用且清晰的方案了。</p>
+<p>但也有缺点，一旦将来某些 prettier 的不可配置的行为也不能被 eslint 所 fix，工作流就 gg 了。整合的过程就是这样，本来是相互分离的两个系统，让它们一起工作，总要失去点什么。</p>
+<blockquote>
+<p>Code ➡️ prettier ➡️ eslint –fix ➡️ Formatted Code ✨</p>
+</blockquote>
+<p>Q：如果能保证 prettier 提供的 rule 能先行执行呢？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1333,138 +1453,6 @@
 </pre>
 
 <p>总结来看，字节起始为0则为单字节字符，起始为110、1110、11110分别代表有2个、3个、4个字节组合代表一个字符。其它字节起始必然全为10，代表不是字符起始位置。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2017/08/07/2017-08-07-why-consulting-is-so-tough/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/08/07/2017-08-07-why-consulting-is-so-tough/" class="post-title-link" itemprop="url">《咨询的奥秘》 第一章 咨询为什么这么难</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-08-07 19:07:35" itemprop="dateCreated datePublished" datetime="2017-08-07T19:07:35+08:00">2017-08-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%92%A8%E8%AF%A2%E7%9A%84%E5%A5%A5%E7%A7%98/" itemprop="url" rel="index"><span itemprop="name">咨询的奥秘</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/08/07/2017-08-07-why-consulting-is-so-tough/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/07/2017-08-07-why-consulting-is-so-tough/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>断断续续用了半年时间才读完了《咨询的奥秘》（今天一口气读了好几章），深感作为大牛咨询师，作者深谙计算机职场的人性，其中众多“法则”的总结无不精辟入骨，虽然鄙人不懂咨询，但从咨询的眼光和角度去看职场，不免有种“不识庐山真面目，只缘身在此山中”的彻悟。</p>
-<p>草草读过一遍甚感粗糙，因此决定第二遍细细研读。下面我努力每一章都抽出时间写下读后感。</p>
-<blockquote>
-<p>忽然发现，此书英文原版第一版竟出版于1986年，而内容时至今日依旧不过时。</p>
-</blockquote>
-<h1 id="第一章-咨询为什么这么难"><a href="#第一章-咨询为什么这么难" class="headerlink" title="第一章 咨询为什么这么难"></a>第一章 咨询为什么这么难</h1><h2 id="咨询第一定律——不管客户和你说什么，问题总会有"><a href="#咨询第一定律——不管客户和你说什么，问题总会有" class="headerlink" title="咨询第一定律——不管客户和你说什么，问题总会有"></a>咨询第一定律——不管客户和你说什么，问题总会有</h2><p>是的，任何系统和设计总会有或多或少的问题，可能是无足轻重的功能补充，也可能是深藏不露的致命缺陷，或大或小，但总会有。</p>
-<p>因为没有事物是完美的，所以缺陷的存在是必然的。每当有人向我滔滔不绝讲了一大堆关于他的想法，我都习惯性的点头表示“同意”，并很少打断。如果如此结束谈话，自然相安无事，我最担心的是他补上一句——“有没有什么问题？”。</p>
-<p>问题总会有，一旦我一时提不出来任何问题，我知道，我一定是没有理解他的观点，他的话被我当做了耳旁风。</p>
-<p>在面试新员工的时候，我也必然地在最后问对方有没有什么问题问我，往往我得到的答案是没有。在这个角度上，我并不喜欢没人任何问题的求职者。</p>
-<p>在会议的末尾，主持人经常询问大家有没有问题，绝大多数情况下，会议室是沉默的。</p>
-<p>显然问题的提出有助于消除歧义，增进理解，提高沟通效率；没有问题可能是不负责任、拖延症、懒惰的表现。</p>
-<p>虽然别人的问题会一直存在，但不必指出得过于强烈，要照顾自尊，因此：</p>
-<h3 id="永远不要承诺百分之十以上的改进"><a href="#永远不要承诺百分之十以上的改进" class="headerlink" title="永远不要承诺百分之十以上的改进"></a>永远不要承诺百分之十以上的改进</h3><p>这就相当于指出对方存在“很大”的问题，人非圣贤，这样指出问题无疑会招致对方强烈的反感。</p>
-<p>如果出现意外：</p>
-<h3 id="如果不小心让改进超过百分之十，要确保没人注意到它"><a href="#如果不小心让改进超过百分之十，要确保没人注意到它" class="headerlink" title="如果不小心让改进超过百分之十，要确保没人注意到它"></a>如果不小心让改进超过百分之十，要确保没人注意到它</h3><p>处心积虑，为对方留足面子，处世之道。</p>
-<h2 id="咨询第二定律——不管一开始看起来什么样，它永远是人的问题"><a href="#咨询第二定律——不管一开始看起来什么样，它永远是人的问题" class="headerlink" title="咨询第二定律——不管一开始看起来什么样，它永远是人的问题"></a>咨询第二定律——不管一开始看起来什么样，它永远是人的问题</h2><p>诸多系统的异常在开始往往都被归咎于异常的客观事实，这种偏见非常地常见，人们在潜意识里往往不相信自己出了错。</p>
-<p>另一种理解是，无论是哪个环节出了问题，都可以归咎于人的管理失职，毕竟只有人才有主观能动性。一般来讲，人们对于难以预防的灾害，最多能够原谅一次，从第二次开始，都可以归咎于负责人对于经验总结的失察，于是：</p>
-<h3 id="马文定律——不管客户在做什么，都要建议他们做些别的"><a href="#马文定律——不管客户在做什么，都要建议他们做些别的" class="headerlink" title="马文定律——不管客户在做什么，都要建议他们做些别的"></a>马文定律——不管客户在做什么，都要建议他们做些别的</h3><p>抛开咨询师和客户的关系不谈，由于当局者迷，当事人往往会深陷思维定势，不妨换个角度思考，很多时候只是睡一觉、喝杯茶，问题就迎刃而解。</p>
-<h2 id="咨询第三定律——永远别忘了客户是按小时付费，而不是按照解决方案付费的"><a href="#咨询第三定律——永远别忘了客户是按小时付费，而不是按照解决方案付费的" class="headerlink" title="咨询第三定律——永远别忘了客户是按小时付费，而不是按照解决方案付费的"></a>咨询第三定律——永远别忘了客户是按小时付费，而不是按照解决方案付费的</h2><p>这一句很容易被误解，它实际上是对人性的极其深刻的讽刺——我只要向老板表态我已经在解决问题了，这是最重要的，至于最终有没有解决——原本就不可能被解决啊，否则依我的能力，早就解决了！</p>
-<p>这也导出了另一个推论：</p>
-<h3 id="你要是在意功劳记在谁头上，那就啥事也干不成了"><a href="#你要是在意功劳记在谁头上，那就啥事也干不成了" class="headerlink" title="你要是在意功劳记在谁头上，那就啥事也干不成了"></a>你要是在意功劳记在谁头上，那就啥事也干不成了</h3><p>人们需要保留一种底线的面子，不能做出证明他一无是处的事情，谁都不想承认自己犯有严重的错误。</p>
-<h2 id="咨询第四定律——要是他们没聘用你，不要帮他们解决问题"><a href="#咨询第四定律——要是他们没聘用你，不要帮他们解决问题" class="headerlink" title="咨询第四定律——要是他们没聘用你，不要帮他们解决问题"></a>咨询第四定律——要是他们没聘用你，不要帮他们解决问题</h2><p>很容易理解，没主动问你，你就别瞎BB，招人烦。</p>
-<h2 id="树莓酱定律——铺的越广，摊得越薄"><a href="#树莓酱定律——铺的越广，摊得越薄" class="headerlink" title="树莓酱定律——铺的越广，摊得越薄"></a>树莓酱定律——铺的越广，摊得越薄</h2><p>精力有限，战线不能拉得太长，顾此失彼。这也是信息守恒的一种体现。</p>
-<h2 id="温伯格双胞胎定律——大部分时间，在世界上大多数地方，不管人们有多努力，都不会发生什么大事"><a href="#温伯格双胞胎定律——大部分时间，在世界上大多数地方，不管人们有多努力，都不会发生什么大事" class="headerlink" title="温伯格双胞胎定律——大部分时间，在世界上大多数地方，不管人们有多努力，都不会发生什么大事"></a>温伯格双胞胎定律——大部分时间，在世界上大多数地方，不管人们有多努力，都不会发生什么大事</h2><p>这印证了一句话，“努力了不一定成功，不努力一定不成功”，似乎，即使努力，成功的几率也是相当低的，很令人沮丧。但这是自然规律，熵增的趋势是极其平缓的。</p>
-<p>书中有一句话很经典：<em><strong>对于世界上大多数系统而言，对于其下一时刻行为的最佳预测，就是和上一时刻做同样的事情</strong></em>。</p>
-<p>在互联网这种信息高速传播的时代，常常会有新事物出现，往往冠以“革命性”的名头。然经过详细了解后就可以发现，大多数都只是旧瓶装新酒，仅仅对旧事物做了一定的改进，暂且不关心改进是否会带来其它的副作用，微小改进就难以称之为任何“革命”。遇到这种新事物的时候，先不要盲目追宠，相信温伯格双胞胎定律。</p>
-<h2 id="鲁迪黄萝卜理论——一旦你干掉了头号问题，二号问题就升级了"><a href="#鲁迪黄萝卜理论——一旦你干掉了头号问题，二号问题就升级了" class="headerlink" title="鲁迪黄萝卜理论——一旦你干掉了头号问题，二号问题就升级了"></a>鲁迪黄萝卜理论——一旦你干掉了头号问题，二号问题就升级了</h2><p>问题是没完没了的，队列不空，多次出栈后仍有队头。</p>
-<hr>
-<p>所以，“咨询为什么这么难”？世界上的问题是无穷无尽的，而人们又不愿意被指出自己有问题，为了照顾人家的情绪，既不能改进过多，又不能包揽全部功劳。即便如此，纵然你再努力，能够做出实质性改变的机会仍然不大。作者在最后抛出了做咨询的三条困难定律：</p>
-<ul>
-<li>要是不能接受失败，做顾问就永远不会成功</li>
-<li>一旦消灭了头号问题，二号问题就升级了</li>
-<li>帮助自己要比帮助别人更难</li>
-</ul>
 
       
     </div>

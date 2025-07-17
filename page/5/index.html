@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,113 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/04/05/2016-04-05-json-encode-performanceresourcetiming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/04/05/2016-04-05-json-encode-performanceresourcetiming/" class="post-title-link" itemprop="url">Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-04-05 11:32:35" itemprop="dateCreated datePublished" datetime="2016-04-05T11:32:35+08:00">2016-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/chrome-json-performance-resource-timing/" itemprop="url" rel="index"><span itemprop="name">chrome json performance resource timing</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2016/04/05/2016-04-05-json-encode-performanceresourcetiming/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/04/05/2016-04-05-json-encode-performanceresourcetiming/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>利用 <a target="_blank" rel="noopener" href="http://nightmarejs.org/">nightmare</a> 做下线性能对比分析中，少不了要获取 <a target="_blank" rel="noopener" href="https://www.w3.org/TR/resource-timing/#performanceresourcetiming">PerformanceResourceTiming</a> 数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">performance.<span class="title function_">getEntriesByType</span>(<span class="string">&#x27;resource&#x27;</span>);</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/04/05/2016-04-05-json-encode-performanceresourcetiming/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1456,124 +1563,6 @@ ue_w = 375px
 <p>因此，在你的成长过程中，遇到困难和问题并非一定都是坏事，往往越糟糕的环境就越能激发你的创造天赋。在这一点上，一个有一定发展但又不足够成熟的公司往往更适合你的初期发展，它会培养你的学习和总结能力。我个人认为在中国，BAT这类公司并不合适，反而像豆瓣、知乎这类中小型公司，效率相对更高，会提供给你更大的发展空间。当你发现自己在这类公司中已经解决了很多问题，积累了足够的经验后，再去大型公司，比较一下他们的工作，会发现你之前的工作方式是多么低级和不规范，从而产生敬畏之心。当你怀着一份敬畏之心来对待这份工作，你会有着不一样的看法：前端领域深似海。</p>
 <p>当我本人看穿这一切后，忽然觉得，前端如此，哪个领域又何尝不是？一味地追求极致只会让自己陷入我执当中。技术界多有高人精通，却有几人真正明白这些都是对于不完美的妥协？生活亦如此，每个人都称热爱生活，谁又会在意其背后的心酸、苦楚与无奈？</p>
 <p>一切技术都是浮云，美好生活才是真谛。当你做这份工作时，失败和妥协只是你成长过程中不断被踢开的绊脚石，热爱和坚持才是那永不枯竭的推动力。不要过份追求成长，当你的经验教训积累足够，成长就会像那初春解冻的冰川，势如破竹。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2015/12/15/2015-12-15-liqi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/12/15/2015-12-15-liqi/" class="post-title-link" itemprop="url">利器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2015-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2015-12-15T00:00:00+08:00">2015-12-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/liqi-%E5%88%A9%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">liqi 利器</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2015/12/15/2015-12-15-liqi/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/15/2015-12-15-liqi/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/images/liqi/banner.jpg" alt="cat"></p>
-<h2 id="介绍一下你自己和所做的工作。"><a href="#介绍一下你自己和所做的工作。" class="headerlink" title="介绍一下你自己和所做的工作。"></a>介绍一下你自己和所做的工作。</h2><p>我叫 yinyong，2013年硕士研究生毕业开始在宇宙中心五道口的搜狐网络大厦工作直到去年，目前在百度。2008年南方大雪的时候 <code>刚好</code> 选择了也留在西安过年，一起的还有许多不能回家的小伙伴。因为无聊，拿起了别人从图书馆借来的却没有阅读的《Java程序设计》，从此一发不可收拾踏上了编程之路。不过，毕业时做的WEB前端工程师的角色，目前扔在坚持但主要做前端技术架构方向的研究。</p>
-<p>我是工程师，不是程序员。</p>
-<h2 id="你都在使用哪些硬件？"><a href="#你都在使用哪些硬件？" class="headerlink" title="你都在使用哪些硬件？"></a>你都在使用哪些硬件？</h2><p>上学时喜爱手机，曾经手握7部各种操作系统的手机（iOS除外，因为买不起）。不过后来兴趣越来越淡了，在折腾了几年的Android后，年纪大了心也累了，目前手握一部iPhone6，娱乐工作都能应付，而且充电速度很满意。家里的iPad Air基本上很少碰了，之前还用它看看美剧。</p>
-<p>工作上我一直使用自己购买的Mac Air 2012，后来公司发了台Mac Pro 2014，发现除了续航外，体验等方面都不如自己的Air。在公司还放着一台神舟K480N-i7D3，买来主要看上了其CPU、显卡并且价格不高，在更换了SSD并加了内存后，主要用做玩游戏。不过现在也很少玩了，电脑放在那基本算是备用机。</p>
-<p>此外，我基本没有其它硬件设备，特别对机械键盘我是嗤之以鼻的，因为它会让我觉得自己是手指体力劳动者而非脑力劳动者。</p>
-<h2 id="软件呢？"><a href="#软件呢？" class="headerlink" title="软件呢？"></a>软件呢？</h2><p>在文本编辑上，我一直使用 Sublime Text，最爱它的多行编辑功能，同时其插件使用Python编写也比较容易，自己也写过<a target="_blank" rel="noopener" href="https://github.com/yanni4night/sublime-custominsert">一个</a>。</p>
-<p>其它软件：</p>
-<ul>
-<li>网易云音乐，Mac版+iOS版，开通了畅听流量包</li>
-<li><a target="_blank" rel="noopener" href="http://www.bandisoft.com/bandizip/cn/">Bandizip X 2</a>，用于文件解压</li>
-<li>Pages&#x2F;Keynote，日常办公文档</li>
-<li><a target="_blank" rel="noopener" href="http://www.iterm2.com/">iTerm 2</a></li>
-</ul>
-<p>总之很少有特别的软件能反应出我的实际工作内容，甚至是便签我也一直使用mac自带的。</p>
-<h2 id="你最理想的工作环境是什么？"><a href="#你最理想的工作环境是什么？" class="headerlink" title="你最理想的工作环境是什么？"></a>你最理想的工作环境是什么？</h2><p>喜欢工位的一侧靠着窗户并且有很宽广的视野，同时希望后面不要有人可以随时窥视我的显示器。</p>
-<h2 id="你平时获得工作灵感的方式有哪些？"><a href="#你平时获得工作灵感的方式有哪些？" class="headerlink" title="你平时获得工作灵感的方式有哪些？"></a>你平时获得工作灵感的方式有哪些？</h2><p>因为现在很少再专注于一个具体技术问题，而更多的是大方案上的思考，因此更多的是 Google 各种国外 blog来攒取灵感。但偶尔也会去Github上搜寻有意思的项目。</p>
-<h2 id="推荐一件生活中的利器给大家。"><a href="#推荐一件生活中的利器给大家。" class="headerlink" title="推荐一件生活中的利器给大家。"></a>推荐一件生活中的利器给大家。</h2><p>一款iOS应用<a target="_blank" rel="noopener" href="http://daysmatter.com/">Days Matter</a>，我用它来统计我自出生以来的天数。</p>
-<hr>
-<p>本文参与了「利器社群计划」，发现更多创造者和他们的工具：<a target="_blank" rel="noopener" href="http://liqi.io/community/">http://liqi.io/community/</a></p>
 
       
     </div>
