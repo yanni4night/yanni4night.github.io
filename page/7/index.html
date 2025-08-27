@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,241 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/11/11/2014-11-11-less-vs-sass/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/11/11/2014-11-11-less-vs-sass/" class="post-title-link" itemprop="url">LESS-vs-SASS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-11T00:00:00+08:00">2014-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/css/" itemprop="url" rel="index"><span itemprop="name">css</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2014/11/11/2014-11-11-less-vs-sass/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/11/11/2014-11-11-less-vs-sass/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>基于<a target="_blank" rel="noopener" href="http://lesscss.org/">less</a> 2.0 与 <a target="_blank" rel="noopener" href="http://sass-lang.com/">sass</a> 3.5.7的官方文档对两者的功能和语法进行一些简单的比较.</p>
+<h6 id="Variable"><a href="#Variable" class="headerlink" title="Variable"></a>Variable</h6><p>两者都支持向_选择器名_、_属性名_、_属性值_和_字符串_中注入变量，并都支持数值变量的计算：</p>
+<pre><code>//sass
+$left: left;
+$variable: variable;
+$num3px: 3px;
+$num5: 5;
+
+.#&#123;$variable&#125;&#123;
+    margin-#&#123;$left&#125;: $num3px + $num5;
+    float: $left;
+    content: &quot;#&#123;$variable&#125;&quot;;
+&#125;
+//less
+@left:left;
+@variable:variable;
+@num3px: 3px;
+@num5: 5;
+
+.@&#123;variable&#125;&#123;
+    margin-@&#123;left&#125;: @num3px + @num5;
+    float: @left;
+    content: &quot;@&#123;variable&#125;&quot;;
+&#125;
+</code></pre>
+<p>但只有sass支持字符串的连接：</p>
+<pre><code>$hel:&quot;hel&quot;;
+$lo:&quot;lo&quot;;
+$hello: $hel + $lp;
+</code></pre>
+<p>在sass中，变量更复杂的<a target="_blank" rel="noopener" href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#data_types">类型</a>的，同时提供了如 <code>!default</code> 和 <code>!global</code> 标记。</p>
+<h6 id="import"><a href="#import" class="headerlink" title="@import"></a>@import</h6><p>两者的 <code>@import</code> 指令都默认引入同类型的.less&#x2F;.scss 文件，同时也支持嵌套：</p>
+<pre><code>.mark&#123;
+    @import &quot;item&quot;;
+&#125;
+</code></pre>
+<p>都输出：</p>
+<pre><code>.mark .item&#123;&#125;
+</code></pre>
+<p>如果要被引入的是一个 css 文件，sass 不执行任何操作，less 可以根据<a target="_blank" rel="noopener" href="http://lesscss.org/features/#import-directives-feature-file-extensions">指令</a>执行多种操作，例如，可以将 css 当做 less 处理：</p>
+<pre><code>@import (less) &quot;common.css&quot;;
+</code></pre>
+<p>或者直接引入不执行任何处理操作：</p>
+<pre><code>@import (inline) &quot;common.css&quot;;
+</code></pre>
+<h6 id="media"><a href="#media" class="headerlink" title="@media"></a>@media</h6><p>两者都支持媒体查询选择器提升：</p>
+<pre><code>.wrap&#123;
+    @media screen&#123;
+        .item&#123;
+            color: red;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code>@media screen &#123;
+    .wrap .item &#123;
+        color: red;
+    &#125;
+&#125;
+</code></pre>
+<h6 id="Extend"><a href="#Extend" class="headerlink" title="Extend"></a>Extend</h6><p>两者都支持extend：</p>
+<pre><code>//less
+.wrap&#123;
+    &amp;:extend(.on);
+&#125;
+.on&#123;font-size:10px;&#125;
+
+//sass
+.wrap&#123;
+    @extend .on;
+&#125;
+.on&#123;font-size:10px;&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code>.wrap .on&#123;font-size:10px;&#125;
+</code></pre>
+<p>sass 实现了 <code>!optional</code> 标记用以屏蔽错误。</p>
+<h6 id="Mixins"><a href="#Mixins" class="headerlink" title="Mixins"></a>Mixins</h6><p>两者都支持mixin：</p>
+<pre><code>//less
+.fork()&#123;font-size:20px;&#125;
+.banner&#123;
+    .fork;
+&#125;
+
+//sass
+@mixin fork()&#123;font-size:20px;&#125;
+.banner&#123;
+    @include fork;
+&#125;
+</code></pre>
+<p>对于 sass，必须使用 <code>@mixin</code> 指令定义一个 mixin，个人感觉 less 更方便一些，直接写入选择器名，也不需要 <code>@include</code> 指令，特别是 mixin 本身去掉圆括号之后也可以作为一个合法的css选择器。</p>
+<h6 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h6><p>都支持判断：</p>
+<pre><code>//less
+@tick:1;
+&amp; when(@tick&lt;5)&#123;
+    .tick&#123;
+        &amp; when(@tick&lt;5)&#123;
+            color:red;
+        &#125;
+        font-size: 10px;
+    &#125;
+&#125;
+
+//sass
+$tick:1;
+@if $tick &lt; 5&#123;
+    .tick &#123;
+        @if $tick &lt; 5&#123;
+            color:red;
+        &#125;
+        font-size: 10px;
+    &#125;
+&#125;
+</code></pre>
+<h6 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h6><p>less 仰赖判断实现循环：</p>
+<pre><code>//less
+.loop(@counter) when (@counter &gt; 0) &#123;
+    .loop((@counter - 1));
+    .item-@&#123;counter&#125;&#123;
+        left: (10px * @counter);
+    &#125;
+&#125;
+
+.loop(5);
+</code></pre>
+<p>sass 实现了 <code>@for</code> 指令：</p>
+<pre><code>//sass
+@for $counter from 1 through 5&#123;
+    .item-#&#123;$counter&#125;&#123;
+        left: #&#123;$counter * 10px&#125;;
+    &#125;
+&#125;
+</code></pre>
+<p>除此之外，sass 还实现了功能强大的 <code>@each</code> 和 <code>@while</code> 指令，这是 less 做不到的。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>less 与 sass 在常规功能上不相上下，less 可能稍稍略逊一点，不过书写上要相对简洁。一些 sass 的实现比如 <code>@at-root</code> 个人认为用处不大，使用反倒增加了阅读代码的难度。从环境部署上看，sass 需要 <a target="_blank" rel="noopener" href="https://www.ruby-lang.org/zh_cn/">ruby</a> 环境，而 less 基于 js，相对更容易在多种环境中使用。</p>
+<p>CSS 预处理器的使用要以简化书写 CSS 和清晰展示选择符层次为重，从这点上来讲，并不需要太复杂的功能，我比较倾向于使用 less。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2103,232 +2338,6 @@ function isNegativeZero(e) &#123;
 <h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/npm/node-semver">https://github.com/npm/node-semver</a></li>
 <li><a target="_blank" rel="noopener" href="http://semver.org/lang/zh-CN/">http://semver.org/lang/zh-CN/</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/05/03/2014-05-03-css3-multicol/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/05/03/2014-05-03-css3-multicol/" class="post-title-link" itemprop="url">CSS3多列布局</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2014-05-03T00:00:00+08:00">2014-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/css3-column-layout/" itemprop="url" rel="index"><span itemprop="name">css3 column layout</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/05/03/2014-05-03-css3-multicol/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/05/03/2014-05-03-css3-multicol/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>过宽的大段文字内容对读者不够友好，尝试阅读一下<a href="/example/columns.html">这里</a>的第一段文字，是否在换行时遇到困难。</p>
-<p>像报纸一样，web 设计时遇到大段文字一般都会尝试将文字内容分成多列显示，在技术上可以通过加入表格(table)或任意其它块级元素标签解决。显然这样的设计欠缺灵活性，需要手动分割文字内容，过多或过少的文字都将影响分割算法。<code>CSS 2.1</code> 后带来了新的布局功能————多列布局，很好地解决了此问题。</p>
-<p>#####语法</p>
-<h6 id="多列布局"><a href="#多列布局" class="headerlink" title="多列布局"></a>多列布局</h6><p>多列布局适用于非替换 <code>block</code> 元素（除 <code>table</code> 外），<code>table-cell</code> 和 <code>inline-block</code> 元素。</p>
-<pre><code>article&#123;
-    columns:3;
-&#125;
-</code></pre>
-<p>这段 CSS 代码即定义所有 <code>article</code> 元素分为3列进行排版。这是最大列数定义，当文字不足时，也可能按2列或1列显示。</p>
-<p>也可以这样定义：</p>
-<pre><code>article&#123;
-    columns:10em;
-&#125;
-</code></pre>
-<p>这意味着每列最多显示10个字符宽度。</p>
-<p>事实上，<code>columns</code> 是 <code>column-count</code> 和 <code>column-width</code> 的缩写。大多数时候仅需给出一个值，当两个值都给出时，一般仅有一个能影响最终排版，<code>column-count</code> 代表可以分割的最大列数。</p>
-<p>######列间隙</p>
-<p>使用 <code>column-gap</code> 设置列与列之间的间隙，如：</p>
-<pre><code>article&#123;
-    column-gap:3em;
-&#125;
-</code></pre>
-<p>######列分割线</p>
-<p>列分割线由 <code>column-rule-color</code> ， <code>column-rule-width</code> 和 <code>column-rule-style</code> 定义，语法类似与 <code>border</code> ，如：</p>
-<pre><code>article&#123;
-    column-rule-color:#28b;
-    column-rule-style:dashed;
-    column-rule-width:1px;
-&#125;
-</code></pre>
-<p>或者简写为：</p>
-<pre><code>article&#123;
-    column-rule:1px #28b dashed;
-&#125;
-</code></pre>
-<p>######分割位置</p>
-<p>可以定义一些分割位置的建议，如不能在某些元素的中间分割：</p>
-<pre><code>article p&#123;
-    break-before:avoid;
-    break-after:column;
-    break-inside:avoid;
-&#125;
-</code></pre>
-<p>这些属性仅对块级元素有效，不过好像目前还没有浏览器支持它们。</p>
-<p>######夸列元素</p>
-<p>可以定义夸列元素，如：</p>
-<pre><code>article h1&#123;
-    column-span:all|none;
-&#125;
-</code></pre>
-<p>######列填充策略</p>
-<p>两种策略：平衡和非平衡的，目前只有 <code>Firefox</code> 支持:</p>
-<pre><code>article&#123;
-    column-fill:balance|auto;
-&#125;
-</code></pre>
-<p>#####浏览器支持</p>
-<p>虽然多列布局一直处于 <a target="_blank" rel="noopener" href="http://www.w3.org/TR/css3-multicol/">Candidate Recommendation</a> 阶段，但是现代 PC 和 Mobile 浏览器几乎已经全部实现， <code>IE</code> 从 10 开始支持。部分浏览器需要加厂商前缀。</p>
-<ul>
-<li>IE 10+</li>
-<li>Firefox 5+</li>
-<li>Chrome 12+</li>
-<li>Safari 3.2+</li>
-<li>Opera 11.1+</li>
-<li>Android 2.1+</li>
-<li>iOS 3.2+</li>
-</ul>
-<p>下面是多列布局所需的所有 CSS 属性的  <code>LESS</code> ：</p>
-<pre><code>.column(@w)&#123;
-    -webkit-columns:@w;
-    -moz-columns:@w;
-    columns:@w;
-&#125;
-.column-gap(@len)&#123;
-    -webkit-column-gap:@len;
-    -moz-column-gap:@len;
-    column-gap:@len;
-&#125;
-.column-rule-color(@color)&#123;
-    -webkit-column-rule-color:@color;
-    -moz-column-rule-color:@color;
-    column-rule-color:@color;
-&#125;
-.column-rule-style(@style:solid)&#123;
-    -webkit-column-rule-style:@style;
-    -moz-column-rule-style:@style;
-    column-rule-style:@style;
-&#125;
-.column-rule-width(@width)&#123;
-    -webkit-column-rule-width:@width;
-    -moz-column-rule-width:@width;
-    column-rule-width:@width;
-&#125;
-.break-before(@break)&#123;
-    -webkit-break-before:@break;
-    -moz-break-before:@break;
-    break-before:@break;
-&#125;
-.break-after(@break)&#123;
-    -webkit-break-after:@break;
-    -moz-break-after:@break;
-    break-after:@break;
-&#125;
-.break-inside(@break)&#123;
-    -webkit-break-inside:@break;
-    -moz-break-inside:@break;
-    break-inside:@break;
-&#125;
-.column-span(@span)&#123;
-    -webkit-column-span:@span;
-    -moz-column-span:@span;
-    column-span:@span;
-&#125;
-.column-fill(@fill:balance)&#123;
-    -webkit-column-fill:@fill;
-    -moz-column-fill:@fill;
-    column-fill:@fill;
-&#125;
-</code></pre>
-<p>查看多列布局的实际效果，点击<a href="/example/columns.html">这里</a>。</p>
-<p>#####总结</p>
-<p>使用 CSS 多列布局不仅大大提高了布局灵活性，对屏幕阅读器、打印机和 <code>SEO</code> 也更友好。但需要针对旧浏览器设计功能降级。</p>
-<p>#####参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Using_multi-column_layouts">https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Using_multi-column_layouts</a></li>
-<li><a target="_blank" rel="noopener" href="http://css-tricks.com/snippets/css/multiple-columns/">http://css-tricks.com/snippets/css/multiple-columns/</a></li>
-<li><a target="_blank" rel="noopener" href="http://webdesign.tutsplus.com/articles/an-introduction-to-the-css3-multiple-column-layout-module--webdesign-4934">http://webdesign.tutsplus.com/articles/an-introduction-to-the-css3-multiple-column-layout-module--webdesign-4934</a></li>
 </ul>
 
       
