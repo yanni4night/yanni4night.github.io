@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,129 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/01/01/2016-01-01-npm3-dependencies/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/01/01/2016-01-01-npm3-dependencies/" class="post-title-link" itemprop="url">npm3 的依赖管理方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-01-01 18:27:03" itemprop="dateCreated datePublished" datetime="2016-01-01T18:27:03+08:00">2016-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/npm/" itemprop="url" rel="index"><span itemprop="name">npm</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2016/01/01/2016-01-01-npm3-dependencies/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/01/2016-01-01-npm3-dependencies/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>npm3 于2015年6月发布，它与 npm2 很大的一点不同是__依赖管理方案__的升级。</p>
+<p>为了管理同一个模块的不同版本，npm2 采用严格树形嵌套的形式组织依赖模块的目录，而 npm3 则尽量_扁平化_，将依赖模块提升至顶层目录：</p>
+<p><img src="/images/npm3/npm3deps4.png"></p>
+<p>对于 B 模块的两个版本，v1 版本会被放置于顶层，而 v2 版本则因为冲突关系仍放置于 C 模块下面。</p>
+<p>这样的布置有什么好处？共用。加入再有一个模块 D 依赖与 Bv1，则不必再安装，直接使用顶层的 Bv1即可。</p>
+<p>那如果 A 和 D 模块都依赖 Bv2 呢？npm3 不会将 Bv2 移至顶层，而是将 Bv2 仍挂在 C 和 D 下面：</p>
+<p><img src="/images/npm3/npm3deps10.png"></p>
+<p>似乎 npm3 并没有那么优化到最好，Bv2 模块没有被复用。要想实现这种最优的组织，需要手动执行命令：</p>
+<pre><code>$npm dedupe
+</code></pre>
+<p>那么，npm3 如何决定 B 模块的哪一个版本在顶层呢？答案是按照自然顺序的先后，最先安装的版本会放置于顶层。</p>
+<p>理论上，自然顺序在任何情况下都是一定的，因此依赖模块的最终组织形式也是一定的。但这个前提是安装依赖之前 node_modules 是空的。一旦 node_modules 内已经有依赖模块，最终的组织形式就会受到影响。</p>
+<p>假如我们现在有这样的一个应用：</p>
+<p><img src="/images/npm3/npm3deps8.png"></p>
+<p>修改 A 模块，使之依赖 Bv2：</p>
+<p><img src="/images/npm3/npm3deps10.png"></p>
+<p>现在，发布应用，在另一台机器上重新部署应用：</p>
+<p><img src="/images/npm3/npm3deps17.png"></p>
+<p>可见这两种环境下，依赖的目录组织形式不是一致的。</p>
+<p>因此，npm3 的这种新的依赖管理方式可能造成依赖模块的目录不一致，除非所有依赖模块都删除并重新安装。但是，这种不一致理论上是无害的，每个模块都能找到所有符合要求的依赖。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.npmjs.com/how-npm-works/npm3">https://docs.npmjs.com/how-npm-works/npm3</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.npmjs.com/how-npm-works/npm3-dupe">https://docs.npmjs.com/how-npm-works/npm3-dupe</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.npmjs.com/how-npm-works/npm3-nondet">https://docs.npmjs.com/how-npm-works/npm3-nondet</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1521,107 +1644,6 @@ ue_w = 375px
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click">https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click</a></li>
 <li><a target="_blank" rel="noopener" href="http://learn.jquery.com/events/event-extensions/">http://learn.jquery.com/events/event-extensions/</a></li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2014/11/16/2014-11-16-making-md-badges/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/11/16/2014-11-16-making-md-badges/" class="post-title-link" itemprop="url">Markdown嵌入徽标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-11-16 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-16T00:00:00+08:00">2014-11-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/11/16/2014-11-16-making-md-badges/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/11/16/2014-11-16-making-md-badges/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>经常在 <a target="_blank" rel="noopener" href="https://github.com/">github</a> 上看到很多 repo 的 readme 都会展示类似<img src="http://img.shields.io/travis/yanni4night/urljoin.svg" alt="Bagde Demo">这样的东西。它们的学名叫徽标(Badge)，大多是使用 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/zh/Markdown">markdown</a> 的图片语法嵌入的 <a target="_blank" rel="noopener" href="http://www.w3.org/Graphics/SVG/">svg</a>，可以自动显示当前 repo 的各种状态。下面介绍几种提供徽标的服务。</p>
-<h4 id="NPM-version"><a href="#NPM-version" class="headerlink" title="NPM version"></a>NPM version</h4><p>显示该repo发布在 NPM 上的版本，链接 <a target="_blank" rel="noopener" href="http://img.shields.io/npm/v/%7Brepo%7D.svg">http://img.shields.io/npm/v/{repo}.svg</a>，如 <img src="http://img.shields.io/npm/v/urljoin.svg" alt="NPM Version">。</p>
-<h4 id="NPM-Download"><a href="#NPM-Download" class="headerlink" title="NPM Download"></a>NPM Download</h4><p>显示在 NPM 上的阶段下载数，链接 <a target="_blank" rel="noopener" href="http://img.shields.io/npm/dm/%7Brepo%7D.svg">http://img.shields.io/npm/dm/{repo}.svg</a>，如 <img src="http://img.shields.io/npm/dm/urljoin.svg" alt="NPM Download">。</p>
-<h4 id="gratipay"><a href="#gratipay" class="headerlink" title="gratipay"></a>gratipay</h4><p>需要<a target="_blank" rel="noopener" href="https://gratipay.com/">登录</a>，用于发起捐助。链接 <a target="_blank" rel="noopener" href="http://img.shields.io/gittip/%7Buser%7D.svg">http://img.shields.io/gittip/{user}.svg</a>，如 <img src="http://img.shields.io/gittip/yanni4night.svg" alt="Git tip">。</p>
-<h4 id="travis"><a href="#travis" class="headerlink" title="travis"></a>travis</h4><p>需要<a target="_blank" rel="noopener" href="https://travis-ci.org/">登录</a>并指定 repo ，用于自动显示构建状态。链接 <a target="_blank" rel="noopener" href="http://img.shields.io/travis/%7Buser%7D/%7Brepo%7D.svg">http://img.shields.io/travis/{user}/{repo}.svg</a>，如 <img src="http://img.shields.io/travis/yanni4night/urljoin.svg" alt="Travis">。</p>
-<h4 id="coveralls"><a href="#coveralls" class="headerlink" title="coveralls"></a>coveralls</h4><p>需要<a target="_blank" rel="noopener" href="https://coveralls.io/">登录</a>并指定 repo ，配合测试框架显示覆盖度。链接 <a target="_blank" rel="noopener" href="http://img.shields.io/coveralls/%7Buser%7D/%7Brepo%7D/master.svg">http://img.shields.io/coveralls/{user}/{repo}/master.svg</a>，如 <img src="http://img.shields.io/coveralls/yanni4night/urljoin/master.svg" alt="Coveralls">。</p>
-<h4 id="appveyor"><a href="#appveyor" class="headerlink" title="appveyor"></a>appveyor</h4><p>需要<a target="_blank" rel="noopener" href="https://ci.appveyor.com/">登录</a>并指定 repo ，用于在 Windows 环境进行构建。链接 <a target="_blank" rel="noopener" href="https://ci.appveyor.com/api/projects/status/%7Brepo-id%7D?svg=true">https://ci.appveyor.com/api/projects/status/{repo-id}?svg=true</a>，如 <img src="https://ci.appveyor.com/api/projects/status/ildoo8h6ewphy8we?svg=true" alt="Appveyor">。</p>
-<h4 id="codeship"><a href="#codeship" class="headerlink" title="codeship"></a>codeship</h4><p>类似于 travis ，同样用于自动构建，点此<a target="_blank" rel="noopener" href="https://codeship.com/">登录</a>，如<img src="https://codeship.com/projects/79da7240-5481-0132-ea32-42ab35009c21/status" alt="Build Status">。</p>
-<hr>
-
-<p>其实这些服务大多都使用了同一种徽标生成服务：<a target="_blank" rel="noopener" href="http://shields.io/">http://shields.io/</a>。可以随意创建自己的徽标：<img src="http://img.shields.io/badge/yanni4night.com-ONLINE-brightgreen.svg" alt="yanni4night.com">。</p>
-<p><a href="http://yanni4night.github.io/badge.html">http://yanni4night.github.io/badge.html</a> 可快速生成所需徽标。</p>
 
       
     </div>
