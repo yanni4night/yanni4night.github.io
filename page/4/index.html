@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,171 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2018/02/06/2018-02-07-js-inherits/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/06/2018-02-07-js-inherits/" class="post-title-link" itemprop="url">JavaScript 中继承的实现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-06 21:37:24" itemprop="dateCreated datePublished" datetime="2018-02-06T21:37:24+08:00">2018-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/06/2018-02-07-js-inherits/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/06/2018-02-07-js-inherits/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我们都知道 JavaScript 是通过原型链继承的，在不支持 class、extends 语法的环境里，继承又该如何实现呢？</p>
+<p>首先我们来整理实现继承后的效果表征，假设存在两个类（函数）A 和 B，我们要实现 B 继承于 A，那么需要满足：</p>
+<ol>
+<li>new B() instanceof A 为真；</li>
+<li>B.prototype.constructor &#x3D;&#x3D;&#x3D; B 为真；</li>
+<li>如果 A.foo &#x3D; 1，则 B.foo &#x3D; 1 为真，即静态变量可继承；</li>
+<li>在普通方法 foo 中可以调用 super.foo() 调用基类方法；</li>
+<li>在构造方法中可以调用 super() 调用基类构造方法</li>
+</ol>
+<p>在很多年前，jQuery 作者 <em>John Resig</em> 曾写过一个继承的<a target="_blank" rel="noopener" href="https://johnresig.com/blog/simple-javascript-inheritance/">实现</a>，在那个还在 ES3 语法的时代已经非常难得。在今天看来，这种实现方式的语义已经远远落后，同时也不能实现静态变量。</p>
+<hr>
+<p>下面我们来一步一步地去理解 babel 的实现方式。</p>
+<p>首先定义两个类（函数），以及子类的实例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="title function_">B</span>();</span><br></pre></td></tr></table></figure>
+
+<p>想实现 B 继承于 A，那边必然 <em>b instanceof B</em> 为真，根据 instanceof 的意义，一定有：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b.<span class="property">__proto__</span>.<span class="property">__proto__</span>... === A.<span class="property"><span class="keyword">prototype</span></span></span><br></pre></td></tr></table></figure>
+
+<p>我们知道：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b.<span class="property">__proto__</span> === B.<span class="property"><span class="keyword">prototype</span></span></span><br></pre></td></tr></table></figure>
+
+<p>那么我们只需要：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">__proto__</span>... === A.<span class="property"><span class="keyword">prototype</span></span></span><br></pre></td></tr></table></figure>
+
+<p>于是我们覆写 <em>B.prototype</em>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样一定有 <em>A.prototype.isPrototypeOf(B.prototype)</em> 为真。</p>
+<p>现在我们已经实现了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b <span class="keyword">instanceof</span> A === <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>也就是说第一条我们已经实现了，下面看第二条，只需要：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = B;</span><br></pre></td></tr></table></figure>
+
+<p>或者更优雅一些：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: B,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>现在我们要实现静态成员的继承：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">setPrototypeOf</span>(B, A);</span><br></pre></td></tr></table></figure>
+
+<p>目前为止，我们定义的是两个空类，现在我们为他们增加 name 属性：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">A.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: A,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: B,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">setPrototypeOf</span>(B, A);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">A</span>().<span class="property">name</span>); <span class="comment">// =&gt; A</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">B</span>().<span class="property">name</span>); <span class="comment">// =&gt; B</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们要在 B 的 name 中获取父类的 name 属性，那么我们就需要找到 B.prototype 中的 name。</p>
+<p>在 B 环境中，灵活的做法是通过 B.prototype 找到 A.prototype，根据 *B.prototype &#x3D; Object.create(A.prototype)*，我们知道：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A.<span class="property"><span class="keyword">prototype</span></span> === <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(B.<span class="property"><span class="keyword">prototype</span></span>)</span><br></pre></td></tr></table></figure>
+
+<p>于是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">A.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: A,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: B,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> sup = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(B.<span class="property"><span class="keyword">prototype</span></span>);</span><br><span class="line">            <span class="keyword">var</span> desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(sup, <span class="string">&#x27;name&#x27;</span>);</span><br><span class="line">            <span class="keyword">return</span> desc.<span class="property">get</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>) + <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">setPrototypeOf</span>(B, A);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">A</span>().<span class="property">name</span>); <span class="comment">// =&gt; A</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">B</span>().<span class="property">name</span>); <span class="comment">// =&gt; AB</span></span><br></pre></td></tr></table></figure>
+
+<p>这就实现了 super.name 的效果。当然，我们假设 B 的父类是定义了 name 的，如果没有找到 name，那应该沿着原型链继续向上寻找。因此更健壮的写法是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">A.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: A,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: B,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> sup = B.<span class="property"><span class="keyword">prototype</span></span>, desc;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                sup = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(sup);</span><br><span class="line">                <span class="keyword">if</span> (!sup) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(sup, <span class="string">&#x27;name&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">while</span>(!desc);</span><br><span class="line">           </span><br><span class="line">            <span class="keyword">return</span> (desc ? desc.<span class="property">get</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>) : <span class="literal">undefined</span>) + <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">setPrototypeOf</span>(B, A);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">A</span>().<span class="property">name</span>); <span class="comment">// =&gt; A</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">B</span>().<span class="property">name</span>); <span class="comment">// =&gt; AB</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里没有考虑 name 不是 getter 的情形，不过原理类似，不再冗述。</p>
+</blockquote>
+<p>最后我们来实现在构造方法中调用 super()。显然，实质是在 B 函数中找到函数 A，根据 *Object.setPrototypeOf(B, A)*，我们有：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(B).<span class="title function_">call</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们为 A 添加一个 age 构造参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params">age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">B</span>(<span class="params">age</span>) &#123;</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(B).<span class="title function_">call</span>(<span class="variable language_">this</span>, age);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">A.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: A,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">B.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Object</span>.<span class="title function_">create</span>(A.<span class="property"><span class="keyword">prototype</span></span>, &#123;</span><br><span class="line">    <span class="attr">constructor</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: B,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> sup = B.<span class="property"><span class="keyword">prototype</span></span>, desc;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                sup = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(sup);</span><br><span class="line">                <span class="keyword">if</span> (!sup) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(sup, <span class="string">&#x27;name&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">while</span>(!desc);</span><br><span class="line">           </span><br><span class="line">            <span class="keyword">return</span> (desc ? desc.<span class="property">get</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>) : <span class="literal">undefined</span>) + <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">setPrototypeOf</span>(B, A);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title function_">B</span>(<span class="number">18</span>).<span class="property">age</span>); <span class="comment">// =&gt; 18</span></span><br></pre></td></tr></table></figure>
+
+<p>于是，一个基本的继承的手写版本就实现了，当然，babel 还考虑了更多细节，比如构造方法有返回值的情况等等，但基本的继承原理就是这个样子。</p>
+<p>下图很好地反应了诸多对象的关系。值得一提的是， <em>b</em> 也可能成为下一级类的 prototype，你可以清晰地看到通过 __proto__ 搜索原型链的轨迹。</p>
+<p><img src="/images/inherits/inherit.jpg" alt="js-inherit"></p>
+<hr>
+<p>在现代浏览器的不断迭代下，已经有大部分版本都实现了对 class 关键字和继承的原生支持，相信在不久的将来，就无需在这么麻烦地实现继承了。无论如何，JavaScript 继承的原理仍然是不变的，上面这些内容有助于理解原型链是怎么样工作的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1410,114 +1575,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/06/30/2016-06-30-fixed-bottom-bar/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2016/06/28/2016-06-28-gitbook-plugins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/06/28/2016-06-28-gitbook-plugins/" class="post-title-link" itemprop="url">Gitbook 插件的问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-06-28 16:03:03" itemprop="dateCreated datePublished" datetime="2016-06-28T16:03:03+08:00">2016-06-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/gitbook-plugin/" itemprop="url" rel="index"><span itemprop="name">gitbook plugin</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2016/06/28/2016-06-28-gitbook-plugins/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/06/28/2016-06-28-gitbook-plugins/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://www.gitbook.com/">Gitbook</a> 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。</p>
-<p>```[type]<br>[content]<br>```</p>
-<p><em>type</em> 处是这段代码的解析类型，常用的有各种语言语法以及 <em>flowchat</em>、<em>sequence</em> 等扩展类型，这些扩展类型都需要引入运行时解析的js脚本。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/06/28/2016-06-28-gitbook-plugins/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

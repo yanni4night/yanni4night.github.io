@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,338 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2025/11/16/2025-11-16-http-sse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Yanni4night">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/16/2025-11-16-http-sse/" class="post-title-link" itemprop="url">SSE实战入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-16 17:01:00 / 修改时间：19:00:20" itemprop="dateCreated datePublished" datetime="2025-11-16T17:01:00+08:00">2025-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2025/11/16/2025-11-16-http-sse/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2025/11/16/2025-11-16-http-sse/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-什么是Server-Sent-Events-SSE"><a href="#1-什么是Server-Sent-Events-SSE" class="headerlink" title="1. 什么是Server-Sent Events (SSE)"></a>1. 什么是Server-Sent Events (SSE)</h2><p>Server-Sent Events (SSE) 是一种基于HTTP协议的服务器向客户端单向推送数据的实时通信技术。它允许服务器主动、持续地向客户端发送数据，而不需要客户端频繁发起请求，从而实现高效的实时数据传输。</p>
+<p>与传统的HTTP请求-响应模式不同，SSE建立的是一种持久连接，服务器可以在任意时间点向客户端推送新信息。这种技术特别适用于需要服务器主动向客户端发送更新的场景，如实时通知、状态更新、数据监控等。</p>
+<h2 id="2-SSE的重要性与价值"><a href="#2-SSE的重要性与价值" class="headerlink" title="2. SSE的重要性与价值"></a>2. SSE的重要性与价值</h2><p>在Web开发技术演进的历程中，SSE凭借其独特的优势占据了重要地位：</p>
+<h3 id="2-1-技术定位与生态系统"><a href="#2-1-技术定位与生态系统" class="headerlink" title="2.1 技术定位与生态系统"></a>2.1 技术定位与生态系统</h3><p>SSE与WebSocket、Polling一起，构成了Web实时通信的三大主要技术。作为一种基于标准HTTP的技术，SSE与现有Web基础设施完美契合，能够充分利用现有的HTTP生态系统，包括安全机制、代理服务器、缓存策略等。这种兼容性使其在企业级应用和复杂网络环境中具有显著优势。</p>
+<h3 id="2-2-实现优势与技术特性"><a href="#2-2-实现优势与技术特性" class="headerlink" title="2.2 实现优势与技术特性"></a>2.2 实现优势与技术特性</h3><p>相比其他实时通信技术，SSE具有以下核心优势：</p>
+<ol>
+<li><p><strong>实现简单性</strong></p>
+<ul>
+<li>基于标准HTTP，无需特殊的服务器配置或协议处理</li>
+<li>浏览器原生支持，学习曲线平缓</li>
+<li>比WebSocket更易于实现和维护</li>
+</ul>
+</li>
+<li><p><strong>资源效率</strong></p>
+<ul>
+<li>比传统轮询(polling)显著节省网络资源和服务器负载</li>
+<li>比WebSocket更轻量，特别适合单向推送场景</li>
+<li>内置自动重连机制，减少手动错误处理的复杂性</li>
+</ul>
+</li>
+<li><p><strong>客户端兼容性</strong></p>
+<ul>
+<li>所有现代浏览器都原生支持EventSource API</li>
+<li>无需额外客户端库，减少应用体积</li>
+<li>可通过简单的polyfill支持更广泛的浏览器环境</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-SSE的应用场景"><a href="#3-SSE的应用场景" class="headerlink" title="3. SSE的应用场景"></a>3. SSE的应用场景</h2><p>SSE技术在多个领域展现出强大的应用价值：</p>
+<h3 id="3-1-AI与智能交互领域"><a href="#3-1-AI与智能交互领域" class="headerlink" title="3.1 AI与智能交互领域"></a>3.1 AI与智能交互领域</h3><p>随着AI技术的快速发展，SSE在AI应用中的重要性日益凸显：</p>
+<ul>
+<li><strong>流式响应生成</strong>：AI模型（如GPT、Claude、Gemini等）生成文本时的逐字输出体验，提供更自然的人机交互</li>
+<li><strong>实时状态更新</strong>：AI Agent思考过程、工具调用状态的实时反馈，增强用户对AI行为的理解</li>
+<li><strong>多模态内容逐步展示</strong>：文字、代码、图表等内容的顺序呈现，提升复杂信息的接收体验</li>
+<li><strong>长期对话上下文维护</strong>：保持长连接状态下的对话连贯性，优化连续交互场景</li>
+<li><strong>模型推理进度可视化</strong>：展示AI思考、检索、生成各阶段的实时状态，提高透明度</li>
+</ul>
+<h3 id="3-2-通用Web应用场景"><a href="#3-2-通用Web应用场景" class="headerlink" title="3.2 通用Web应用场景"></a>3.2 通用Web应用场景</h3><p>除AI领域外，SSE在各种Web应用中也有广泛应用：</p>
+<ul>
+<li><strong>实时通知与警报系统</strong>：如新消息提醒、系统警告、订单状态更新</li>
+<li><strong>数据监控与仪表盘</strong>：服务器性能指标、网络状态、业务指标的实时更新</li>
+<li><strong>多人协作应用</strong>：文档编辑状态、在线用户列表、操作冲突提示的同步</li>
+<li><strong>实时数据可视化</strong>：股票行情、传感器数据、系统监控图表的动态更新</li>
+<li><strong>游戏状态同步</strong>：回合制游戏的状态更新、排行榜实时变化</li>
+</ul>
+<p>接下来，我们将通过理论讲解和实例代码，系统地介绍SSE技术的各个方面，从基础概念到实际应用，进而理解和掌握这一重要的实时通信技术。</p>
+<h2 id="4-项目结构设计"><a href="#4-项目结构设计" class="headerlink" title="4. 项目结构设计"></a>4. 项目结构设计</h2><p>为了更好地理解和实践SSE技术，我们设计了一个简洁明了的项目结构。这个结构虽然简单，但涵盖了实现SSE通信所需的核心组件，包括服务器端和客户端两部分。通过这种结构，我们可以清晰地展示SSE的工作原理和实现方式。</p>
+<p>我们将创建以下文件结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/sse-project</span><br><span class="line">  /public         # 存放客户端静态资源</span><br><span class="line">    index.html    # 客户端SSE实现页面，包含EventSource和Fetch API示例</span><br><span class="line">  index.js        # Node.js服务器端，负责创建HTTP服务器和处理SSE连接</span><br></pre></td></tr></table></figure>
+
+<p>这个项目结构体现了典型的前后端分离设计：服务器端使用Node.js处理SSE连接和消息推送，客户端通过浏览器API接收实时数据流。在接下来的章节中，我们将详细介绍浏览器端和服务器端的具体实现代码。</p>
+<h2 id="5-浏览器端实现"><a href="#5-浏览器端实现" class="headerlink" title="5. 浏览器端实现"></a>5. 浏览器端实现</h2><h3 id="5-1-SSE客户端实现的两种主要方式"><a href="#5-1-SSE客户端实现的两种主要方式" class="headerlink" title="5.1 SSE客户端实现的两种主要方式"></a>5.1 SSE客户端实现的两种主要方式</h3><p>浏览器端实现SSE主要有两种方式：</p>
+<ol>
+<li><strong>EventSource API</strong> - 浏览器原生的SSE专用接口</li>
+<li><strong>Fetch API + ReadableStream</strong> - 使用Fetch API和流处理实现SSE</li>
+</ol>
+<h3 id="5-2-EventSource-API-基础"><a href="#5-2-EventSource-API-基础" class="headerlink" title="5.2 EventSource API 基础"></a>5.2 EventSource API 基础</h3><p>EventSource是浏览器提供的专门用于SSE的原生接口，使用非常简单直接。</p>
+<h4 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建EventSource实例，连接到服务器的SSE端点</span></span><br><span class="line"><span class="keyword">const</span> eventSource = <span class="keyword">new</span> <span class="title class_">EventSource</span>(<span class="string">&#x27;/events&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听message事件，这是默认的事件类型</span></span><br><span class="line"> eventSource.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> data = event.<span class="property">data</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到服务器数据:&#x27;</span>, data);</span><br><span class="line">  <span class="comment">// 这里可以处理收到的数据，比如更新UI</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听open事件，连接建立时触发</span></span><br><span class="line"> eventSource.<span class="property">onopen</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接已建立&#x27;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听error事件，连接出错时触发</span></span><br><span class="line"> eventSource.<span class="property">onerror</span> = <span class="keyword">function</span>(<span class="params">error</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接发生错误:&#x27;</span>, error);</span><br><span class="line">  <span class="comment">// 可以在这里处理重连逻辑</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="自定义事件类型"><a href="#自定义事件类型" class="headerlink" title="自定义事件类型"></a>自定义事件类型</h4><p>除了默认的<code>message</code>事件，服务器也可以发送自定义类型的事件。客户端可以通过<code>addEventListener</code>方法监听这些自定义事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听自定义事件&quot;update&quot;</span></span><br><span class="line"> eventSource.<span class="title function_">addEventListener</span>(<span class="string">&#x27;update&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> data = event.<span class="property">data</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到更新事件:&#x27;</span>, data);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听自定义事件&quot;notification&quot;</span></span><br><span class="line"> eventSource.<span class="title function_">addEventListener</span>(<span class="string">&#x27;notification&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(event.<span class="property">data</span>);  <span class="comment">// 如果服务器发送的是JSON格式数据</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到通知:&#x27;</span>, data.<span class="property">title</span>, data.<span class="property">message</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h4><p>当不再需要接收服务器推送的数据时，应该关闭EventSource连接以释放资源：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关闭SSE连接</span></span><br><span class="line"> eventSource.<span class="title function_">close</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接已关闭&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-使用Fetch-API实现SSE"><a href="#5-3-使用Fetch-API实现SSE" class="headerlink" title="5.3 使用Fetch API实现SSE"></a>5.3 使用Fetch API实现SSE</h3><p>除了EventSource，我们还可以使用Fetch API结合ReadableStream来实现SSE功能。这种方式提供了更多的灵活性，特别是在需要发送POST请求或自定义请求头的场景。</p>
+<h4 id="基本实现-1"><a href="#基本实现-1" class="headerlink" title="基本实现"></a>基本实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectSSEWithFetch</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 使用Fetch API发起请求</span></span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/events&#x27;</span>, &#123;</span><br><span class="line">      <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>, <span class="comment">// 也可以是POST</span></span><br><span class="line">      <span class="attr">headers</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;Accept&#x27;</span>: <span class="string">&#x27;text/event-stream&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">&#x27;Bearer token123&#x27;</span> <span class="comment">// 可以添加自定义认证头</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">credentials</span>: <span class="string">&#x27;include&#x27;</span> <span class="comment">// 包含cookies</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查响应是否成功</span></span><br><span class="line">    <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`HTTP error! status: <span class="subst">$&#123;response.status&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取响应体的可读流</span></span><br><span class="line">    <span class="keyword">const</span> reader = response.<span class="property">body</span>.<span class="title function_">getReader</span>();</span><br><span class="line">    <span class="keyword">const</span> decoder = <span class="keyword">new</span> <span class="title class_">TextDecoder</span>();</span><br><span class="line">    <span class="keyword">let</span> buffer = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 逐块处理流数据</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; done, value &#125; = <span class="keyword">await</span> reader.<span class="title function_">read</span>();</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (done) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;SSE连接已关闭&#x27;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 解码新的数据块并添加到缓冲区</span></span><br><span class="line">      buffer += decoder.<span class="title function_">decode</span>(value, &#123; <span class="attr">stream</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 处理缓冲区中的完整事件</span></span><br><span class="line">      <span class="title function_">processSSEBuffer</span>(buffer);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;SSE连接错误:&#x27;</span>, error);</span><br><span class="line">    <span class="comment">// 实现重连逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理SSE格式的数据缓冲区</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">processSSEBuffer</span>(<span class="params">buffer</span>) &#123;</span><br><span class="line">  <span class="comment">// 分割事件（每个事件以两个连续的换行符结束）</span></span><br><span class="line">  <span class="keyword">const</span> eventSeparator = <span class="string">&#x27;\n\n&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> events = buffer.<span class="title function_">split</span>(eventSeparator);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 处理所有完整的事件</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; events.<span class="property">length</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> eventData = events[i].<span class="title function_">trim</span>();</span><br><span class="line">    <span class="keyword">if</span> (!eventData) <span class="keyword">continue</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 解析事件数据</span></span><br><span class="line">    <span class="title function_">parseAndDispatchEvent</span>(eventData);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 保留最后一个不完整的事件块</span></span><br><span class="line">  <span class="keyword">if</span> (events.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    buffer = events[events.<span class="property">length</span> - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解析SSE事件并分发</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">parseAndDispatchEvent</span>(<span class="params">eventData</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> lines = eventData.<span class="title function_">split</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">  <span class="keyword">let</span> eventType = <span class="string">&#x27;message&#x27;</span>;</span><br><span class="line">  <span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 解析事件的每一行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> line <span class="keyword">of</span> lines) &#123;</span><br><span class="line">    <span class="keyword">if</span> (line.<span class="title function_">startsWith</span>(<span class="string">&#x27;event:&#x27;</span>)) &#123;</span><br><span class="line">      eventType = line.<span class="title function_">substring</span>(<span class="number">6</span>).<span class="title function_">trim</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (line.<span class="title function_">startsWith</span>(<span class="string">&#x27;data:&#x27;</span>)) &#123;</span><br><span class="line">      data += line.<span class="title function_">substring</span>(<span class="number">5</span>).<span class="title function_">trim</span>() + <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 移除最后一个换行符</span></span><br><span class="line">  data = data.<span class="title function_">trim</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 分发事件</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`收到<span class="subst">$&#123;eventType&#125;</span>事件:`</span>, data);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 这里可以根据事件类型进行不同的处理</span></span><br><span class="line">  <span class="comment">// 或者触发自定义事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-EventSource与Fetch-API实现SSE的比较"><a href="#5-4-EventSource与Fetch-API实现SSE的比较" class="headerlink" title="5.4 EventSource与Fetch API实现SSE的比较"></a>5.4 EventSource与Fetch API实现SSE的比较</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>EventSource</th>
+<th>Fetch API + ReadableStream</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>请求方法</strong></td>
+<td>仅支持GET请求</td>
+<td>支持GET、POST等所有HTTP方法</td>
+</tr>
+<tr>
+<td><strong>请求头</strong></td>
+<td>有限的自定义能力</td>
+<td>完全自定义请求头</td>
+</tr>
+<tr>
+<td><strong>自动重连</strong></td>
+<td>内置自动重连机制</td>
+<td>需要手动实现重连逻辑</td>
+</tr>
+<tr>
+<td><strong>事件解析</strong></td>
+<td>自动解析SSE格式</td>
+<td>需要手动解析SSE格式</td>
+</tr>
+<tr>
+<td><strong>浏览器支持</strong></td>
+<td>所有现代浏览器，IE不支持</td>
+<td>现代浏览器，IE不支持</td>
+</tr>
+<tr>
+<td><strong>代码复杂度</strong></td>
+<td>低，API简单</td>
+<td>较高，需要手动处理流和解析</td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>较低，功能固定</td>
+<td>高，可以完全控制整个过程</td>
+</tr>
+<tr>
+<td><strong>认证支持</strong></td>
+<td>基础认证，Cookie</td>
+<td>支持所有认证方式，包括Bearer Token</td>
+</tr>
+</tbody></table>
+<h4 id="何时选择EventSource"><a href="#何时选择EventSource" class="headerlink" title="何时选择EventSource"></a>何时选择EventSource</h4><ul>
+<li>简单的SSE实现需求</li>
+<li>只需要GET请求</li>
+<li>希望利用自动重连功能</li>
+<li>代码简洁性优先</li>
+<li>低复杂度的应用</li>
+</ul>
+<h4 id="何时选择Fetch-API"><a href="#何时选择Fetch-API" class="headerlink" title="何时选择Fetch API"></a>何时选择Fetch API</h4><ul>
+<li>需要使用POST或其他HTTP方法</li>
+<li>需要自定义复杂的请求头或认证方式</li>
+<li>需要更精细地控制连接生命周期</li>
+<li>需要与现有Fetch API代码集成</li>
+<li>复杂的企业级应用</li>
+</ul>
+<h2 id="6-Node-js服务器端实现"><a href="#6-Node-js服务器端实现" class="headerlink" title="6. Node.js服务器端实现"></a>6. Node.js服务器端实现</h2><h3 id="6-1-服务器基础配置"><a href="#6-1-服务器基础配置" class="headerlink" title="6.1 服务器基础配置"></a>6.1 服务器基础配置</h3><p>使用Node.js原生的<code>http</code>模块，我们可以轻松创建一个支持SSE的服务器。关键是设置正确的响应头并保持连接打开：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建HTTP服务器</span></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (req.<span class="property">url</span> === <span class="string">&#x27;/events&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 处理SSE连接请求</span></span><br><span class="line">    <span class="title function_">handleSSE</span>(req, res);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (req.<span class="property">url</span> === <span class="string">&#x27;/&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 提供主HTML页面</span></span><br><span class="line">    <span class="title function_">serveFile</span>(res, <span class="string">&#x27;/public/index.html&#x27;</span>, <span class="string">&#x27;text/html&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 提供静态文件</span></span><br><span class="line">    <span class="title function_">serveFile</span>(res, req.<span class="property">url</span>, <span class="title function_">getContentType</span>(req.<span class="property">url</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动服务器</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = <span class="number">3000</span>;</span><br><span class="line">server.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`服务器运行在 http://localhost:<span class="subst">$&#123;PORT&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 辅助函数：提供静态文件</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">serveFile</span>(<span class="params">res, filePath, contentType</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> fullPath = path.<span class="title function_">join</span>(__dirname, filePath);</span><br><span class="line">  </span><br><span class="line">  fs.<span class="title function_">readFile</span>(fullPath, <span class="function">(<span class="params">err, data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      res.<span class="title function_">writeHead</span>(<span class="number">404</span>);</span><br><span class="line">      res.<span class="title function_">end</span>(<span class="string">&#x27;文件未找到&#x27;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    res.<span class="title function_">writeHead</span>(<span class="number">200</span>, &#123; <span class="string">&#x27;Content-Type&#x27;</span>: contentType &#125;);</span><br><span class="line">    res.<span class="title function_">end</span>(data);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 辅助函数：获取内容类型</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getContentType</span>(<span class="params">filePath</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> ext = path.<span class="title function_">extname</span>(filePath);</span><br><span class="line">  <span class="keyword">switch</span> (ext) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;.html&#x27;</span>: <span class="keyword">return</span> <span class="string">&#x27;text/html&#x27;</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;.js&#x27;</span>: <span class="keyword">return</span> <span class="string">&#x27;text/javascript&#x27;</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;.css&#x27;</span>: <span class="keyword">return</span> <span class="string">&#x27;text/css&#x27;</span>;</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">return</span> <span class="string">&#x27;text/plain&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-SSE处理函数"><a href="#6-2-SSE处理函数" class="headerlink" title="6.2 SSE处理函数"></a>6.2 SSE处理函数</h3><p>下面是处理SSE连接的核心函数，它设置必要的HTTP头并保持连接打开以发送事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理SSE连接的函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">handleSSE</span>(<span class="params">req, res</span>) &#123;</span><br><span class="line">  <span class="comment">// 设置SSE相关的HTTP头</span></span><br><span class="line">  res.<span class="title function_">writeHead</span>(<span class="number">200</span>, &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;text/event-stream&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cache-Control&#x27;</span>: <span class="string">&#x27;no-cache&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Connection&#x27;</span>: <span class="string">&#x27;keep-alive&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="string">&#x27;*&#x27;</span> <span class="comment">// 允许跨域，生产环境应该限制具体域名</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 发送欢迎消息</span></span><br><span class="line">  <span class="title function_">sendSSE</span>(res, <span class="string">&#x27;message&#x27;</span>, <span class="string">&#x27;连接已建立&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 定期发送更新消息</span></span><br><span class="line">  <span class="keyword">const</span> intervalId = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> data = &#123;</span><br><span class="line">      <span class="attr">timestamp</span>: <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toLocaleTimeString</span>(),</span><br><span class="line">      <span class="attr">random</span>: <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">100</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="title function_">sendSSE</span>(res, <span class="string">&#x27;update&#x27;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data));</span><br><span class="line">  &#125;, <span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 发送自定义事件示例</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">sendSSE</span>(res, <span class="string">&#x27;notification&#x27;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;重要通知&#x27;</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&#x27;这是一个通过SSE发送的通知！&#x27;</span>,</span><br><span class="line">      <span class="attr">time</span>: <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toLocaleTimeString</span>()</span><br><span class="line">    &#125;));</span><br><span class="line">  &#125;, <span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当连接关闭时清理资源</span></span><br><span class="line">  req.<span class="title function_">on</span>(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearInterval</span>(intervalId);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;SSE连接已关闭&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送SSE消息的辅助函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sendSSE</span>(<span class="params">res, eventType, data</span>) &#123;</span><br><span class="line">  res.<span class="title function_">write</span>(<span class="string">`event: <span class="subst">$&#123;eventType&#125;</span>\n`</span>);</span><br><span class="line">  res.<span class="title function_">write</span>(<span class="string">`data: <span class="subst">$&#123;data&#125;</span>\n\n`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-SSE消息格式说明"><a href="#6-3-SSE消息格式说明" class="headerlink" title="6.3 SSE消息格式说明"></a>6.3 SSE消息格式说明</h3><p>SSE消息必须遵循特定的格式：</p>
+<ol>
+<li><code>event: eventName</code> - 可选，指定事件类型</li>
+<li><code>data: messageData</code> - 必须，包含消息内容</li>
+<li>两个连续的换行符 (<code>\n\n</code>) 表示消息结束</li>
+</ol>
+<p>如果消息内容多行，可以每行都以<code>data:</code>开头，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data: 第一行数据</span><br><span class="line">data: 第二行数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Node.js服务器使用<code>res.write()</code>而不是<code>res.end()</code>来保持连接打开，这样可以持续发送数据。</p>
+<h2 id="7-SSE前端实现方案与大模型应用"><a href="#7-SSE前端实现方案与大模型应用" class="headerlink" title="7. SSE前端实现方案与大模型应用"></a>7. SSE前端实现方案与大模型应用</h2><p>在实际生产环境中，使用原生EventSource API虽然直接，但通过封装框架可以大大简化开发并提高可靠性。以下是SSE在生产环境中的主要应用方式和常用封装框架：</p>
+<h3 id="7-1-前端框架SSE封装"><a href="#7-1-前端框架SSE封装" class="headerlink" title="7.1 前端框架SSE封装"></a>7.1 前端框架SSE封装</h3><h4 id="React生态系统"><a href="#React生态系统" class="headerlink" title="React生态系统"></a>React生态系统</h4><ol>
+<li><p><strong>useEventSource Hook</strong></p>
+<ul>
+<li>社区中有多个轻量级Hook库，如<code>react-use-event-source</code>和<code>use-sse</code></li>
+<li>提供自动连接管理、错误处理和组件生命周期集成</li>
+<li>简单示例：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useEventSource &#125; <span class="keyword">from</span> <span class="string">&#x27;react-use-event-source&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">MyComponent</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; data, error, isConnected &#125; = <span class="title function_">useEventSource</span>(<span class="string">&#x27;/api/stream&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">onOpen</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接已建立&#x27;</span>),</span><br><span class="line">    <span class="attr">onError</span>: <span class="function">(<span class="params">e</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接错误&#x27;</span>, e)</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;data || &#x27;等待数据...&#x27;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>React Query SSE支持</strong></p>
+<ul>
+<li>React Query通过扩展可以支持SSE数据的实时更新</li>
+<li>适合需要将SSE数据与应用状态管理集成的场景</li>
+</ul>
+</li>
+</ol>
+<h4 id="Vue生态系统"><a href="#Vue生态系统" class="headerlink" title="Vue生态系统"></a>Vue生态系统</h4><ol>
+<li><p><strong>Vue SSE插件</strong></p>
+<ul>
+<li><code>vue-sse</code>插件提供了Vue组件与SSE的无缝集成</li>
+<li>支持Vue 2和Vue 3，具有响应式数据绑定</li>
+</ul>
+</li>
+<li><p><strong>Pinia&#x2F;Vuex集成</strong></p>
+<ul>
+<li>可以通过插件方式将SSE数据流直接注入状态管理</li>
+<li>实现全局状态的实时更新</li>
+</ul>
+</li>
+</ol>
+<h3 id="7-2-大模型API-SSE封装"><a href="#7-2-大模型API-SSE封装" class="headerlink" title="7.2 大模型API SSE封装"></a>7.2 大模型API SSE封装</h3><p>各大AI模型提供的官方SDK都包含了对SSE流式响应的优化封装：</p>
+<ol>
+<li><p><strong>OpenAI SDK</strong></p>
+<ul>
+<li>提供了对SSE流的Promise和AsyncIterator支持</li>
+<li>自动处理分块响应和重连逻辑</li>
+</ul>
+</li>
+<li><p><strong>Anthropic SDK</strong></p>
+<ul>
+<li>针对Claude模型优化的流式处理</li>
+<li>提供更丰富的事件类型和状态管理</li>
+</ul>
+</li>
+<li><p><strong>Google Generative AI SDK</strong></p>
+<ul>
+<li>为Gemini模型提供流式响应支持</li>
+<li>包含自动重试和错误恢复机制</li>
+</ul>
+</li>
+</ol>
+<h3 id="7-3-通用SSE增强库"><a href="#7-3-通用SSE增强库" class="headerlink" title="7.3 通用SSE增强库"></a>7.3 通用SSE增强库</h3><ol>
+<li><p><strong>EventSource-Polyfill</strong></p>
+<ul>
+<li>为不支持EventSource的旧浏览器提供兼容层</li>
+<li>支持现代浏览器中的额外功能扩展</li>
+</ul>
+</li>
+<li><p><strong>sse.js</strong></p>
+<ul>
+<li>增强型EventSource实现，支持自定义头部和跨域配置</li>
+<li>提供更灵活的重连控制和事件处理</li>
+</ul>
+</li>
+<li><p><strong>fetch-event-source</strong></p>
+<ul>
+<li>基于Fetch API的现代化SSE实现</li>
+<li>支持POST请求和自定义认证，适合需要发送复杂请求的场景</li>
+</ul>
+</li>
+</ol>
+<h3 id="7-4-生产环境最佳实践"><a href="#7-4-生产环境最佳实践" class="headerlink" title="7.4 生产环境最佳实践"></a>7.4 生产环境最佳实践</h3><ol>
+<li><p><strong>连接管理</strong></p>
+<ul>
+<li>实现指数退避重连策略</li>
+<li>监控连接健康状态，主动检测断开</li>
+</ul>
+</li>
+<li><p><strong>性能优化</strong></p>
+<ul>
+<li>批量处理DOM更新以避免频繁渲染</li>
+<li>使用流式解析大型JSON响应</li>
+</ul>
+</li>
+<li><p><strong>安全性</strong></p>
+<ul>
+<li>使用适当的认证和授权机制保护SSE端点</li>
+<li>实现请求限流和连接数控制</li>
+</ul>
+</li>
+</ol>
+<p>在选择SSE实现方案时，应根据项目的具体需求、技术栈和团队熟悉程度来决定。对于简单应用，原生EventSource可能已足够；而对于复杂的生产环境应用，使用成熟的封装框架可以显著提高开发效率和应用稳定性。</p>
+<p>选择适合的框架或服务取决于具体项目需求、技术栈和团队熟悉程度。对于简单的应用，原生实现可能已经足够；而对于复杂的企业级应用，使用成熟的框架可以提高开发效率和代码可维护性。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1842,181 +2174,6 @@
 <p>这个故事包含两大因子：第一是密室，远藤的房间在一般人眼中俨然就是一个密室，只不过大多数所谓密室都是假的，乱步在《幻影城主》——《诡计类别集成》之《密室诡计》中统计了非常多的密室设计技巧，最让我感到咂舌的是，竟然有作家想出先杀人，再在尸体周围一夜建房的疯狂故事。</p>
 <p>第二是无动机犯罪，如果没有留下明显属于凶手的线索，那么追踪凶手是异常困难的。</p>
 <p>明智小五郎在本故事中不仅仅彰显了他观察力敏锐的特点，而且从乡田三郎在抽烟习惯的改变上还能和远藤床上的药瓶、香烟盒联系起来，多少也有一些心理学的意味。</p>
-<p><font size=-1 color=lightgrey>（文中大部分图片采用AI生成）</font></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yanni4night.github.io/2024/05/23/2024-05-23-psychological-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Yanni4night">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 人过不留名 雁过不留声">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/05/23/2024-05-23-psychological-test/" class="post-title-link" itemprop="url">潜意识的迷宫：破解人性的秘密——读江户川乱步《心理测试》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-05-23 09:58:00" itemprop="dateCreated datePublished" datetime="2024-05-23T09:58:00+08:00">2024-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-13 02:12:59" itemprop="dateModified" datetime="2025-07-13T02:12:59+08:00">2025-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%BB%E4%B9%A6/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2024/05/23/2024-05-23-psychological-test/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2024/05/23/2024-05-23-psychological-test/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p><font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font></p>
-</blockquote>
-<br />
-
-<p><font size=-1 color=lightgrey>(全文约3700字，阅读大概需要8分钟)</font></p>
-<p>这本《阴兽》的下一篇是《心理测试》，也是乱步在心理犯罪方面的代表作。在之前的《D坂杀人事件》中，首次出场的明智小五郎就展现出了他对犯罪心理刻画的敏感性，这一次，他将继续用他的才华来揪出背后的杀人凶手。</p>
-<img src="/images/psychological-test/book.png" />
-
-<p>和很多侦探推理小说不同，这部《心理测试》乱步没有在凶手是谁上设置悬疑，而是着重刻画了凶手在面对如何逃避刑罚上的缜密心思，为读者展现了一次相对比较专业的心理刑侦。</p>
-<p>虽然如此，但这次案件的最后并非完全以心理测试的结果作为证据，这也说明了心理测试只能作为一种辅助手段。而真正起作用的，是明智小五郎设下的一个陷阱，是一次十分精彩的反转。</p>
-<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a><center>动机</center></h2><p>蕗屋清一郎（以下称“蕗屋”）是一个十分穷困的学生，连交学费都成了困难。他有一位同学叫做斋藤勇（以下称“斋藤”）。</p>
-<img src="/images/psychological-test/1.jpg" />
-
-<p>斋藤的房东是一位年近60的官员遗孀。她是个守财奴，靠着出租房屋和放贷积累了一笔财富。除了放到银行的钱以外，她还把一笔数额很大的现金存放在家中。</p>
-<p>这引起了蕗屋的注意，他认为，如此财富对一个行将就木的老妇人毫无用处，不如留给自己这样一位前途无量的青年才俊。</p>
-<p>于是，他的欲望变成了他的企图，目标很明确，就是要拿到老妇人的一笔钱，缓解学费紧张的压力，同时还要逃避刑罚。</p>
-<p>老妇人日常很少出门，家里除了斋藤以外，还有一位女佣。蕗屋听闻老妇人把钱藏在了客厅的盆栽里，他必须想办法悄无声息的盗走那笔钱。</p>
-<p>蕗屋思来想去，发现没有任何时机和办法，除非——杀死老妇人。</p>
-<p>为了一笔不大不小的钱，而杀死一个人值得吗？蕗屋不觉得有什么问题，况且解决学费问题才是当务之急，只要不被发现，再大的风险都可以冒。</p>
-<p>于是，他就开始实施计划了。这个时候距离斋藤告诉他现金藏在盆栽里已经过去半年了，蕗屋必须先确认那笔钱是否还在原位。</p>
-<p>他找到一个机会，即女佣和斋藤都不在家的时候，前去拜访老妇人，与之交谈。如何套出老妇人的话呢？当然不可能直接问人家盆栽里面是否有钱。</p>
-<img src="/images/psychological-test/2.jpg" />
-
-<p>这里蕗屋运用了一点心理学技巧，即谈到钱的话题并提到“藏”字时，观察老妇人的反应，果然她不禁眼神瞟向盆栽，因此蕗屋确信无疑钱还在原来的位置。</p>
-<h2 id="作案"><a href="#作案" class="headerlink" title="作案"></a><center>作案</center></h2><p>蕗屋笃信犯罪应该在不被发现的前提下尽可能显得自然，因此这一天他既没有乔装打扮也没有选在夜晚，而是白天大摇大摆得径直向老妇人家走去，只不过他已经提前打探好，斋藤和女佣都不在家，而且路上也没有遇到熟人。</p>
-<p>蕗屋以私下谈论斋藤的事为由，进入了老妇人的客厅，因为女佣不在家，老妇人便起身去泡茶。正当其俯下身的时候，蕗屋突然从身后抱住她，并用双手将其扼毙。</p>
-<p>这里有个插曲，就是当老妇人挣扎的时候，无意间碰到了旁边的一幅古老的金色折叠屏风，并在上面留下了一道刮痕。这是一处埋伏，将是后面破案的关键。</p>
-<img src="/images/psychological-test/3.jpg" />
-
-<p>蕗屋杀死老妇人后，从盆栽中找到了一大摞用油纸包裹的纸币，不过他只拿走了一半，而将剩下的一半放回了原处。他这样做并非因为他不贪财，而是为了掩人耳目。因为其他人也知道老妇人在这里藏了钱，但不知道数额多少，蕗屋只拿走一部分就不至于留下线索。从这里能看出蕗屋确实是一个很聪明的青年。</p>
-<p>为了老妇人不至于苏醒过来，蕗屋又用了一把从喧闹嘈杂的庙会上买来的小刀，插入了老妇人的心脏，并转动了一圈。</p>
-<p>接下来蕗屋小心翼翼走出了老妇人的家，确保没人看见他，并处理了凶器。然后他做了一件让人意外的事——走进警察局，声称捡到了一笔钱，上交了上去。</p>
-<p>我想很多读者看到这里一定很懵。</p>
-<p>虽然冒险，但是蕗屋有他自己的考虑。如果他这样的穷学生忽然有了一大笔钱，反而容易暴露。我们都听过“巨额财产来源不明”的说法，解决的办法就是洗钱。日本法律规定，捡到的东西如果一年后仍然无人认领，就会归捡到的人所有。老妇人已经身死，那笔钱至少在形式上也还在盆栽中，因此必然无人认领，一年后蕗屋就可以正当合法地拥有那笔钱。</p>
-<img src="/images/psychological-test/4.jpg" />
-
-<p>按理来说，蕗屋应该去远一点的警察局，不过毕竟他就住在附近，为了更自然，他就选择了最近的警察局。</p>
-<blockquote>
-<p>如果我是蕗屋，肯定没有勇气利用警察来洗钱。毕竟警察通过社会关系调查一定会知道蕗屋和老妇人的关系。</p>
-</blockquote>
-<p>第二天，蕗屋从报纸上看到了老妇人遇害的相关报道。不过令人意外的是，他的同学斋藤竟然被列为嫌疑人。</p>
-<p>然后蕗屋做了一件我认为比较愚蠢的事，他主动去警察局看望斋藤，被拒后询问到了斋藤被怀疑的原因，原来是因为持有来源不明的大额现金。看来，蕗屋主动去洗钱而不是藏匿还是明智的。</p>
-<p>那么斋藤为什么会有那一大笔钱呢？蕗屋猜想，一定是斋藤回家发现房东被害后，想起来藏在盆栽中的钱，他抵不住诱惑，占为己有，反正即便警察发现有现金失窃，也一定认为是凶手盗走了。</p>
-<p>斋藤去报案的时候，身上就带着那一笔现金，没想到警察会搜身。</p>
-<p>斋藤被抓直接导致蕗屋和老妇人被杀案产生了联系，特别是他还主动上交过一笔钱。</p>
-<p>果不其然，负责本案的笠森法官耗时数周都没有进展后，这才忽而得知老妇人被杀当天，蕗屋曾经捡到过一笔钱。这是巧合吗？笠森不这么想，他开始怀疑蕗屋是否就是杀害老妇人的凶手了。</p>
-<p>故事讲到这里，我们已经可以认为蕗屋的计划正处于破产的边缘了。虽然他精于算计的头脑很聪明，善于做出那种反其道而掩人耳目的行为，但是也有失算之处，那就是他没有想到斋藤会偷走剩下的钱并被警察发现。</p>
-<p>好在老妇人的钱并没有记录号码，也不是连号，否则故事到这里就结束了。</p>
-<h2 id="心理测试"><a href="#心理测试" class="headerlink" title="心理测试"></a><center>心理测试</center></h2><p>显然斋藤的嫌疑最大，但是笠森法官没有确切的证据能证明他就是凶手，他也怀疑蕗屋。那么怎么才能确定谁是凶手呢？笠森决定使用心理测试。</p>
-<p>蕗屋很快就接到了传唤，他知道笠森法官是著名的业余心理学家，因此他以身体不适为由，推迟了一个星期。</p>
-<p>这一个星期，蕗屋都在思考如何骗过这次心理测试。他并非心理学专业，但并不妨碍他那颗聪明的脑袋找到解决方案。</p>
-<p>乱步借蕗屋之口，道出了他对心理测试的理解，这里面涉及一些基本的生理学和心理学知识。</p>
-<p>心理测试的方法有两种，一种是利用机器来记录受试者听到一些问题或者词汇时的细微生理变化，一种是记录受试者在听到一些词汇时立即作答的联想词，这些词汇里面混杂一些陷阱。显然，这和单纯的测谎还不完全一样。</p>
-<p>蕗屋的应对方案就是提前训练自己在听到词汇时的反应，这样，即便有些词汇和案件有关，能让他露出马脚，在经过多次训练后，反应也会变得轻微而无法被察觉。不得不说，蕗屋的思路，或者说是乱步的思路还真是取巧。</p>
-<p>不过我们前面提到过，蕗屋的一个性格特点，就是追求自然来掩盖秘密，因此即便面对“盆栽”这个词汇，他认为回答“钱”反而是最安全的。</p>
-<p>时间来到心理测试结束后，正当笠森法官分析蕗屋和斋藤的结果时，明智小五郎登场了。乱步在文中介绍到，《心理测试》的故事时间在《D坂杀人事件》数年后，明智小五郎已经不再是青涩书生，而是颇被认可的侦探，与笠森比较熟络。</p>
-<p>测试结果是这样的，面对一些和案件有关的词汇，斋藤的回答耗时数秒，联想的词汇也和原词关系不大，看上去是花时间刻意避免与案件发生关联。而蕗屋的回答更自然，与案件相关，且耗时都在1秒之内。</p>
-<img src="/images/psychological-test/5.jpg" />
-
-<p>笠森法官认为从数据上看凶手应该就是斋藤，可是仍然犹豫不决。</p>
-<p>明智小五郎持不同意见，他认为心理测试仍然有可能引起冤假错案，斋藤的测试结果看上去疑点重重，但是却也可以理解为这是一个被冤枉之人的正常反应。</p>
-<p>明智认为凶手是蕗屋，但还需进一步确认，因此他让笠森找了个理由，把蕗屋约了出来。由于约他的时候就告诉他斋藤已经被定罪，因此蕗屋并没有任何防备。</p>
-<h2 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a><center>陷阱</center></h2><p>就这样，明智、笠森与蕗屋开始了一场谈话，只不过明智伪装成老妇人遗产的律师参与的。谈话的大部分内容并不重要，正当蕗屋要告辞时，明智忽然提到了一个物件，就是老妇人家里的那个古老的金色折叠屏风，上面有一道划痕，问蕗屋知不知道。</p>
-<p>再三确认下，蕗屋回答道他对这个屏风有印象，因为他在凶杀案<u>前两天</u>去过老妇人家里，但是并没有见过上面有划痕。</p>
-<p>故事到这里就基本结束了，明智直接向蕗屋摊牌。</p>
-<p>首先看明智为什么会怀疑蕗屋。第一是蕗屋在心里测试的结果上，对“画作”一词的反应是“屏风”，但是一般来说出租屋里面是没有屏风的，蕗屋的反应很奇怪。</p>
-<p>第二是蕗屋对那些跟案件有关词汇的反应时间，太快了，甚至超过了一些更常见的词汇。因此明智认为这是提前练习的结果。蕗屋本想让回答更自然一些，以练习来减小反应时间，殊不知反应太快也是不自然的，他没有想到这一点。</p>
-<img src="/images/psychological-test/6.jpg" />
-
-<p>以上都只是怀疑，真正让蕗屋露出马脚的是，他说过案发当天他没有去过老妇人家，而是前两天去的，并且看见过那个金色屏风。</p>
-<p>但是事实是，<strong>那个金色屏风是案发前一天才作为抵押物搬过来的</strong>，如按照蕗屋所说他就不应该见过这个屏风。</p>
-<p>蕗屋被明智普普通通的话给诈了！虽然无论是案发前还是案发后，蕗屋都做足了功课，但百密终有一疏。他露出的细微漏洞被明智小五郎抓住了。</p>
-<p>蕗屋没有再狡辩和抵抗，乖乖认了罪。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><center>总结</center></h2><p>诚然，这种细微的心理线索能被发现是不真实的，当然明智小五郎这个角色也是不真实的，现代的读者倒是不必吹毛求疵。我们要看到这部短篇的主题，即心理学犯罪，这是推理小说中的重要分支。它不需要借助精密的道具、以假乱真的装束或者缜密的时间安排，即便真相就在眼前，也能掩人耳目、瞒天过海，作者在其中的策略设计实为人惊叹。</p>
-<p>我认为乱步在《心理测试》中的最大亮点，就是虽然名为心理测试，但是并非以此来作为定案的论据，而是作为一种线索。真正起作用的仍然是能充分说明问题的证词。如同明智小五郎这样能设计出精妙陷阱的人应该并不常见，不过现代刑侦系统上有心理刻画师，在寻找案犯、审讯疑犯上都起到了重要作用。</p>
 <p><font size=-1 color=lightgrey>（文中大部分图片采用AI生成）</font></p>
 
       
