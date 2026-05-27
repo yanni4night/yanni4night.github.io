@@ -1,7 +1,15 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 20
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 20
+    allow:
+      - dependency-type: direct
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+    labels:
+      - dependencies
+      - automerge

@@ -1,0 +1,7 @@
+node_modules/
+_site/
+public/
+.deploy*/
+source/_posts/
+source/images/
+scaffolds/
