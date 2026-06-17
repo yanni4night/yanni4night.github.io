@@ -10,7 +10,8 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "test": "node test/smoke.test.js",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "prepare": "husky"
   },
   "hexo": {
     "version": "8.1.2"
@@ -32,6 +33,17 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-theme-next": "^8.19.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "prettier": "^3.8.3"
+  },
+  "lint-staged": {
+    "*.{js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }
