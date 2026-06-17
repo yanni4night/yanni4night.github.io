@@ -4,15 +4,15 @@ This is a Hexo static blog site for Yanni4night, deployed to GitHub Pages.
 
 ## Key Commands
 
-| Command              | Purpose                               |
-| -------------------- | ------------------------------------- |
-| `npm run build`      | Build static site into `_site/`       |
-| `npm run server`     | Start local dev server (hot reload)   |
-| `npm run clean`      | Remove generated files (`_site/`)     |
-| `npm run deploy`     | Deploy to `gh-pages` branch via Git   |
-| `npm test`           | Run smoke test (builds then verifies) |
-| `npm run lint`       | ESLint + Prettier check               |
-| `npm run lint:fix`   | Auto-fix lint and formatting          |
+| Command            | Purpose                               |
+| ------------------ | ------------------------------------- |
+| `npm run build`    | Build static site into `_site/`       |
+| `npm run server`   | Start local dev server (hot reload)   |
+| `npm run clean`    | Remove generated files (`_site/`)     |
+| `npm run deploy`   | Deploy to `gh-pages` branch via Git   |
+| `npm test`         | Run smoke test (builds then verifies) |
+| `npm run lint`     | ESLint + Prettier check               |
+| `npm run lint:fix` | Auto-fix lint and formatting          |
 
 ## Architecture
 
@@ -27,8 +27,8 @@ This is a Hexo static blog site for Yanni4night, deployed to GitHub Pages.
 
 ```yaml
 ---
-title: {{ title }}
-date: {{ date }}
+title: { { title } }
+date: { { date } }
 tags:
 ---
 ```
