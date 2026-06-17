@@ -2,7 +2,13 @@
 layout: post
 title:  "Chrome 31~36 的 text-decoration bug"
 date:   2014-09-20
-categories: css
+categories:
+  - 技术
+  - css
+tags:
+  - css
+  - browser-bug
+
 ---
 
 

@@ -2,7 +2,13 @@
 layout: post
 title:  "JavaScript中识别native方法"
 date:   2014-04-21
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - polyfill
+
 ---
 
 Js中一些本地(native/built-in)对象和方法是可以重写的，比如在针对低版本浏览器的编程中，我们使用：

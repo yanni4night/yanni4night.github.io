@@ -2,7 +2,15 @@
 layout: post
 title:  "Vue.js 中的 DOM Diff 算法"
 date:   2018-02-12 14:41:01 +0800
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - dom
+  - dom-diff
+  - vue
+
 ---
 
 上一篇我们熟悉了一下 *Inferno.js* 的 DOM Diff 算法。今天我们来看 [Vue.js](https://vuejs.org/) 框架的 DOM Diff 算法。

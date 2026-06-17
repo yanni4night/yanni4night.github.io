@@ -2,7 +2,13 @@
 layout: post
 title:  "getElementsByName方法的出身"
 date:   2014-04-29
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - dom
+
 ---
 
 ###### 定义

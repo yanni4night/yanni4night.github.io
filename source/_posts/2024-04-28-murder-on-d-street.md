@@ -2,7 +2,15 @@
 layout: post
 title: "名侦探小五郎的初次登场——读江户川乱步《D坂杀人事件》"
 date: 2024-04-28 10:19:00 +0800
-categories: 读书
+categories:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+tags:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

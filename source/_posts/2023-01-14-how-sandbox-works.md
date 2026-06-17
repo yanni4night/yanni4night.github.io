@@ -2,7 +2,12 @@
 layout: post
 title: "沙箱是如何工作的"
 date: 2023-01-14 11:32:48 +0800
-categories: 微前端
+categories:
+  - 技术
+  - javascript
+tags:
+  - micro-frontend
+
 ---
 
 ## 一、前言

@@ -2,7 +2,11 @@
 layout: post
 title:  "CSS3多列布局"
 date:   2014-05-03
-categories: css3 column layout
+categories:
+  - 技术
+  - css
+tags:
+  - css
 ---
 
 过宽的大段文字内容对读者不够友好，尝试阅读一下[这里](/example/columns.html)的第一段文字，是否在换行时遇到困难。

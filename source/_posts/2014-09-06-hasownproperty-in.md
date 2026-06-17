@@ -2,7 +2,12 @@
 layout: post
 title:  "hasOwnProperty与in"
 date:   2014-09-06
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 `hasOwnProperty` 与 `in` 都可以用来判断一个对象的成员是否存在，但有很大的区别，前者不会搜索对象的原型链中的成员，但后者会；前者是 Object 原型中的函数，后者是 Javascript 操作符等。关于第一中区别，可以通过阅读 [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm) 规范来了解其细节。

@@ -2,7 +2,12 @@
 layout: post
 title:  "isPlainObject 的不同实现"
 date:   2018-02-06 15:21:44 +08:00
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 开头一个问题是：什么是 `Plain Object`？

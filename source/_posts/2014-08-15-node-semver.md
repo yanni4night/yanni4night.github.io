@@ -2,7 +2,13 @@
 layout: post
 title: "NODE 语义化版本解析"
 date: 2014-08-15
-categories: npm node semser 语义化版本
+categories:
+  - 技术
+  - 工具
+tags:
+  - npm
+  - semver
+
 ---
 
 `Node Packaged Modules`(NPM) 中使用的版本号系统遵循[语义化版本2.0.0](http://semver.org/lang/zh-CN)：

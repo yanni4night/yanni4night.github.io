@@ -2,7 +2,14 @@
 layout: post
 title: "数学方法推导 leetcode 142 之环形链表 II"
 date: 2026-01-06 00:25:00 +0800
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - algorithm
+  - leetcode
+
 ---
 
 原题如下：

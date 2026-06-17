@@ -2,7 +2,15 @@
 layout: post
 title: "心理游侠的致命游戏——读江户川乱步《天花板上的散步者》"
 date: 2024-05-27 10:17:00 +0800
-categories: 读书
+categories:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+tags:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

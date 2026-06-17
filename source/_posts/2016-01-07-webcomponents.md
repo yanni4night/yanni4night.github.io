@@ -2,7 +2,12 @@
 layout: post
 title: "Webcomponents"
 date: 2016-01-07 16:44:15 +0800
-categories: webcomponents
+categories:
+  - 技术
+  - javascript
+tags:
+  - web-components
+
 ---
 
 `Webcomponents` 草案包含四个特性：

@@ -2,7 +2,12 @@
 layout: post
 title:  "数学方法解释 dpr/scale/rem 三者的关系"
 date:   2015-12-30 16:59:04 +0800
-categories: layout
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 开发过移动端页面的同学一定听过 `dpr`、`scale`、`rem` 三个概念。最起码，也会用过 `scale`，如

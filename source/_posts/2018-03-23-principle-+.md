@@ -2,7 +2,12 @@
 layout: post
 title: "Javascript '+' 运算符原理"
 date: 2018-03-23 15:02:57 +0800
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 继了解完“==”的原理后，再来了解一下加号“+”的 ECMAScript 实现原理。

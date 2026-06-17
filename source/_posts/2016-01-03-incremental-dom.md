@@ -2,7 +2,12 @@
 layout: post
 title:  "Incremental DOM"
 date:   2016-01-03 16:13:27 +0800
-categories: incremental DOM reactjs emberjs glimmer
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - dom-diff
 ---
 
 ## 简介

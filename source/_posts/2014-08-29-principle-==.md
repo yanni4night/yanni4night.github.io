@@ -2,7 +2,12 @@
 layout: post
 title: "Javascript '==' 运算符原理"
 date: 2014-08-29
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 JavaScript 中的`==`运算符用以比较两侧的值是否“近似”相等，区别于`===`的严格相等。

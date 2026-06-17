@@ -2,7 +2,12 @@
 layout: post
 title:  "Gitbook 插件的问题"
 date:   2016-06-28 16:03:03 +0800
-categories: gitbook plugin
+categories:
+  - 技术
+  - 工具
+tags:
+  - gitbook
+
 ---
 
 [Gitbook](https://www.gitbook.com/) 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。

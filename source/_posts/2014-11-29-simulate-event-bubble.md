@@ -2,7 +2,13 @@
 layout: post
 title: "模拟submit、change事件冒泡"
 date: 2014-11-29
-categories: bubble event jquery
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - jquery
+
 ---
 
 IE8以下 form 表单的 `submit` 事件、checkbox/radio 的 `change` 都不会冒泡到 `document` 中，[jQuery][jquery-url] 对它们进行了修复，使得在这些 DOM 元素的父节点上 `delegate` 这些事件得以实现。

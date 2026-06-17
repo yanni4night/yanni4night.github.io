@@ -2,7 +2,12 @@
 layout: post
 title:  "一种特殊的Sublime插件"
 date:   2014-09-13
-categories: sublime plugin
+categories:
+  - 技术
+  - 工具
+tags:
+  - sublime
+
 ---
 
 

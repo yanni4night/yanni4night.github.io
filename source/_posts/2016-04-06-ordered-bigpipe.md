@@ -2,7 +2,13 @@
 layout: post
 title: "有序 BigPipe"
 date: 2016-04-06 16:13:12 +0800
-categories: performance
+categories:
+  - 技术
+  - javascript
+tags:
+  - performance
+  - bigpipe
+
 ---
 
 ![纪念此猫](/images/bigpipe/shenshen.jpg)

@@ -2,7 +2,12 @@
 layout: post
 title:  "JavaScript 中继承的实现"
 date:   2018-02-06 21:37:24 +0800
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 我们都知道 JavaScript 是通过原型链继承的，在不支持 class、extends 语法的环境里，继承又该如何实现呢？

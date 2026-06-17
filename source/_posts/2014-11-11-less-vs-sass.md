@@ -2,7 +2,12 @@
 layout: post
 title: "LESS-vs-SASS"
 date: 2014-11-11
-categories: css
+categories:
+  - 技术
+  - css
+tags:
+  - css
+
 ---
 
 基于[less](http://lesscss.org/) 2.0 与 [sass](http://sass-lang.com/) 3.5.7的官方文档对两者的功能和语法进行一些简单的比较.

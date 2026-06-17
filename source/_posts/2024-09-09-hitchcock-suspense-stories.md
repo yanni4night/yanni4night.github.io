@@ -2,7 +2,14 @@
 layout: post
 title: "心灵的迷雾，悬疑的盛宴——读《希区柯克悬念故事集》"
 date: 2024-09-09 11:15:00 +0800
-categories: 读书
+categories:
+  - 读书
+  - 推理小说
+  - 希区柯克
+tags:
+  - 读书
+  - 希区柯克
+
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

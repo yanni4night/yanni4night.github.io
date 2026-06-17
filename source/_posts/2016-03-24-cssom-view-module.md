@@ -2,7 +2,12 @@
 layout: post
 title:  "CSSOM View Module 中的尺寸与位置属性"
 date:   2016-03-24 00:40:22 +0800
-categories: css
+categories:
+  - 技术
+  - css
+tags:
+  - css
+
 ---
 
 `CSSOM` 指 _CSS Object Model_，即 _CSS对象模型_。CSSOM 是 JavaScript 操纵 CSS 的一系列 API 集合，它属是 DOM 和 HTML API 的附属。

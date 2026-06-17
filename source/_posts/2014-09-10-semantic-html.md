@@ -2,7 +2,12 @@
 layout: post
 title: "WEB语义化"
 date: 2014-09-10
-categories: html
+categories:
+  - 技术
+  - javascript
+tags:
+  - html
+
 ---
 
 下面是从<http://justineo.github.io/slideshows/semantic-html>摘录的关于大部分 `HTML` 标签语义化含义的内容，可简要理解各种标签的含义。

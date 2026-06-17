@@ -2,7 +2,12 @@
 layout: post
 title: "理想与现实，黑与白，总结半年来React-Native的深度应用经验"
 date: 2017-07-13 15:17:01 +0800
-categories: react-native
+categories:
+  - 技术
+  - javascript
+tags:
+  - react-native
+
 ---
 
 自从去年11月中旬在公司内部转岗后，我就一直从事着React-Native业务研发工作，算起来也有大半年了，在这项技术的应用、运维上也算是有了点经验。

@@ -2,7 +2,13 @@
 layout: post
 title: "Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象"
 date: 2016-04-05 11:32:35 +0800
-categories: chrome json performance resource timing
+categories:
+  - 技术
+  - 浏览器
+tags:
+  - browser-bug
+  - performance
+
 ---
 
 利用 [nightmare](http://nightmarejs.org) 做下线性能对比分析中，少不了要获取 [PerformanceResourceTiming](https://www.w3.org/TR/resource-timing/#performanceresourcetiming) 数据：

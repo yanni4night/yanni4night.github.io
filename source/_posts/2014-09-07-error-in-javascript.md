@@ -2,7 +2,12 @@
 layout: post
 title:  "Error in JavaScript"
 date:   2014-09-07
-categories: error exception throw try catch 异常
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 

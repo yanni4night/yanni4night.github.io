@@ -41,10 +41,12 @@ open_graph:
 menu:
   home: / || fa fa-home
   archives: /archives/ || fa fa-archive
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
 
 menu_settings:
   icons: true
-  badges: false
+  badges: true
 
 # ---------------------------------------------------------------
 # Sidebar
@@ -112,12 +114,13 @@ post_meta:
     enable: true
     another_day: true
   categories: true
+  tags: true
 
 symbols_count_time:
   separated_meta: true
   item_text_total: false
 
-tag_icon: false
+tag_icon: true
 
 reward_settings:
   enable: false

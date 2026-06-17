@@ -2,7 +2,13 @@
 layout: post
 title:  "利用flexbox构建可伸缩布局"
 date:   2014-05-01
-categories: flex box 可伸缩 布局
+categories:
+  - 技术
+  - css
+tags:
+  - css
+  - flexbox
+
 ---
 
 

@@ -2,7 +2,12 @@
 layout: post
 title: "浅谈document.domain"
 date: 2014-04-23
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 在需要主子域跨域技术的应用场景中，父 frame 和子 frame 设置相同的 `document.domain` 是一种特别常用的方式，我们可以看见[腾讯](http://www.qq.com)公司的页面中很多都会有一句：

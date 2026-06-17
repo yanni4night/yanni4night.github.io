@@ -68,6 +68,8 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  js: javascript
+  other: 生活
 tag_map:
 
 # Metadata elements

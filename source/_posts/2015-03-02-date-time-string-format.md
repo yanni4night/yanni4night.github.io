@@ -2,7 +2,12 @@
 layout: post
 title:  "日期的字符串表现形式"
 date:   2015-03-02
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+
 ---
 
 使用 `Date` 构造一个指定日期，即可以传入毫秒单位的 UNIX 时间戳，也可以传入一定格式的字符串。

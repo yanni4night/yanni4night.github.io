@@ -2,7 +2,12 @@
 layout: post
 title: "贴吧无线 Web 的 HTTPS 改造实践"
 date: 2016-11-16
-categories: tieba https
+categories:
+  - 技术
+  - 浏览器
+tags:
+  - http
+
 ---
 
 ## 1. 背景

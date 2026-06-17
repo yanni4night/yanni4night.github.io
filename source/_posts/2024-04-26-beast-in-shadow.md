@@ -2,7 +2,15 @@
 layout: post
 title: "谁杀死了未亡人——读江户川乱步《阴兽》"
 date: 2024-04-26 10:55:00 +0800
-categories: 读书
+categories:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+tags:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

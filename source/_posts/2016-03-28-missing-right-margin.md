@@ -2,7 +2,12 @@
 layout: post
 title: "滚动区内消失的右边距"
 date: 2016-03-28 17:13:57 +0800
-categories: css
+categories:
+  - 技术
+  - css
+tags:
+  - css
+
 ---
 
 观察[这个](/example/miss-right-margin.html)页面，在可滚动区域内部，为 _.content_ 元素定义的右边距消失了。

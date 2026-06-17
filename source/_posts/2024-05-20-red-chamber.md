@@ -2,7 +2,15 @@
 layout: post
 title: "蛇蝎之心：或然率杀人之秘密——读江户川乱步《红色房间》"
 date: 2024-05-20 21:46:00 +0800
-categories: 读书
+categories:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+tags:
+  - 读书
+  - 推理小说
+  - 江户川乱步
+
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

@@ -2,7 +2,15 @@
 layout: post
 title:  "Inferno.js 中的 DOM Diff 算法"
 date:   2018-02-11 18:20:59 +0800
-categories: js
+categories:
+  - 技术
+  - javascript
+tags:
+  - javascript
+  - dom
+  - dom-diff
+  - inferno
+
 ---
 
 已经关注 [Inferno.js](https://infernojs.org/) 有两年的时间，终于在刚刚不久的过去建立起了官网和文档。

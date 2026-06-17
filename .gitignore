@@ -1,9 +1,21 @@
+# OS
 .DS_Store
 Thumbs.db
-db.json
-*.log
+
+# Dependencies
 node_modules/
+
+# Build output
+_site/
 public/
+db.json
+
+# Deploy
 .deploy*/
 _multiconfig.yml
-_site
+
+# Local scripts / utilities
+tools/
+
+# Logs
+*.log
