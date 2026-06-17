@@ -17,13 +17,13 @@ _Node.js_ 的<a href="https://nodejs.org/dist/latest-v18.x/docs/api/vm.html" tar
 
 沙箱的基础能力就是隔离上下文，让下列操作都只局限在特定的上下文内，不会干扰到外部：
 
-- 删除已有变量，如 _delete obj.a_ 或 _Relect.deleteProperty(obj, 'a')_ ；
+- 删除已有变量，如 _delete obj.a_ 或 _Reflect.deleteProperty(obj, 'a')_ ；
 - 修改已有变量
   - 修改取值，如 _obj.a=1_ 或 _Reflect.set(obj, 'a', 1)_ 或 _Reflect.defineProperty(obj, 'a', { value: 1 })_
   - 修改描述符，如 _Reflect.defineProperty(obj, 'a', { writable: false })_
   - 修改 frozen、sealed、extensible 状态，如 _Object.freeze(obj.a)_ 、 _Object.seal(obj.a)_ 或 _Object.preventExtensions(obj.a)_
   - 修改原型链，如 _Object.setPrototypeOf(obj.a, null)_
-- 创建新的变量，如 _obj.a=1_ 或 _Relect.defineProperty(obj, 'a', {value: 1})_
+- 创建新的变量，如 _obj.a=1_ 或 _Reflect.defineProperty(obj, 'a', {value: 1})_
 
 上面的 **obj** 对象即指上下文对象，在浏览器中通常是 _window_ 或 _document_ ，这两个全局对象。但事实上，window 下的所有属性都可以直接取到，如 _addEventListener_ 、 _name_ 、 _CSS_ 、 _location_ 、 _history_ 、 _navigator_ 、 _HTMLElement_ 等等，不胜枚举。因此， **沙箱不可能监视所有变量的属性删除/修改/创建，因此也就不可能实现“完美”沙箱** ，毕竟你不能遍历 window 下的所有属性，都监视一遍。
 
@@ -150,7 +150,7 @@ const target = {} as Window;
 
 const winProxy = new Proxy(target, {
     defineProperty: function (target: Window, p: PropertyKey, attributes: PropertyDescriptor): boolean {
-        return Reflect.defineProperty)(target, p, attributes);
+        return Reflect.defineProperty(target, p, attributes);
     },
     deleteProperty: function (target: Window, p: PropertyKey): boolean {
         return Reflect.deleteProperty(target, p);
@@ -176,9 +176,9 @@ const winProxy = new Proxy(target, {
 });
 ```
 
-但显然这样是有严重问题的，因为 target 是伪装的 Window 对象，它身上没有任何属性，这不但会影响 get、getOwnPropertyDescriptor、has、ownKeys 这些只读操作的结果，由于 Proxy 的规则，同样也会影响 defineProperty、deletePrperty、set 这些写操作的结果。
+但显然这样是有严重问题的，因为 target 是伪装的 Window 对象，它身上没有任何属性，这不但会影响 get、getOwnPropertyDescriptor、has、ownKeys 这些只读操作的结果，由于 Proxy 的规则，同样也会影响 defineProperty、deleteProperty、set 这些写操作的结果。
 
-举个例子，本来真实 window 对象上有一个不可配置的属性 foo，正常来说，我们用 defineProxy 修改其描述符类型时一定会报错，但是 target 本身并没有任何属性，Reflect.defineProperty(target)却是成功的，不符合期望。
+举个例子，本来真实 window 对象上有一个不可配置的属性 foo，正常来说，我们用 defineProperty 修改其描述符类型时一定会报错，但是 target 本身并没有任何属性，Reflect.defineProperty(target)却是成功的，不符合期望。
 
 于是，业界常规的做法都是会把 **原始对象的自身属性拷贝到 target 中，特别是那些不可配置的属性** 。这样无论是读操作还是写操作，其结果都真实反应到了代码对象的 target 中，不会被任何 Proxy 原则所影响。
 
@@ -277,7 +277,7 @@ const winProxy = new Proxy(target, {
 目标没有很好的办法来解决这个问题，毕竟函数内部的逻辑是无法预测的，只能尽可能兼容。一些策略有：
 
 - 如果属性名是 constructor，无需特殊处理；
-- 如果属性名以大些字母开头， **认为它们是构造函数** ，无需特殊处理；
+- 如果属性名以大写字母开头， **认为它们是构造函数** ，无需特殊处理；
 - 创建包装函数来锁定上下文:
 
 ```ts
