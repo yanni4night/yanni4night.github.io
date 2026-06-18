@@ -1,28 +1,26 @@
 ---
 layout: post
-title: "LESS-vs-SASS"
+title: 'LESS-vs-SASS'
 date: 2014-11-11
 categories:
   - 技术
   - css
 tags:
   - css
-
 ---
 
 基于[less](http://lesscss.org/) 2.0 与 [sass](http://sass-lang.com/) 3.5.7的官方文档对两者的功能和语法进行一些简单的比较.
 
 ###### Variable
 
-两者都支持向_选择器名_、_属性名_、_属性值_和_字符串_中注入变量，并都支持数值变量的计算：
-
+两者都支持向*选择器名*、_属性名_、*属性值*和*字符串*中注入变量，并都支持数值变量的计算：
 
     //sass
     $left: left;
     $variable: variable;
     $num3px: 3px;
     $num5: 5;
-    
+
     .#{$variable}{
         margin-#{$left}: $num3px + $num5;
         float: $left;
@@ -33,7 +31,7 @@ tags:
     @variable:variable;
     @num3px: 3px;
     @num5: 5;
-    
+
     .@{variable}{
         margin-@{left}: @num3px + @num5;
         float: @left;
@@ -41,7 +39,6 @@ tags:
     }
 
 但只有sass支持字符串的连接：
-
 
     $hel:"hel";
     $lo:"lo";
@@ -59,23 +56,19 @@ tags:
 
 都输出：
 
-
     .mark .item{}
 
 如果要被引入的是一个 css 文件，sass 不执行任何操作，less 可以根据[指令](http://lesscss.org/features/#import-directives-feature-file-extensions)执行多种操作，例如，可以将 css 当做 less 处理：
 
-
     @import (less) "common.css";
 
 或者直接引入不执行任何处理操作：
-
 
     @import (inline) "common.css";
 
 ###### @media
 
 两者都支持媒体查询选择器提升：
-
 
     .wrap{
         @media screen{
@@ -87,7 +80,6 @@ tags:
 
 输出：
 
-
     @media screen {
         .wrap .item {
             color: red;
@@ -98,13 +90,12 @@ tags:
 
 两者都支持extend：
 
-
     //less
     .wrap{
         &:extend(.on);
     }
     .on{font-size:10px;}
-    
+
     //sass
     .wrap{
         @extend .on;
@@ -113,9 +104,7 @@ tags:
 
 输出：
 
-
     .wrap .on{font-size:10px;}
-
 
 sass 实现了 `!optional` 标记用以屏蔽错误。
 
@@ -123,13 +112,12 @@ sass 实现了 `!optional` 标记用以屏蔽错误。
 
 两者都支持mixin：
 
-
     //less
     .fork(){font-size:20px;}
     .banner{
         .fork;
     }
-    
+
     //sass
     @mixin fork(){font-size:20px;}
     .banner{
@@ -138,11 +126,9 @@ sass 实现了 `!optional` 标记用以屏蔽错误。
 
 对于 sass，必须使用 `@mixin` 指令定义一个 mixin，个人感觉 less 更方便一些，直接写入选择器名，也不需要 `@include` 指令，特别是 mixin 本身去掉圆括号之后也可以作为一个合法的css选择器。
 
-
 ###### 判断
 
 都支持判断：
-
 
     //less
     @tick:1;
@@ -154,7 +140,7 @@ sass 实现了 `!optional` 标记用以屏蔽错误。
             font-size: 10px;
         }
     }
-    
+
     //sass
     $tick:1;
     @if $tick < 5{
@@ -177,11 +163,10 @@ less 仰赖判断实现循环：
             left: (10px * @counter);
         }
     }
-    
+
     .loop(5);
 
 sass 实现了 `@for` 指令：
-
 
     //sass
     @for $counter from 1 through 5{

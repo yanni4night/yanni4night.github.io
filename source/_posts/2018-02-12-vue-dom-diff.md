@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Vue.js 中的 DOM Diff 算法"
-date:   2018-02-12 14:41:01 +0800
+title: 'Vue.js 中的 DOM Diff 算法'
+date: 2018-02-12 14:41:01 +0800
 categories:
   - 技术
   - javascript
@@ -10,24 +10,23 @@ tags:
   - dom
   - dom-diff
   - vue
-
 ---
 
-上一篇我们熟悉了一下 *Inferno.js* 的 DOM Diff 算法。今天我们来看 [Vue.js](https://vuejs.org/) 框架的 DOM Diff 算法。
+上一篇我们熟悉了一下 _Inferno.js_ 的 DOM Diff 算法。今天我们来看 [Vue.js](https://vuejs.org/) 框架的 DOM Diff 算法。
 
-*Vue.js* 的作者没有编写自己的算法，而是使用了 [Snabbdom](https://github.com/snabbdom/snabbdom)，并做了适当的修改。
+_Vue.js_ 的作者没有编写自己的算法，而是使用了 [Snabbdom](https://github.com/snabbdom/snabbdom)，并做了适当的修改。
 
 DOM Diff 的关键算法在 <https://github.com/snabbdom/snabbdom/blob/v0.7.1/src/snabbdom.ts#L179>。
 
-同样，我们依然假设有原始的 DOM 集合A为 “*dfibge*”，更新后的集合B为 “*igfheb*”。
+同样，我们依然假设有原始的 DOM 集合A为 “_dfibge_”，更新后的集合B为 “_igfheb_”。
 
-创建4个指针 *oldStartIdx*、*oldEndIdx*、*newStartIdx*、*newEndIdx*，初始分别指向A的起始点、结束点和B的起始点、结束点。显然：
+创建4个指针 _oldStartIdx_、_oldEndIdx_、_newStartIdx_、_newEndIdx_，初始分别指向A的起始点、结束点和B的起始点、结束点。显然：
 
 ```js
-oldStartIdx=0
-oldEndIdx=5
-newStartIdx=0
-newEndIdx=5
+oldStartIdx = 0
+oldEndIdx = 5
+newStartIdx = 0
+newEndIdx = 5
 ```
 
 第一步，比较 A[oldStartIdx] 和 B[newStartIdx]，如果相同，则 oldStartIdx++、newStartIdx++。
@@ -40,9 +39,9 @@ newEndIdx=5
 
 在本例中，以上两步全部不满足，跳过。
 
-第五步，在A中搜索 B[newStartIdx]，即 *i*，找到则把A中的 *i* 移到 A[oldStartVnode] 前面并 newStartIdx++、oldStartVnode++，否则则创建它。
+第五步，在A中搜索 B[newStartIdx]，即 _i_，找到则把A中的 _i_ 移到 A[oldStartVnode] 前面并 newStartIdx++、oldStartVnode++，否则则创建它。
 
-在本例中，A变成 *idfbge*。
+在本例中，A变成 _idfbge_。
 
 返回第一步。
 
@@ -96,6 +95,6 @@ B:igfheb
        ^
 ```
 
-用一句话概括此算法的核心就是：依次遍历B集合，在A集合中找到对应项，放到与在B集合中相同的位置上。只不过 *Snabbdom* 使用了双向同时遍历来进行优化。
+用一句话概括此算法的核心就是：依次遍历B集合，在A集合中找到对应项，放到与在B集合中相同的位置上。只不过 _Snabbdom_ 使用了双向同时遍历来进行优化。
 
 事实上，React 的 DOM Diff 算法与此也是非常类似的，只不过受限于 Fiber，只进行了单向搜索。但是即便如此， React 也引入了优化策略，尽量使得更多的元素不必移动。从本质上来看，Inferno 和 React 都利用递增子序列来进行了优化，但是 Inferno 使用算法来保证是最大递增子序列，而 React 的子序列是一定从第一个元素开始的，因此不一定是最大子序列。这在尾部元素移动到首部的时候，差异表现得更明显。

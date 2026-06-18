@@ -1,13 +1,12 @@
 ---
 layout: post
-title: "沙箱是如何工作的"
+title: '沙箱是如何工作的'
 date: 2023-01-14 11:32:48 +0800
 categories:
   - 技术
   - javascript
 tags:
   - micro-frontend
-
 ---
 
 ## 一、前言
@@ -132,53 +131,57 @@ _Node.js_ 的<a href="https://nodejs.org/dist/latest-v18.x/docs/api/vm.html" tar
 
 举几个例子：
 
- + 如果Reflect.has(proxyObj, 'a')返回true，那么target就必须不能有一个不可配置的属性a；
- + 如果Reflect.set(proxyObj, 'a', 1)返回true，那么target对象必然不能是不可扩展的，也不可以有一个不可写也不可配置的属性a
+- 如果Reflect.has(proxyObj, 'a')返回true，那么target就必须不能有一个不可配置的属性a；
+- 如果Reflect.set(proxyObj, 'a', 1)返回true，那么target对象必然不能是不可扩展的，也不可以有一个不可写也不可配置的属性a
 
 如下的做法，直接代理原始 window、document 肯定是不可以的，根据上面的 Invariants 可知我们几乎必须把属性同步给原始的 window、document 才能不报错，显然违背我们做沙箱的初衷。
 
 ```ts
-const proxy = new Proxy(window, {});
+const proxy = new Proxy(window, {})
 ```
 
 因此，通常的做法是把一个 **新创建的对象** 当作原始对象进行代理，下文简称为 **target** 。
 
 ```ts
-const target = {};
-const winProxy = new Proxy(target, {});
+const target = {}
+const winProxy = new Proxy(target, {})
 ```
 
 所有的操作几乎都是最终体现在 target 对象上的，个别稍有例外。
 
 ```ts
-const target = {} as Window;
+const target = {} as Window
 
 const winProxy = new Proxy(target, {
-    defineProperty: function (target: Window, p: PropertyKey, attributes: PropertyDescriptor): boolean {
-        return Reflect.defineProperty(target, p, attributes);
-    },
-    deleteProperty: function (target: Window, p: PropertyKey): boolean {
-        return Reflect.deleteProperty(target, p);
-    },
-    get: function (target: T, p: PropertyKey /*, receiver: any */): any {
-        return Reflect.get(target, p);
-    },
-    getOwnPropertyDescriptor: function (target: T, p: PropertyKey): PropertyDescriptor | undefined {
-        return Reflect.getOwnPropertyDescriptor(target, p);
-    },
-    has: function (target: T, p: PropertyKey): boolean {
-        return Reflect.has(target, p);
-    },
-    ownKeys: function (target: T): ArrayLike<string | symbol> {
-        return Reflect.ownKeys(target);
-    },
-    set: function (target: T, p: PropertyKey, value: unknown /*, receiver: unknown */): boolean {
-        return Reflect.set(target, p, value);
-    },
-    getPrototypeOf() {
-        return Reflect.getPrototypeOf(window);
-    }
-});
+  defineProperty: function (
+    target: Window,
+    p: PropertyKey,
+    attributes: PropertyDescriptor,
+  ): boolean {
+    return Reflect.defineProperty(target, p, attributes)
+  },
+  deleteProperty: function (target: Window, p: PropertyKey): boolean {
+    return Reflect.deleteProperty(target, p)
+  },
+  get: function (target: T, p: PropertyKey /*, receiver: any */): any {
+    return Reflect.get(target, p)
+  },
+  getOwnPropertyDescriptor: function (target: T, p: PropertyKey): PropertyDescriptor | undefined {
+    return Reflect.getOwnPropertyDescriptor(target, p)
+  },
+  has: function (target: T, p: PropertyKey): boolean {
+    return Reflect.has(target, p)
+  },
+  ownKeys: function (target: T): ArrayLike<string | symbol> {
+    return Reflect.ownKeys(target)
+  },
+  set: function (target: T, p: PropertyKey, value: unknown /*, receiver: unknown */): boolean {
+    return Reflect.set(target, p, value)
+  },
+  getPrototypeOf() {
+    return Reflect.getPrototypeOf(window)
+  },
+})
 ```
 
 但显然这样是有严重问题的，因为 target 是伪装的 Window 对象，它身上没有任何属性，这不但会影响 get、getOwnPropertyDescriptor、has、ownKeys 这些只读操作的结果，由于 Proxy 的规则，同样也会影响 defineProperty、deleteProperty、set 这些写操作的结果。
@@ -188,11 +191,11 @@ const winProxy = new Proxy(target, {
 于是，业界常规的做法都是会把 **原始对象的自身属性拷贝到 target 中，特别是那些不可配置的属性** 。这样无论是读操作还是写操作，其结果都真实反应到了代码对象的 target 中，不会被任何 Proxy 原则所影响。
 
 ```ts
-const target = {} as Window;
+const target = {} as Window
 
 for (let key of Object.getOwnPropertyNames(window)) {
-  const descriptor = Reflect.getOwnPropertyDescriptor(window, key);
-  if (!descriptor.configurable) Reflect.defineProperty(target, p, descriptor);
+  const descriptor = Reflect.getOwnPropertyDescriptor(window, key)
+  if (!descriptor.configurable) Reflect.defineProperty(target, p, descriptor)
 }
 ```
 
@@ -205,64 +208,48 @@ for (let key of Object.getOwnPropertyNames(window)) {
 实现主动变量逃逸比较简单，以 set 和 get 操作为例：
 
 ```ts
-const target = {} as Window;
+const target = {} as Window
 
 const winProxy = new Proxy(target, {
   get: function (target: T, p: PropertyKey /*, receiver: any */): any {
     if (isEscaped(p)) {
-      return Reflect.get(window, p);
+      return Reflect.get(window, p)
     }
-    return Reflect.get(target, p);
+    return Reflect.get(target, p)
   },
-  set: function (
-    target: T,
-    p: PropertyKey,
-    value: unknown /*, receiver: unknown */
-  ): boolean {
+  set: function (target: T, p: PropertyKey, value: unknown /*, receiver: unknown */): boolean {
     if (isEscaped(p)) {
-      return Reflect.set(window, p, value);
+      return Reflect.set(window, p, value)
     }
-    return Reflect.set(target, p, value);
+    return Reflect.set(target, p, value)
   },
-});
+})
 ```
 
 不过别忘记了 Proxy 的那些 Invariants 限制，上述这些操作的结果都要反应到 target 身上，所以最后还是得把原始对象（如 window）上的属性同步到 target 上。
 
 ```ts
-const target = {} as Window;
+const target = {} as Window
 
 const winProxy = new Proxy(target, {
   get: function (target: T, p: PropertyKey /*, receiver: any */): any {
     if (isEscaped(p)) {
       // 同步到target中
-      Reflect.defineProperty(
-        target,
-        p,
-        Reflect.getOwnPropertyDescriptor(window, p)
-      );
-      return Reflect.get(window, p);
+      Reflect.defineProperty(target, p, Reflect.getOwnPropertyDescriptor(window, p))
+      return Reflect.get(window, p)
     }
-    return Reflect.get(target, p);
+    return Reflect.get(target, p)
   },
-  set: function (
-    target: T,
-    p: PropertyKey,
-    value: unknown /*, receiver: unknown */
-  ): boolean {
+  set: function (target: T, p: PropertyKey, value: unknown /*, receiver: unknown */): boolean {
     if (isEscaped(p)) {
       // 同步到target中
-      Reflect.defineProperty(
-        target,
-        p,
-        Reflect.getOwnPropertyDescriptor(window, p)
-      );
-      Reflect.set(window, p, value);
-      return Reflect.set(target, p, value);
+      Reflect.defineProperty(target, p, Reflect.getOwnPropertyDescriptor(window, p))
+      Reflect.set(window, p, value)
+      return Reflect.set(target, p, value)
     }
-    return Reflect.set(target, p, value);
+    return Reflect.set(target, p, value)
   },
-});
+})
 ```
 
 ### 2.3 函数属性上下文
@@ -289,11 +276,11 @@ const winProxy = new Proxy(target, {
 const newValueInTarget = function (this: any, ...args: unknown[]): unknown {
   // 小写字母也可能是构造函数
   if (new.target) {
-    return Reflect.construct(valueInRaw, args);
+    return Reflect.construct(valueInRaw, args)
   }
 
-  return Reflect.apply(valueInRaw, raw, args);
-};
+  return Reflect.apply(valueInRaw, raw, args)
+}
 ```
 
 - 一些特殊属性的处理，例如 window 上的 eval、isFinite、isNaN、parseFloat、parseInt、hasOwnProperty、decodeURI、decodeURIComponent、encodeURI、encodeURIComponent，直接走主动变量逃生即可
@@ -310,7 +297,7 @@ const newValueInTarget = function (this: any, ...args: unknown[]): unknown {
 
 ```ts
 function evalScript(code: string): any {
-  return ("", eval)(code);
+  return ('', eval)(code)
 }
 ```
 
@@ -320,7 +307,7 @@ function evalScript(code: string): any {
 evalScript(`;
     (function (window, self, parent, top, globalThis, document) {
         ${appCode}
-    }).call(winProxy, winProxy.window, winProxy.self, winProxy.parent, winProxy.top, winProxy.globalThis, winProxy.document)`);
+    }).call(winProxy, winProxy.window, winProxy.self, winProxy.parent, winProxy.top, winProxy.globalThis, winProxy.document)`)
 ```
 
 从这里也能看出，如果直接引用如 location、navigator、history 将无法被沙箱捕获，你需要用 window.location、window.navigator、window.history 的方法。进而可以推断出你在全局定义的变量，也必须以 window 属性的方式来读取，比如：
@@ -329,12 +316,12 @@ evalScript(`;
 <head>
   <title></title>
   <script>
-    var loadStartTime = Date.now();
+    var loadStartTime = Date.now()
   </script>
 </head>
 <body>
   <script>
-    var loadCost = Date.now() - loadStartTime;
+    var loadCost = Date.now() - loadStartTime
   </script>
   <script src="./entry.js" entry></script>
 </body>
@@ -359,16 +346,16 @@ function() {
 <head>
   <title></title>
   <script>
-    var loadStartTime = Date.now();
+    var loadStartTime = Date.now()
     function sendLog() {
       // 访问未预定义变量
-      sendToServer({ loadCost });
+      sendToServer({ loadCost })
     }
   </script>
 </head>
 <body>
   <script>
-    var loadCost = Date.now() - loadStartTime;
+    var loadCost = Date.now() - loadStartTime
   </script>
   <script src="./entry.js"></script>
 </body>
@@ -385,8 +372,8 @@ function() {
 ```ts
 if (window.__IN_MICRO_ENV__) {
   Promise.resolve().then(() => {
-    console.log(window.__IN_MICRO_ENV__); // undefined
-  });
+    console.log(window.__IN_MICRO_ENV__) // undefined
+  })
 }
 ```
 
@@ -396,7 +383,7 @@ if (window.__IN_MICRO_ENV__) {
 evalScript(`;
     (function (window, document, __IN_MICRO_ENV__) {
         ${appCode}
-    }).call(winProxy, winProxy.document, winProxy.__IN_MICRO_ENV__)`);
+    }).call(winProxy, winProxy.document, winProxy.__IN_MICRO_ENV__)`)
 ```
 
 ### 3.3 ESM
@@ -425,23 +412,23 @@ DOM API 中的 **document.documentElement** 、 **document.body** 、 **document
 根据业务需求，可以做更深的伪装定制，通过以下测试：
 
 ```ts
-document.documentElement.tagName === "HTML";
-document.documentElement.nodeName === "HTML";
-document.documentElement.version === "";
-document.documentElement.parentNode === document;
-document.documentElement.parentElement === null;
-document.documentElement.constructor === HTMLHtmlElement;
-document.documentElement instanceof HTMLHtmlElement === true;
+document.documentElement.tagName === 'HTML'
+document.documentElement.nodeName === 'HTML'
+document.documentElement.version === ''
+document.documentElement.parentNode === document
+document.documentElement.parentElement === null
+document.documentElement.constructor === HTMLHtmlElement
+document.documentElement instanceof HTMLHtmlElement === true
 
-document.body.tagName === "BODY";
-document.body.nodeName === "BODY";
-document.body.constructor === HTMLBodyElement;
-document.body instanceof HTMLBodyElement === true;
+document.body.tagName === 'BODY'
+document.body.nodeName === 'BODY'
+document.body.constructor === HTMLBodyElement
+document.body instanceof HTMLBodyElement === true
 
-document.head.tagName === "HEAD";
-document.head.nodeName === "HEAD";
-document.head.constructor === HTMLHeadElement;
-document.head instanceof HTMLHeadElement === true;
+document.head.tagName === 'HEAD'
+document.head.nodeName === 'HEAD'
+document.head.constructor === HTMLHeadElement
+document.head instanceof HTMLHeadElement === true
 ```
 
 注意 **document.documentElement.parentElement** ，如果等于 null，可能对一些视觉框架、组件库等需要用 parentElement 向上递归搜索的功能不友好。可根据需要是否开启以上伪装能力。
@@ -461,15 +448,15 @@ document.head instanceof HTMLHeadElement === true;
 
 新增 DOM 有多种创建方式：
 
-+ document.createElement()；
-+ dom.clone()；
-+ dom.innerHTML=
+- document.createElement()；
+- dom.clone()；
+- dom.innerHTML=
 
 通常来说只有第一种会被沙箱接管，使得新创建的 DOM 的 ownerDocument、baseURI 是符合沙箱环境的。
 
 需要特别关注的是，新创建的 script 元素会被转换成一个无实际功能的&lt;pseudo-script&gt;元素。框架会在后台自行下载/执行其代码，模拟了 script 的能力。
 
-Custom Element默认是inline类型，除了在shadow DOM内部使用 __:host{display:block}__ 外，只能在外部用选择器覆盖。未来如果Safari支持<a href="https://caniuse.com/custom-elementsv1" target="_blank">继承built-in元素</a>后可以解决。
+Custom Element默认是inline类型，除了在shadow DOM内部使用 **:host{display:block}** 外，只能在外部用选择器覆盖。未来如果Safari支持<a href="https://caniuse.com/custom-elementsv1" target="_blank">继承built-in元素</a>后可以解决。
 
 ## 五、总结
 

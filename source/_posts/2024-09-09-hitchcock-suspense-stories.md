@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "心灵的迷雾，悬疑的盛宴——读《希区柯克悬念故事集》"
+title: '心灵的迷雾，悬疑的盛宴——读《希区柯克悬念故事集》'
 date: 2024-09-09 11:15:00 +0800
 categories:
   - 读书
@@ -9,7 +9,6 @@ categories:
 tags:
   - 读书
   - 希区柯克
-
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
@@ -20,7 +19,6 @@ tags:
 
 <img src="/images/hitchcock/book.png" />
 <center><font size=1>《希区柯克悬念故事集》2014年版</font></center>
-
 
 按理说如此大师的作品应该很能引人入胜。不错，有人说，希区柯克的故事充满了离奇曲折的意外和对人生的深刻理解。我深表同意，只是大多数人不愿意接受一些残酷的现实罢了。
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "从 margin-bottom 到 writing-mode"
+title: '从 margin-bottom 到 writing-mode'
 date: 2016-04-19 22:48:45 +0800
 categories:
   - 技术
@@ -8,15 +8,14 @@ categories:
 tags:
   - css
   - writing-mode
-
 ---
 
 一个有趣的事实是，不论 _margin_ 还是 _padding_，都可以设置百分比值：
 
 ```css
 .content {
-    margin: 5%;
-    padding: 10%;
+  margin: 5%;
+  padding: 10%;
 }
 ```
 
@@ -34,8 +33,8 @@ tags:
 
 ```css
 .content {
-    writing-mode: vertical-lr;
-    direction: rtl;
+  writing-mode: vertical-lr;
+  direction: rtl;
 }
 ```
 

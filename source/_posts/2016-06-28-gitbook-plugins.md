@@ -1,13 +1,12 @@
 ---
 layout: post
-title:  "Gitbook 插件的问题"
-date:   2016-06-28 16:03:03 +0800
+title: 'Gitbook 插件的问题'
+date: 2016-06-28 16:03:03 +0800
 categories:
   - 技术
   - 工具
 tags:
   - gitbook
-
 ---
 
 [Gitbook](https://www.gitbook.com/) 是一个工具，可以将你的 Markdown 文档转换为 HTML、PDF 电子书，也是一个平台，你可以将电子书分享到上面去。不过严格来讲将 Markdown 发布为 HTML 没有任何技术含量，解析 Markdown 格式的工具不计其数。原始的 Markdown 语法非常简陋，在写书的时候，难免会用到一些图表、公式之类的，这种 Markdown 通过扩展也不在话下。
@@ -16,7 +15,7 @@ tags:
 [content]
 \`\`\`
 
-*type* 处是这段代码的解析类型，常用的有各种语言语法以及 *flowchat*、*sequence* 等扩展类型，这些扩展类型都需要引入运行时解析的js脚本。
+_type_ 处是这段代码的解析类型，常用的有各种语言语法以及 _flowchat_、_sequence_ 等扩展类型，这些扩展类型都需要引入运行时解析的js脚本。
 
 <!-- more -->
 
@@ -47,7 +46,7 @@ Gitbook 通过注册插件，无需手动引入js：
 
 目前官网还没有给出解决方案，对于不得不使用的插件，需要手动改造一番，尽量少向全局暴露对象。
 
- - [js-sequence-diagram-full](https://plugins.gitbook.com/plugin/js-sequence-diagram-full)
- - [mathjax-full](https://plugins.gitbook.com/plugin/mathjax-full)
- - [mermaid-full ](https://plugins.gitbook.com/plugin/mermaid-full)
- - [flowchart-full](https://plugins.gitbook.com/plugin/flowchart-full)
+- [js-sequence-diagram-full](https://plugins.gitbook.com/plugin/js-sequence-diagram-full)
+- [mathjax-full](https://plugins.gitbook.com/plugin/mathjax-full)
+- [mermaid-full ](https://plugins.gitbook.com/plugin/mermaid-full)
+- [flowchart-full](https://plugins.gitbook.com/plugin/flowchart-full)

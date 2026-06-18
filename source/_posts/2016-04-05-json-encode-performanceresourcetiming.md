@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象"
+title: 'Chrome bug 之 JSON 序列化 PerformanceResourceTiming 对象'
 date: 2016-04-05 11:32:35 +0800
 categories:
   - 技术
@@ -8,13 +8,12 @@ categories:
 tags:
   - browser-bug
   - performance
-
 ---
 
 利用 [nightmare](http://nightmarejs.org) 做下线性能对比分析中，少不了要获取 [PerformanceResourceTiming](https://www.w3.org/TR/resource-timing/#performanceresourcetiming) 数据：
 
 ```js
-performance.getEntriesByType('resource');
+performance.getEntriesByType('resource')
 ```
 
 <!-- more -->
@@ -34,13 +33,13 @@ let resources = yield nightmare.evaluate(() => JSON.stringify(performance.getEnt
 你会发现返回值是这样的：
 
 ```js
-[
+;[
   {
-    "name": "https://...",
-    "entryType": "resource",
-    "startTime": 1059.82,
-    "duration": 413.96500000000015
-  }
+    name: 'https://...',
+    entryType: 'resource',
+    startTime: 1059.82,
+    duration: 413.96500000000015,
+  },
 ]
 ```
 
@@ -49,25 +48,25 @@ let resources = yield nightmare.evaluate(() => JSON.stringify(performance.getEnt
 转向 Chrome，执行类似的操作，发现这并非 _nightmare_ 的问题，而是 blink 内核的bug。Safari 由于不支持 _getEntriesByType_ 而无法测试，Firefox 则输出正常：
 
 ```js
-[
+;[
   {
-    "name": "https://...",
-    "entryType": "resource",
-    "startTime": 4326.712201,
-    "duration": 1264.9166809999997,
-    "initiatorType": "xmlhttprequest",
-    "redirectStart": 0,
-    "redirectEnd": 0,
-    "fetchStart": 4326.712201,
-    "domainLookupStart": 0,
-    "domainLookupEnd": 0,
-    "connectStart": 0,
-    "connectEnd": 0,
-    "secureConnectionStart": 0,
-    "requestStart": 0,
-    "responseStart": 0,
-    "responseEnd": 5591.628882
-  }
+    name: 'https://...',
+    entryType: 'resource',
+    startTime: 4326.712201,
+    duration: 1264.9166809999997,
+    initiatorType: 'xmlhttprequest',
+    redirectStart: 0,
+    redirectEnd: 0,
+    fetchStart: 4326.712201,
+    domainLookupStart: 0,
+    domainLookupEnd: 0,
+    connectStart: 0,
+    connectEnd: 0,
+    secureConnectionStart: 0,
+    requestStart: 0,
+    responseStart: 0,
+    responseEnd: 5591.628882,
+  },
 ]
 ```
 

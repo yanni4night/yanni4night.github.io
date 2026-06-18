@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "模拟submit、change事件冒泡"
+title: '模拟submit、change事件冒泡'
 date: 2014-11-29
 categories:
   - 技术
@@ -8,7 +8,6 @@ categories:
 tags:
   - javascript
   - jquery
-
 ---
 
 IE8以下 form 表单的 `submit` 事件、checkbox/radio 的 `change` 都不会冒泡到 `document` 中，[jQuery][jquery-url] 对它们进行了修复，使得在这些 DOM 元素的父节点上 `delegate` 这些事件得以实现。
@@ -29,15 +28,13 @@ radio、checkbox的选中状态在变化前，在IE中会触发一个叫 `before
 
 这4个事件是 [jQuery][jquery-url] 模拟的，支持冒泡。
 
-
 顺便提一下当调用 `jQuery.on` 时发生了什么，[jQuery][jquery-url] 首先要判断应不应该在指定DOM 元素上绑定，一般都应该直接绑，不过像上面提到的 `submit`、`change`就不能直接绑，可能需要在子孙元素上绑定，也可能绑定其它替代事件。而像 `focusin`、`focusout` 这样模拟的事件就需要编程去实现冒泡了。
 
 当调用 `jQuery.trigger` 时，[jQuery][jquery-url] 内部会尝试在 DOM 元素上调用与事件同名的方法，而不是用事件 API 去构造一个 event 对象。
 
-
-[jquery-url]:http://jquery.com/
-
+[jquery-url]: http://jquery.com/
 
 ## 参考
- - <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click>
- - <http://learn.jquery.com/events/event-extensions/>
+
+- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click>
+- <http://learn.jquery.com/events/event-extensions/>

@@ -1,13 +1,12 @@
 ---
 layout: post
-title: "贴吧无线 Web 的 HTTPS 改造实践"
+title: '贴吧无线 Web 的 HTTPS 改造实践'
 date: 2016-11-16
 categories:
   - 技术
   - 浏览器
 tags:
   - http
-
 ---
 
 ## 1. 背景
@@ -28,10 +27,10 @@ tags:
 
 由于智能版相对与贴吧PC版与移动客户端来说关注度不高，一开始我们采取的改造流程非常简单：
 
-+ 建设HTTPS开发环境
-+ 改造代码
-+ QA验证
-+ 小流量
+- 建设HTTPS开发环境
+- 改造代码
+- QA验证
+- 小流量
 
 上线的流程是有致命问题的，我们后面会提到。
 
@@ -39,7 +38,7 @@ tags:
 
 无效的HTTPS证书会导致现代浏览器主动阻塞请求，在PC上，可以通过手动放行来强行加载页面和资源，在移动端上，一些浏览器（如Safari）则不提供此功能，从而无法加载页面。如果手动安装信任证书，则过于繁琐，在测试过程中不具有实际可操作性。
 
-真实的HTTPS证书只存在于公司的线上环境中，应用于_\*.baidu.com_，因此，我们申请了一台线上机器，但不接入任何用户流量。在内网环境，需要绑hosts，就可以像正常一样去访问了。
+真实的HTTPS证书只存在于公司的线上环境中，应用于*\*.baidu.com*，因此，我们申请了一台线上机器，但不接入任何用户流量。在内网环境，需要绑hosts，就可以像正常一样去访问了。
 
 ## 3. 改造
 
@@ -117,12 +116,12 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
 
 ### 3.5 CORS
 
-即 [Cross-Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)，是一种优雅的跨域通信方式，通过配置一些服务器响应头来实现。在贴吧的无线页面中，_CORS_被用于两种场景：
+即 [Cross-Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)，是一种优雅的跨域通信方式，通过配置一些服务器响应头来实现。在贴吧的无线页面中，*CORS*被用于两种场景：
 
 1. 加载CDN域名上的字体文件（现代浏览器要求字体文件必须同域，除非配置CORS）；
 2. 向其它域上传图片
 
-如果_CORS_的目标域名支持HTTPS，则增加响应头部即可，成本很低，字体文件即是这样的一个例子。但如果不支持的话，百度的代理服务器并不方便配置这样复杂的头部，因此我们不得不花费一周的时间申请了一个新域名并做了相应的配置。
+如果*CORS*的目标域名支持HTTPS，则增加响应头部即可，成本很低，字体文件即是这样的一个例子。但如果不支持的话，百度的代理服务器并不方便配置这样复杂的头部，因此我们不得不花费一周的时间申请了一个新域名并做了相应的配置。
 
 ### 3.6 白名单
 
@@ -147,17 +146,17 @@ function ssl_url_replace_recursive($json){} // 递归替换数组中的URL字符
 为了模拟真实的地址环境，我们创建了一个贴吧域名的空图片URL，使用JavaScript脚本加载它并检测请求结果，伪代码大概是这样的：
 
 ```js
-var img = new Image();
+var img = new Image()
 
-img.onload = function() {
-  track('success');
-};
+img.onload = function () {
+  track('success')
+}
 
-img.onerror = function() {
-  track('failure');
-};
+img.onerror = function () {
+  track('failure')
+}
 
-img.src = 'https://www.abc.com/empty.gif?' + Date.now();
+img.src = 'https://www.abc.com/empty.gif?' + Date.now()
 ```
 
 其中*track()*是统计函数。我们最终得到的是一个成功与失败的分布比例，这个数值经过计算后十分接近100%，于是我们认为用户访问HTTPS的通路没有问题。
@@ -171,30 +170,33 @@ img.src = 'https://www.abc.com/empty.gif?' + Date.now();
 为了验证这个猜测，我们修改了统计代码，不再一直等待*onerror*被触发：
 
 ```js
-new Promise(function(resolve, reject) {
-    var img = new Image();
+new Promise(function (resolve, reject) {
+  var img = new Image()
 
-    img.onload = function() {
-      resolve();
-    };
+  img.onload = function () {
+    resolve()
+  }
 
-    img.onerror = function() {
-      reject();
-    };
+  img.onerror = function () {
+    reject()
+  }
 
-    setTimeout(function() {
-        reject();
-    }, 1e3);
-    
-    img.src = 'https://www.abc.com/empty.gif?' + Date.now();
-}).then(function() {
-    track('success');
-}, function() {
-    track('failure');
-});
+  setTimeout(function () {
+    reject()
+  }, 1e3)
+
+  img.src = 'https://www.abc.com/empty.gif?' + Date.now()
+}).then(
+  function () {
+    track('success')
+  },
+  function () {
+    track('failure')
+  },
+)
 ```
 
-关键在于*setTimeout*，它让程序最多等待一秒就发送了结果。经过这样的修改，我们再来看统计结果，就与理论值很接近了，验证了之前的猜测。虽然这种方案会误杀那种访问很慢但能访问得到的情况，但根据以往经验，这部分量级很少，并且我们的目标并非严格定量地统计它，这仅是一个短期的临时统计方案。 
+关键在于*setTimeout*，它让程序最多等待一秒就发送了结果。经过这样的修改，我们再来看统计结果，就与理论值很接近了，验证了之前的猜测。虽然这种方案会误杀那种访问很慢但能访问得到的情况，但根据以往经验，这部分量级很少，并且我们的目标并非严格定量地统计它，这仅是一个短期的临时统计方案。
 
 ## 5. 总结
 
@@ -202,9 +204,9 @@ HTTPS改造实际上并没有太多的技巧可言，很大程度上都是一种
 
 在未来的HTTPS持续改造中，我们的流程将是：
 
-+ 验证线上HTTPS环境，保证通道畅通
-+ 评估所有依赖，必要时发起合作，确定时间点接洽
-+ 建设HTTPS开发环境
-+ 改造代码，尽可能所有流量都走HTTPS
-+ QA验证，全量覆盖，确保所有重要业务运行正常
-+ 小流量，可采用log函数递增方式缓慢开启流量，观察统计指标
+- 验证线上HTTPS环境，保证通道畅通
+- 评估所有依赖，必要时发起合作，确定时间点接洽
+- 建设HTTPS开发环境
+- 改造代码，尽可能所有流量都走HTTPS
+- QA验证，全量覆盖，确保所有重要业务运行正常
+- 小流量，可采用log函数递增方式缓慢开启流量，观察统计指标

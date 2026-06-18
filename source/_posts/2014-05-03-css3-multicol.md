@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "CSS3多列布局"
-date:   2014-05-03
+title: 'CSS3多列布局'
+date: 2014-05-03
 categories:
   - 技术
   - css
@@ -87,22 +87,19 @@ tags:
         column-fill:balance|auto;
     }
 
-
 #####浏览器支持
 
 虽然多列布局一直处于 [Candidate Recommendation](http://www.w3.org/TR/css3-multicol/) 阶段，但是现代 PC 和 Mobile 浏览器几乎已经全部实现， `IE` 从 10 开始支持。部分浏览器需要加厂商前缀。
 
+- IE 10+
+- Firefox 5+
+- Chrome 12+
+- Safari 3.2+
+- Opera 11.1+
+- Android 2.1+
+- iOS 3.2+
 
- - IE 10+
- - Firefox 5+
- - Chrome 12+
- - Safari 3.2+
- - Opera 11.1+
- - Android 2.1+
- - iOS 3.2+
-
-
-下面是多列布局所需的所有 CSS 属性的  `LESS` ：
+下面是多列布局所需的所有 CSS 属性的 `LESS` ：
 
     .column(@w){
         -webkit-columns:@w;

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "百年奋斗，只为一统六合——读金铁木《大秦军团》"
+title: '百年奋斗，只为一统六合——读金铁木《大秦军团》'
 date: 2025-07-21 08:00:00 +0800
 categories:
   - 读书
@@ -8,9 +8,7 @@ categories:
 tags:
   - 读书
   - 历史
-
 ---
-
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
 

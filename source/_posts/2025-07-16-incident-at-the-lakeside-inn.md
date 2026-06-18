@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "镜中杀人幻影——读江户川乱步《湖畔亭事件》"
+title: '镜中杀人幻影——读江户川乱步《湖畔亭事件》'
 date: 2025-07-16 08:00:00 +0800
 categories:
   - 读书
@@ -10,9 +10,7 @@ tags:
   - 读书
   - 推理小说
   - 江户川乱步
-
 ---
-
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
 

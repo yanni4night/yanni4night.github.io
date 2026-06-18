@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有限身躯照彻无限深蓝——读海明威《老人与海》"
+title: '有限身躯照彻无限深蓝——读海明威《老人与海》'
 date: 2025-08-27 12:00:00 +0800
 categories:
   - 读书
@@ -8,9 +8,7 @@ categories:
 tags:
   - 读书
   - 海明威
-
 ---
-
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>
 

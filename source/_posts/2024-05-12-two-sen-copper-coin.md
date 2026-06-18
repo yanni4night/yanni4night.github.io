@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "一场暴富梦的破灭——读江户川乱步《两分铜币》"
+title: '一场暴富梦的破灭——读江户川乱步《两分铜币》'
 date: 2024-05-12 21:54:00 +0800
 categories:
   - 读书
@@ -10,7 +10,6 @@ tags:
   - 读书
   - 推理小说
   - 江户川乱步
-
 ---
 
 > <font size=1>本文整理自“莺见”微信公众号：<img src="/images/wx/wx.png" width="300" /></font>

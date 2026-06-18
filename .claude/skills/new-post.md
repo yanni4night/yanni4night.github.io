@@ -160,12 +160,12 @@ If the build succeeds, confirm the post is ready. If it fails, report the error 
 
 ## Quick Reference
 
-| Item | Value |
-|------|-------|
-| Posts directory | `source/_posts/` |
-| Images directory | `source/images/{slug}/` |
-| WeChat QR code | `/images/wx/wx.png` |
-| Permalink | `:year/:month/:day/:title/` |
-| Timezone | `+0800` (Asia/Shanghai) |
-| Hexo command | `npx hexo new post "title"` |
-| Build command | `npm run build` |
+| Item             | Value                       |
+| ---------------- | --------------------------- |
+| Posts directory  | `source/_posts/`            |
+| Images directory | `source/images/{slug}/`     |
+| WeChat QR code   | `/images/wx/wx.png`         |
+| Permalink        | `:year/:month/:day/:title/` |
+| Timezone         | `+0800` (Asia/Shanghai)     |
+| Hexo command     | `npx hexo new post "title"` |
+| Build command    | `npm run build`             |

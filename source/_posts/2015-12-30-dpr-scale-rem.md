@@ -1,18 +1,18 @@
 ---
 layout: post
-title:  "数学方法解释 dpr/scale/rem 三者的关系"
-date:   2015-12-30 16:59:04 +0800
+title: '数学方法解释 dpr/scale/rem 三者的关系'
+date: 2015-12-30 16:59:04 +0800
 categories:
   - 技术
   - javascript
 tags:
   - javascript
-
 ---
 
 开发过移动端页面的同学一定听过 `dpr`、`scale`、`rem` 三个概念。最起码，也会用过 `scale`，如
-​    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+​
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 因为如果你不设置这一行，几乎所有的移动端浏览器都会把宽度设置为 `980px`，页面上的文字变得太小而难以阅读。
 
@@ -27,12 +27,14 @@ tags:
 如何在不同的屏幕上完美还原设计图，同时兼顾有限的人力与时间？
 
 由此我们可以提出需求：
-  1. 设计师只输出一套基准尺寸的 UE 图；
-  2. 通过页面缩放还原 UE 图的设计比例
+
+1. 设计师只输出一套基准尺寸的 UE 图；
+2. 通过页面缩放还原 UE 图的设计比例
 
 这有两种方案：
-  1. 使用 rem 为单位设置各个元素的尺寸；
-  2. 设定一个固定的页面宽度，所有元素可以使用 px 设定尺寸，然后缩放整个页面
+
+1. 使用 rem 为单位设置各个元素的尺寸；
+2. 设定一个固定的页面宽度，所有元素可以使用 px 设定尺寸，然后缩放整个页面
 
 我们分开来讲讲这两种方案。
 
@@ -40,7 +42,7 @@ tags:
 
 我们经常看到业界的大致方案是：
 
->将 `scale` 设置为 `1 / dpr`，`<html>` 的 `font-size` 计算为 `screen.width * dpr / >10`，然后在以 `less` 将UE图上得到的尺寸透明转换为对应的 `rem` 值。
+> 将 `scale` 设置为 `1 / dpr`，`<html>` 的 `font-size` 计算为 `screen.width * dpr / >10`，然后在以 `less` 将UE图上得到的尺寸透明转换为对应的 `rem` 值。
 
 由于 `rem` 是比例值，因此能做到最终每个元素的尺寸相对于 UE 图的比例都是一致的。
 
@@ -69,8 +71,8 @@ tags:
 其中 `psd_rem`、`ue_fs`、`foo_w`、`ue_w` 皆为已知，而 `foo_fs` 可给定一个具体值，相当于已知。
 
 ```css
-.px2rem(@px){
-    @px * (foo_w) / (foo_fs * ue_w) rem
+.px2rem(@px) {
+  @px * (foo_w) / (foo_fs * ue_w) rem;
 }
 ```
 
@@ -84,19 +86,19 @@ tags:
     psd_rem = 375px / 2 / 75px = 2.5rem
 
 在一台 iPhone6 plus 上，则：
-​    
-    foo_w = 414px
-    foo_fs = 69px（任取值）
+​  
+ foo_w = 414px
+foo_fs = 69px（任取值）
 
 代入(3)，得
-​    
-    foo_rem = 2.5 * (75 / 69) * (414 / 375) = 3rem = 3 * 69px = 414px / 2
+​  
+ foo*rem = 2.5 * (75 / 69) \_ (414 / 375) = 3rem = 3 \* 69px = 414px / 2
 
 刚好也为屏幕的一半。因此，上面的 `LESS` 实际内容是：
 
 ```css
-.px2rem(@px){
-    @px * 0.016 rem
+.px2rem(@px) {
+  @px * 0.016 rem;
 }
 ```
 
@@ -112,14 +114,13 @@ tags:
 
 就也一定是有限小数。分解：
 
-    ue_fs / ue_w 
+    ue_fs / ue_w
 
 和：
 
     foo_fs / foo_w
 
-最好都是有限小数。因此，只要取屏幕宽度的___约数___做 `foo_fs` 就可以了，如 iPhone6 上的 75px，iPhone6 plus 上的 69px 等等。
-
+最好都是有限小数。因此，只要取屏幕宽度的***约数***做 `foo_fs` 就可以了，如 iPhone6 上的 75px，iPhone6 plus 上的 69px 等等。
 
 我们知道，在 `dpr` 大于1的设备上，是画不出来真正 1px 的，除非将 `scale` 设置成 `1 / dpr`。这样，`foo_w` 也会成倍增加：
 
@@ -142,34 +143,54 @@ tags:
 `rem` 的方案就讲到这里，已经用数学算式推导出了 `foo_fs` 的计算公式(4)。
 
 核心代码参考：
+
 ```javascript
-var dpr = window.devicePixelRatio;
-var meta = '<meta name="viewport" content="width=' + baseW + ", initial-scale=" + scale + ", maximum-scale=" + scale + ", minimum-scale=" + scale + ', user-scalable=no"/>';
-document.write(meta);
-var style = '<style tyle="text/css">html{font-size:' + (screen * dpr / 10) + 'px !important}</style>';
-document.write(style);
+var dpr = window.devicePixelRatio
+var meta =
+  '<meta name="viewport" content="width=' +
+  baseW +
+  ', initial-scale=' +
+  scale +
+  ', maximum-scale=' +
+  scale +
+  ', minimum-scale=' +
+  scale +
+  ', user-scalable=no"/>'
+document.write(meta)
+var style =
+  '<style tyle="text/css">html{font-size:' + (screen * dpr) / 10 + 'px !important}</style>'
+document.write(style)
 ```
 
 ## 第二种方案，scale
 
 相比于第一种，第二种方案显得简单粗暴：
 
- >设置一个基准的尺寸，页面上所有元素都按照此基准布局。然后将页面缩放到设备的真实尺寸上去。
+> 设置一个基准的尺寸，页面上所有元素都按照此基准布局。然后将页面缩放到设备的真实尺寸上去。
 
 比如设定基准为 400px，而真实设备尺寸为 500px，则 `scale` 必须为 `500 / 400 = 1.25`。核心代码参考：
 
 ```javascript
 var baseW = 400
-var scale = screen.width / baseW;
-var meta = '<meta name="viewport" content="width=' + baseW + ", initial-scale=" + scale + ", maximum-scale=" + scale + ", minimum-scale=" + scale + ', user-scalable=no"/>';
-document.write(meta);
+var scale = screen.width / baseW
+var meta =
+  '<meta name="viewport" content="width=' +
+  baseW +
+  ', initial-scale=' +
+  scale +
+  ', maximum-scale=' +
+  scale +
+  ', minimum-scale=' +
+  scale +
+  ', user-scalable=no"/>'
+document.write(meta)
 ```
 
 同时还必须要设置HTML的宽度:
 
 ```css
 html {
-    width: 400px !important；
+  width: 400px !important；;
 }
 ```
 
@@ -179,14 +200,15 @@ html {
 
 比较上述两种方案：
 
-| 方案   | 等比布局 | 1物理像素 | 兼容vw/vh | 绝对定位 | UE尺寸 | 高清图  |
-| ---- | ---- | ----- | ------- | ---- | ---- | ---- |
-| 第一种  | ✔    | ✔     | ✔       | ✔    | LESS | ✔    |
-| 第二种  | ✔    | ✘     | ✘       | ✔    | ✔    | 有误差  |
+| 方案   | 等比布局 | 1物理像素 | 兼容vw/vh | 绝对定位 | UE尺寸 | 高清图 |
+| ------ | -------- | --------- | --------- | -------- | ------ | ------ |
+| 第一种 | ✔        | ✔         | ✔         | ✔        | LESS   | ✔      |
+| 第二种 | ✔        | ✘         | ✘         | ✔        | ✔      | 有误差 |
 
 因此两种方案的使用场景是：
-  1. 如果必须实现1物理像素，或者需要精确的高清图片，或者对 `vw/vh` 向后兼容，则使用方案一，代表有[淘宝](https://m.taobao.com/),，缺点是需要单位换算，也存在一定的误差；
-  2. 预处理，或者需要精确的像素控制，则使用方案二开发会比较方便，代表有[百度H5](http://h5.baidu.com/)，缺点是不能实现1物理像素，也不能实现精确的高清图片
+
+1. 如果必须实现1物理像素，或者需要精确的高清图片，或者对 `vw/vh` 向后兼容，则使用方案一，代表有[淘宝](https://m.taobao.com/),，缺点是需要单位换算，也存在一定的误差；
+2. 预处理，或者需要精确的像素控制，则使用方案二开发会比较方便，代表有[百度H5](http://h5.baidu.com/)，缺点是不能实现1物理像素，也不能实现精确的高清图片
 
 ## 回归
 

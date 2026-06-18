@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有序 BigPipe"
+title: '有序 BigPipe'
 date: 2016-04-06 16:13:12 +0800
 categories:
   - 技术
@@ -8,18 +8,17 @@ categories:
 tags:
   - performance
   - bigpipe
-
 ---
 
 ![纪念此猫](/images/bigpipe/shenshen.jpg)
 
 ## 概念
 
-`BigPipe` 的原理是使用 _HTTP/1.1_ 的 __chunk__ 能力分片多线程加载页面的不同部分，以降低白屏/首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。
+`BigPipe` 的原理是使用 _HTTP/1.1_ 的 **chunk** 能力分片多线程加载页面的不同部分，以降低白屏/首屏时间。由于 HTML 文档（document）是一篇纯文本，文本的内容直接决定了最终页面的展现形态和功能，因此虽然服务端可以采用多线程加载数据和输出页面片段，但在浏览器端这些片段必须保证是有序排列。于是，JavaScript 脚本担负起了这个职责，它将 HTML 片段字符串渲染成为 DOM。
 
 <!-- more -->
 
-在移动端，JavaScript 脚本渲染页面存在可观的性能问题，频繁的 _reflow_/_repaint_将会很大程度影响页面首次展示的视觉体验。既然 JavaScript 脚本在前端不适合做渲染者的角色，那么我们考虑将渲染放在服务端，这也就是传统的 _C/S_ 模式。但是因此前面提到的顺序问题，服务器必须保证整个页面文档是按照顺序输出的，加上 _chunk_ 能力，我们得到的是一种退化的 _BigPipe_：可以降低首屏时间，但会限制整个页面的最终输出时间，我们叫它 _Ordered BigPipe_。
+在移动端，JavaScript 脚本渲染页面存在可观的性能问题，频繁的 _reflow_/*repaint*将会很大程度影响页面首次展示的视觉体验。既然 JavaScript 脚本在前端不适合做渲染者的角色，那么我们考虑将渲染放在服务端，这也就是传统的 _C/S_ 模式。但是因此前面提到的顺序问题，服务器必须保证整个页面文档是按照顺序输出的，加上 _chunk_ 能力，我们得到的是一种退化的 _BigPipe_：可以降低首屏时间，但会限制整个页面的最终输出时间，我们叫它 _Ordered BigPipe_。
 
 应用 _Ordered BigPipe_ 的前提是你的页面可以分解为相互独立的，自上而下的页面片，每个页面片在 _chunk_ 通道中依次输出：
 
@@ -67,8 +66,8 @@ flush();
 
 上面提到，Server 需要分段获取数据，那么如何定义每段的数据需求呢？两种方式：
 
-  1. 前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；
-  2. 由前端自由划分段落，主动向 Server 索取数据
+1. 前后端约定一个页面划分哪几段，再规定每段应该有什么样的数据；
+2. 由前端自由划分段落，主动向 Server 索取数据
 
 显然，第二种方式，虽然实现更复杂，然而更灵活，解耦更好。
 
@@ -87,7 +86,7 @@ user_id:
 user_recent_posts:
 ```
 
-既不能单独查询 *user_profile.address*，也不能同时查询 *user_profile* 和 *user_recent_posts*。
+既不能单独查询 _user_profile.address_，也不能同时查询 _user_profile_ 和 _user_recent_posts_。
 
 合理地规划 _DataProvider_ 有助于提升效能。
 
@@ -130,7 +129,7 @@ sg3:
 段组成的队列为:
 
 ```
-    |sg1| 
+    |sg1|
     |sg2|
     |sg3|
     -----
@@ -149,14 +148,14 @@ _Ordered BigPipe_ 的前提是服务端渲染。
 ```
 <html>-----------------------------------
     <head>                               \
-        <meta>                            \  
+        <meta>                            \
         <title></title>                    Segment
         <link rel="stylesheet" href="">   /
     </head>                              /
     <body>-------------------------------
     <article>-------------------------------
                                             \
-                                             Segment    
+                                             Segment
                                             /
     </article>------------------------------
     <script src=""></script>----------------
