@@ -54,3 +54,4 @@ To create a new post: `npx hexo new post "your-title"` — this generates `sourc
 - `_config.yml` has `skip_render` for specific posts — check before changing rendering behavior.
 - Content is in Chinese (zh-CN); respect the language when editing posts or UI text.
 - The site URL is `https://yanni4night.github.io` — links should use this as base.
+- **After renaming a post file or editing the `date` in a post's frontmatter, stop the dev server before cleaning.** Hexo's incremental cache (`db.json`) keeps the old slug/date as a phantom post, which duplicates on `/archives/` and category/tag listings. The running `npm run server` process holds the old Post list in memory and will immediately rewrite the cleaned `db.json` if left running. Sequence: stop the server (kill the `hexo` process on port 4000) → `npm run clean` → restart `npm run server` (or `npm run build`).
