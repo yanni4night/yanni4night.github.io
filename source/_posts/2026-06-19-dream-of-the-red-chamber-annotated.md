@@ -41,11 +41,19 @@ tags:
 
 古代没有摄像机，这样的场面，作者除了要有细致入微的观察和记忆能力之外，前提还必须是亲身经历过方可，这就不像是一个普通的明末遗民所能及。
 
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;">
+  <source src="/images/dream-of-the-red-chamber-annotated/ancestral-temple.mp4" type="video/mp4" />
+</video>
+
 第五十二回《俏平儿情掩虾须镯 勇晴雯病补孔雀裘》：
 
 > 晴雯先将里子拆开，用茶杯口大小一个竹弓钉绷在背面，再将破口四边用金刀刮的散松松的，然后用针缝了两条，分出经纬，亦如界线之法，先界出地子来，后依本纹来回织补。
 
 然而世家子弟又怎会知晓这种针线活的细节！反而和曹雪芹家道中落的遭遇很能相合。
+
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;">
+  <source src="/images/dream-of-the-red-chamber-annotated/qingwen-mending.mp4" type="video/mp4" />
+</video>
 
 《红楼梦》的用词不全是华丽优雅，也有着难以忍受的粗鄙之语，比如第九回《恋风流情友入家塾 起嫌疑顽童闹学堂》等，不便贴出。
 
@@ -72,6 +80,10 @@ tags:
 ## <center>画外音</center>
 
 《红楼梦》中有几处让人深思的旁支故事。
+
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;">
+  <source src="/images/dream-of-the-red-chamber-annotated/dream-illusion.mp4" type="video/mp4" />
+</video>
 
 第一处自然是贾宝玉梦游太虚幻境，这里不再展开，毫无疑问影射了众人的结局。
 
