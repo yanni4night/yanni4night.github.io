@@ -33,7 +33,7 @@ tags:
 
 贾宝玉再一次梦到了太虚幻境。
 
-<img src="/images/guiyou-ben-stone-story/baoyu-taixu-dream.webp" alt="贾宝玉梦游太虚幻境" width="400" />
+<video autoplay muted loop playsinline width="500" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/baoyu-taixu-dream.mp4" type="video/mp4"></video>
 
 ## <center>第八十二回 王熙凤病求千翼方 林黛玉闷作十独吟</center>
 
@@ -41,11 +41,11 @@ tags:
 
 学堂里贾环、贾蓉、贾蔷等纨绔子弟拉帮结派，不务正业。
 
-王熙凤“血山崩积症“复发，因要强不愿请太医而是找人看医书找方子，她本人不识字。
+王熙凤”血山崩积症”复发，因要强不愿请太医而是找人看医书找方子，她本人不识字。
+
+<video autoplay muted loop playsinline width=”640” style=”max-width:100%;border-radius:8px;”><source src=”/images/guiyou-ben-stone-story/xifeng-reads-medical-book.mp4” type=”video/mp4”></video>
 
 王夫人找林黛玉谈话希望她能鼓励贾宝玉读书。
-
-<img src="/images/guiyou-ben-stone-story/xifeng-reads-medical-book.webp" alt="王熙凤独自看医书" width="500" />
 
 ## <center>第八十三回 史太君临终念子孙 王夫人膏肓托儿女</center>
 
@@ -57,7 +57,7 @@ tags:
 
 相比于电视剧中被抄家后去世而言，这两位在这个结局中算是不错的了。
 
-<img src="/images/guiyou-ben-stone-story/jiamu-deathbed.webp" alt="贾母临终念子孙" width="500" />
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/jiamu-deathbed.mp4" type="video/mp4"></video>
 
 ## <center>第八十四回 薛宝钗弥望金玉缘 史湘云喜得如意郎</center>
 
@@ -69,9 +69,9 @@ tags:
 
 薛宝钗以给林黛玉驱邪为名，请了张半仙。贾政让张半仙为整个园子驱邪。张半仙提出贾宝玉应与“金“相配的观点，实际上指的是薛宝钗，但是贾政并不认同。如果说之前薛宝钗的言行还算隐晦的话，那么这一回就不藏着掖着了，将薛的心机直接摆到了台面上。
 
-史湘云嫁给了卫若兰，在所有女子当中，这一对夫妇算是最和睦的了，无奈最终结局也不佳，后面再表。
-
 <img src="/images/guiyou-ben-stone-story/zhang-banxian-exorcism.webp" alt="张半仙大观园驱邪" width="500" />
+
+史湘云嫁给了卫若兰，在所有女子当中，这一对夫妇算是最和睦的了，无奈最终结局也不佳，后面再表。
 
 ## <center>第八十五回 痴王孙传信牵奇缘 惭妙尼避情乘游槎</center>
 
@@ -105,11 +105,11 @@ tags:
 
 贾政免职了赖大、来升两个管家，可见此时贾府经济之捉襟见肘，要靠查没下人家产来过活。
 
+<img src="/images/guiyou-ben-stone-story/jiazheng-dismisses-stewards.webp" alt="贾政免职赖大来升" width="500" />
+
 贾宝玉去孙绍祖家探望贾迎春，方知她结婚一年便被孙家折磨死了，本质上她是贾赦用来抵债的。贾家前去讨要说法无果，可见当你失势的时候，没人会再尊敬你。
 
 贾惜春正式拒绝求亲，出家为尼。她留下的大观园图以后还会出场。
-
-<img src="/images/guiyou-ben-stone-story/jiazheng-dismisses-stewards.webp" alt="贾政免职赖大来升" width="500" />
 
 ## <center>第八十八回 邢夫人执意寻舛错 王熙凤聪明误此生</center>
 
@@ -127,9 +127,9 @@ tags:
 
 贾政开始为宝黛婚事做准备。这也是贾府最后一段和谐时光。
 
-赵姨娘、贾环认为贾政偏心贾宝玉，受气离开了贾府，为日后祸患贾府做准备。
-
 <img src="/images/guiyou-ben-stone-story/wedding-preparations.webp" alt="贾政准备宝黛婚事" width="500" />
+
+赵姨娘、贾环认为贾政偏心贾宝玉，受气离开了贾府，为日后祸患贾府做准备。
 
 ## <center>第九十回 林黛玉嬉春待好音 贾元春托梦警天伦</center>
 
@@ -137,9 +137,9 @@ tags:
 
 贾政梦元春之死。
 
-冯紫英、柳湘莲再次出场。他们将来一个保护贾府，一个祸害贾府。
-
 <img src="/images/guiyou-ben-stone-story/yuanchun-dream-warning.webp" alt="贾元春托梦警天伦" width="400" />
+
+冯紫英、柳湘莲再次出场。他们将来一个保护贾府，一个祸害贾府。
 
 ## <center>第九十一回 锦衣卫查抄荣宁府 御林军戒严大观园</center>
 
@@ -149,9 +149,9 @@ tags:
 
 北静王带头查抄贾府家产，报上来的都是一些不痛不痒的东西，北静王不信，他不知贾府已经败落如此。
 
-薛蟠、薛宝钗、薛姨妈、夏金桂、宝蟾一家等人为避祸，收拾细软投奔了住在山庄上的袭人、蒋玉菡夫妇。
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/jinyiwei-arrest.mp4" type="video/mp4"></video>
 
-<img src="/images/guiyou-ben-stone-story/jinyiwei-arrest.webp" alt="锦衣卫查抄荣宁府" width="500" />
+薛蟠、薛宝钗、薛姨妈、夏金桂、宝蟾一家等人为避祸，收拾细软投奔了住在山庄上的袭人、蒋玉菡夫妇。
 
 ## <center>第九十二回 家宅乱恶子通强梁 世道艰道人连流寇</center>
 
@@ -165,7 +165,7 @@ tags:
 
 薛蟠、柳湘莲与贾蓉、冷子兴汇合成一股。
 
-<img src="/images/guiyou-ben-stone-story/jiahuan-storms-mansion.webp" alt="贾环攻入贾府" width="500" />
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/jiahuan-storms-mansion.mp4" type="video/mp4"></video>
 
 ## <center>第九十三回 山雨近阊阖笼霭晦 风云喧末世漫尘烟</center>
 
@@ -173,7 +173,7 @@ tags:
 
 赵姨娘等人继续攻打贾府，邢夫人被杀，贾府死伤无数，惨不忍睹。
 
-<img src="/images/guiyou-ben-stone-story/bandits-attack-mansion.webp" alt="盗匪攻入贾府" width="500" />
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/bandits-attack-mansion.mp4" type="video/mp4"></video>
 
 ## <center>第九十四回 骨肉泯良女落风尘 贵贱失恶奴劫浮财</center>
 
@@ -183,11 +183,11 @@ tags:
 
 冯紫英、卫若兰在贾府带人抵御盗匪。冯紫英腿部受伤。多说不说，这二位可谓对贾府仁至义尽。后言冯紫英因无药医治身亡。
 
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/fengziying-defends.mp4" type="video/mp4"></video>
+
 此时出了个插曲，贾母的丫鬟鸳鸯在贾府内想伺机而动，将来霸占贾府。这个设定也很突兀，鸳鸯之前的烈女形象一直是很正面的，怎么突然要打整个贾府的主意？而且她一个下人，势单力孤，用什么名义霸占贾府？很难有说服力。
 
 贾芸、小红夫妇在外寻找宝玉下落。
-
-<img src="/images/guiyou-ben-stone-story/fengziying-defends.webp" alt="冯紫英卫若兰抵御盗匪" width="500" />
 
 ## <center>第九十五回 水月庵龄官挞贾蔷 岳神庙茜雪慰宝玉</center>
 
@@ -241,7 +241,7 @@ tags:
 
 二人将林黛玉的遗骨埋到了贾家祖坟，毕竟宝黛二人也算是成婚了。
 
-<img src="/images/guiyou-ben-stone-story/burying-daiyu.webp" alt="埋葬黛玉遗骨" width="500" />
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/burying-daiyu.mp4" type="video/mp4"></video>
 
 接着二人又在贾府住了几天，薛宝钗照顾贾宝玉衣食，贾宝玉甚为感激，终于二人成夫妻之实。回到山庄之后，薛姨妈便为二人成婚。
 
@@ -259,6 +259,8 @@ tags:
 
 后听说皇帝已死，军卒便不再履职，把大家给放了。大家与强盗共同组织，推举戚建辉（同为发配的罪臣）为首领，向北方挺进，意欲清除戎羌。不久后邢岫烟病亡。后贾珍也在战斗中被杀。因此贾府这一帮被发配的人就都死光了。
 
+<img src="/images/guiyou-ben-stone-story/xiuyan-dies-mountain.webp" alt="邢岫烟魂断大庾岭" width="400" />
+
 话题转到贾环和赵姨娘。自从上次被薛蟠等逐出贾府后，到处躲藏流浪。跟着他们的马道婆见他们不济便偷偷逃出来，将他们藏匿的位置告诉了贾蓉、贾蔷。
 
 贾蓉、贾蔷按照马道婆的指引果然找到了贾环、赵姨娘一干人等。一阵厮杀，贾环被杀，赵姨娘走脱，不想遇到了逃走的芳官十二个戏子，被众人一顿痛击而亡。
@@ -273,13 +275,13 @@ tags:
 
 这一回简直是走马观花般地交代了一众人的结局或现状，显得比较仓促。
 
-<img src="/images/guiyou-ben-stone-story/xiuyan-dies-mountain.webp" alt="邢岫烟魂断大庾岭" width="400" />
-
 ## <center>第一百一回 呆霸王惹祸牵旧案 悍妒妇作歹设新谋</center>
 
 薛蟠、薛蝌与冷子兴一伙出门做生意，薛蟠被冷子兴和手下百般戏弄，终于在一次酒后失手打死了人，被冷子兴扭送官府，正好是贾雨村判案。薛蝌赶紧回家取500两银子行贿贾雨村。
 
 但冷子兴势必要置薛蟠于死地，从而霸占他的钱财。冷子兴送与贾雨村2000两银子，导致薛蟠还是被处斩了。
+
+<video autoplay muted loop playsinline width="640" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/xuepan-trial.mp4" type="video/mp4"></video>
 
 薛宝琴因为有个两岁的儿子需要照顾，因此不愿再嫁。她离开了薛宝钗一家，独自照顾幼子。守节苦熬10年后病死。
 
@@ -289,27 +291,25 @@ tags:
 
 卫若兰后来也被新朝抓捕，史湘云趁乱逃出，扮作乞丐到处乞讨。她在贾家祖坟看到了林黛玉的坟。
 
-<img src="/images/guiyou-ben-stone-story/xuepan-trial.webp" alt="薛蟠被拿公堂" width="500" />
-
 ## <center>第一百二回 冷惜春甘伴青灯佛 洁妙玉泥陷瓜洲渡</center>
 
 妙玉自从离开贾府后，在一处尼姑庵住下。在这里邂逅了富家公子陈也俊，再次因孤僻高傲出走，流落瓜洲，被一伙淫和尚逼良为娼，几十年后再回首，不禁为当年错过贾宝玉而感叹。
 
 这一回还简短地加入了少量的惜春和刘姥姥的情节，无关痛痒。
 
+<img src="/images/guiyou-ben-stone-story/xichun-nun.webp" alt="惜春青灯古佛" width="400" />
+
 蒋玉菡开始常常夜不归宿，袭人常常暗自流泪索性不再管他。
 
 趁薛宝钗和莺儿下山，贾宝玉扔下书打盹去了。等薛宝钗回来，赫然发现蒋玉菡和贾宝玉搂抱在一起。
-
-<img src="/images/guiyou-ben-stone-story/xichun-nun.webp" alt="惜春青灯古佛" width="400" />
 
 ## <center>第一百三回 刘姥姥三进荣国府 贾巧姐二哭大观园</center>
 
 刘姥姥把巧姐赎了出来，回到荣国府找到王仁揍了一顿。刘姥姥从贾惜春的房里找到了那一幅大观园图，带着巧姐回到了自己家。一段时间后，巧姐嫁给了刘姥姥的外孙板儿，后生有靠。
 
-蒋玉菡在城里买了房，带着一个年轻美貌女子生活，彻底离开了袭人。
-
 <img src="/images/guiyou-ben-stone-story/granny-liu-third-visit.webp" alt="刘姥姥三进荣国府" width="500" />
+
+蒋玉菡在城里买了房，带着一个年轻美貌女子生活，彻底离开了袭人。
 
 ## <center>第一百四回 毒中毒薛姨妈添病 计上计夏金桂焚身</center>
 
@@ -317,9 +317,9 @@ tags:
 
 宝蟾给夏金桂做了一碗毒汤，夏金桂转而送给了薛姨妈，薛姨妈中毒，虽然吐了出来，但不久后仍然去世。薛宝钗更加记恨夏金桂，于是和宝蟾设计将夏金桂烧死在房里。
 
-贾雨村在街上偶遇已成乞丐的甄宝玉和路过的北静王，过后他那钱财让北静王在京城给他安排了个官。
+<video autoplay muted loop playsinline width="500" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/xiajingui-fire.mp4" type="video/mp4"></video>
 
-<img src="/images/guiyou-ben-stone-story/xiajingui-fire.webp" alt="夏金桂焚身" width="400" />
+贾雨村在街上偶遇已成乞丐的甄宝玉和路过的北静王，过后他那钱财让北静王在京城给他安排了个官。
 
 ## <center>第一百五回 薛宝钗借词含讽谏 王熙凤知命强英雄</center>
 
@@ -327,17 +327,19 @@ tags:
 
 王熙凤阴魂从太虚幻境逃出，乔装来到贾府，见满目疮痍，不明所以。意外捡到了宝玉的那块通灵宝玉，后者向她述说了贾府的悲惨遭遇。王熙凤怒不可遏。
 
+<img src="/images/guiyou-ben-stone-story/xifeng-spirit-returns.webp" alt="王熙凤魂魄重返贾府" width="400" />
+
 她找到在外出家为尼的鸳鸯，逼其上吊自尽，又飞回贾府杀死王仁和卜世仁，意欲杀贾蓉贾蔷时被天兵天将追回。
 
 贾雨村又遇冷子兴，二人在街上竟然遇到了道士甄士隐。甄士隐斥责贾雨村，后者赶忙走开了。
-
-<img src="/images/guiyou-ben-stone-story/xifeng-spirit-returns.webp" alt="王熙凤魂魄重返贾府" width="400" />
 
 ## <center>第一百六回 孤倔王孙悬崖撒手 凄惶红袖秋千传情</center>
 
 因不堪薛宝钗整日逼其看书，一日贾宝玉逃下山去，偶遇雪雁，将其带回了山庄。
 
 这一次，贾宝玉下定了决心要离开薛宝钗，他带着一些银两，不顾薛宝钗等极力挽留，独自下山去了。
+
+<video autoplay muted loop playsinline width="500" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/baoyu-leaves-mountain.mp4" type="video/mp4"></video>
 
 辗转做了几次小生意都没有挣到钱，贾宝玉无奈去做了和尚，本来想着能六根清净。没想到和尚也甚为辛苦，大家都欺负他是新来的，脏活累活都让他做。最不能接受的是，他发现这帮和尚晚上竟然变成了小偷，到处偷东西。
 
@@ -348,8 +350,6 @@ tags:
 贾宝玉多年不归，薛宝钗整日哀伤，然后她与麝月、宝蟾、莺儿离开了袭人，搬到荣国府中居住了。
 
 后来因为生意由贾蓉介绍认识了贾雨村，薛宝钗与其两情相悦，成为了娇杏后的二房，总算是圆了她的功名梦。
-
-<img src="/images/guiyou-ben-stone-story/baoyu-leaves-mountain.webp" alt="贾宝玉下山出走" width="400" />
 
 ## <center>第一百七回 史湘云诉前尘旧梦 贾宝玉淡后事今生</center>
 
@@ -373,7 +373,7 @@ tags:
 
 那块通灵宝玉后悔来到人间，飞回到了大荒山无稽崖青埂峰下。
 
-<img src="/images/guiyou-ben-stone-story/baoyu-final-vision.webp" alt="宝玉太虚幻境梦见众金钗" width="400" />
+<video autoplay muted loop playsinline width="500" style="max-width:100%;border-radius:8px;"><source src="/images/guiyou-ben-stone-story/baoyu-final-vision.mp4" type="video/mp4"></video>
 
 ## <center>总结</center>
 
